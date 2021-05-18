@@ -18,6 +18,21 @@ const createUser = async (user) => {
   return createdUser;
 };
 
+const validateUser = async ({username, password}) => {
+  const userData = await pool.query('SELECT * FROM users u WHERE u.username = ?', [username]);
+
+  if (userData.length === 0) {
+    throw new Error('Username does not exist!');
+  }
+
+  if (await bcrypt.compare(password, userData[0].password)) {
+    return userData[0];
+  }
+
+  return null;
+};
+
 export default {
   createUser,
+  validateUser,
 };

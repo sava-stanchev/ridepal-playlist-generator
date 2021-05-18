@@ -37,4 +37,29 @@ app.post('/register', async (req, res) => {
   }
 });
 
+/** Login */
+app.post('/login', async (req, res) => {
+  try {
+    const user = await usersData.validateUser(req.body);
+    if (user) {
+      const token = createToken({
+        users_id: user.users_id,
+        username: user.username,
+        is_admin: user.is_admin,
+      });
+      res.json({
+        token,
+      });
+    } else {
+      res.status(401).json({
+        error: 'Invalid credentials!',
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
