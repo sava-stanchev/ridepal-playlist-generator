@@ -62,4 +62,19 @@ app.post('/login', async (req, res) => {
   }
 });
 
+/** Logout */
+app.delete('/logout', authMiddleware, async (req, res) => {
+  try {
+    await usersData.logoutUser(req.headers.authorization.replace('Bearer ', ''));
+
+    res.json({
+      message: 'Successfully logged out!',
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));

@@ -32,7 +32,12 @@ const validateUser = async ({username, password}) => {
   return null;
 };
 
+const logoutUser = async (token) => {
+  return await pool.query('INSERT INTO tokens (token) VALUES (?)', [token]);
+};
+
 export default {
   createUser,
   validateUser,
+  logoutUser,
 };
