@@ -1,10 +1,15 @@
-import Seed from './components/Seed'
 import './App.css';
+import Seed from './components/Seed'
+import NavBar from "./components/Navbar";
+import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <Seed />
+      <BrowserRouter>
+        <NavBar />
+        <Seed />
+      </BrowserRouter>
     </div>
   );
 }
