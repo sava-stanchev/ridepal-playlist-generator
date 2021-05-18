@@ -1,7 +1,17 @@
 import {Navbar, Nav} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import AuthContext from '../providers/auth-context';
+import {useContext} from 'react';
 
 const NavBar = () => {
+  const auth = useContext(AuthContext);
+  const logout = () => {
+    localStorage.removeItem('token');
+    auth.setAuthState({
+      user: null,
+      isLoggedIn: false,
+    });
+  };
 
   return(
     <div className="App">
