@@ -11,5 +11,8 @@
         "sourceType": "module"
     },
     "rules": {
+        "camelcase": 0,
+        "max-len": "off",
+        "no-unused-vars": "off"
     }
 }
