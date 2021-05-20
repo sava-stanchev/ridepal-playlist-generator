@@ -80,7 +80,6 @@ const getAllAlbums = async () => {
 };
 
 
-
 /** Set tracks from Deezer */
 const setTracks = async () => {
   try {
