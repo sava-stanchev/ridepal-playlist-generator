@@ -83,7 +83,7 @@ const getAllAlbums = async () => {
 
 /** Set tracks from Deezer */
 const setTracks = async () => {
-  // try {
+  try {
     let timer = 0;
     const albums = await getAllAlbums();
     await Promise.all(
@@ -107,9 +107,9 @@ const setTracks = async () => {
                     }));
               }, timer);
         }));
-  // } catch (error) {
-  //   console.log(error);
-  // }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 setTracks();
