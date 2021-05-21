@@ -12,6 +12,7 @@ const NB_GENRES = 2000;
 const TIME = 200;
 const ARTISTS_BLACKLIST = [5429322, 5475614, 5195381, 6937433];
 const ALBUMS_BLACKLIST = [230188352, 14499818, 11713634, 183332312, 179431712, 170480242, 160041702, 217614992, 186174392, 75228792, 7991214, 9854796, 128110722, 184596992, 97645982];
+const TRACKS_BLACKLIST = [671847, 747522];
 const NB_ARTISTS = 3000;
 const NB_ALBUMS = 2000;
 const ALBUMS_START_POINT = 82000;
@@ -95,13 +96,13 @@ const setTracks = async () => {
                 const tracks = await response.json();
                 await Promise.all(
                     tracks.data.map(async track => {
-                      if (!(tracksId.includes(track.id))) {
+                      if (!(tracksId.includes(track.id)) && !(TRACKS_BLACKLIST.includes(track.id))) {
                         tracksId.push(track.id);
                         const sql = `
-                        INSERT INTO tracks (tracks_id, track_title, duration, rank, artist)
-                        VALUES (?, ?, ?, ?, ?)
+                        INSERT INTO tracks (tracks_id, track_title, duration, rank, artist, genre)
+                        VALUES (?, ?, ?, ?, ?, ?)
                         `;
-                        const res = await pool.query(sql, [track.id, track.title, track.duration, track.rank, track.artist.id]);
+                        const res = await pool.query(sql, [track.id, track.title, track.duration, track.rank, album.artist, album.genre]);
                       }
                     }));
               }, timer);
