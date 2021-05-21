@@ -1,32 +1,12 @@
-/* eslint-disable max-len */
 import fetch from 'node-fetch';
-import mariadb from 'mariadb';
+import pool from '../data/pool.js';
 
-
-const HOST = 'localhost';
-const DBPORT = 3306;
-const USER = 'root';
-const PASSWORD = 'Pr0t0dqk0n';
-const DATABASE = 'rpg';
 const NB_GENRES = 2000;
 const TIME = 200;
 const ARTISTS_BLACKLIST = [5429322, 5475614, 5195381, 6937433];
 const ALBUMS_BLACKLIST = [230188352, 14499818, 11713634, 183332312, 179431712, 170480242, 160041702, 217614992, 186174392, 75228792, 7991214, 9854796, 128110722, 184596992, 97645982];
 const TRACKS_BLACKLIST = [671847, 747522];
 const NB_ARTISTS = 3000;
-const NB_ALBUMS = 2000;
-const ALBUMS_START_POINT = 82000;
-const NB_TRACKS = 3000;
-const TRACKS_START_POINT = 999999;
-
-
-const pool = mariadb.createPool({
-  host: HOST,
-  port: DBPORT,
-  user: USER,
-  password: PASSWORD,
-  database: DATABASE,
-});
 
 /** Get all artists from DB */
 const getAllArtists = async () => {

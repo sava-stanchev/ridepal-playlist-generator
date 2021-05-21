@@ -7,7 +7,6 @@ import usersData from './data/users.js';
 import {authMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
-import userService from './services/user-service.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
