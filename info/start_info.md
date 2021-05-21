@@ -26,3 +26,4 @@ Sofiq to Dupnica
 installed
 dotenv
 node-fetch
+object-hash
