@@ -1,7 +1,7 @@
-import {Navbar, Nav} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import AuthContext from '../providers/auth-context';
 import {useContext} from 'react';
+import brandLogo from '../images/logo.png';
 
 const NavBar = () => {
   const auth = useContext(AuthContext);
@@ -14,28 +14,24 @@ const NavBar = () => {
   };
 
   return(
-    <div className="App">
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Link to="/home">
-          <Navbar.Brand href="#home">RidePal</Navbar.Brand>
-        </Link>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
-            <Link to="/something">
-              <Nav.Link href="#something">Something</Nav.Link>
-            </Link>
-          </Nav>
-          <Nav>
-            <Link to="/register">
-              <Nav.Link eventKey={2} href="#register">
-                Register
-              </Nav.Link>
-            </Link>          
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-    </div>
+    <header className="main-header">
+      <Link to="/home">
+        <a href="#home" class="brand-logo">
+          <img src={brandLogo} alt="logo"/>
+          <div href="#home" className="brand-logo-name">RidePal</div>
+        </a>
+      </Link>  
+      <nav className="main-nav">
+        <ul>
+          <Link to="/login">
+            <li><a href="#login">Login</a></li>
+          </Link>
+          <Link to="/register">
+            <li><a href="#register">Register</a></li>
+          </Link>
+        </ul>
+      </nav>
+    </header>
   )
 };
 
