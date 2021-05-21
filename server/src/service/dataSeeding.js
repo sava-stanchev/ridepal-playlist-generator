@@ -235,6 +235,7 @@ const setMainGenres = async () => {
   }
 };
 
+
 /** Set number of artist from Deezer */
 const setArtists = async () => {
   try {
