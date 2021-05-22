@@ -6,6 +6,7 @@ import {useState} from 'react';
 import AuthContext, {getUser} from './providers/auth-context';
 import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
 import StartPage from './components/StartPage';
+import ViewPlaylist from './components/ViewPlaylist';
 
 const App = () => {
   const [authValue, setAuthValue] = useState({
@@ -20,9 +21,10 @@ const App = () => {
           <NavBar />
           <Switch>
             <Redirect path="/" exact to="/home" />
-            <Route path="/home" exact component={StartPage}/>
-            <Route path="/login" component={Login}/>       
-            <Route path="/register" component={Register}/>
+            <Route path="/home" exact component={StartPage} />
+            <Route path="/login" component={Login} />       
+            <Route path="/register" component={Register} />
+            <Route path="/playlist" component={ViewPlaylist} />
           </Switch>
         </AuthContext.Provider>
       </BrowserRouter>
