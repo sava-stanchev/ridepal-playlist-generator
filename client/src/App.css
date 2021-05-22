@@ -59,7 +59,7 @@ body {
 }
 
 .container {
-  max-width: 1350px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 40px;
 }
@@ -216,7 +216,7 @@ body {
 
 .view-btn-wrapper {
   position: absolute;
-  right: 1rem;
+  text-align: center;
   bottom: 1rem;
 }
 
@@ -249,10 +249,90 @@ body {
 
 .pl-name {
   font-size: 1rem;
+  margin-top: -1rem;
 }
 
 .pl-about {
   font-size: 0.9375rem;
   color: #AAAAAA;
   margin-bottom: 0.3rem;
+}
+
+.songs-container-main-section {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.songs-container {
+  width: 50vw;
+  max-width: 50%;
+  display: block;
+  background-image: linear-gradient(#3A56B0, #BA3A81);
+  height: 70%;
+  max-height: 70vh;
+  overflow-y: scroll;
+}
+
+.songs-header {
+  width: 100%;
+  height: 50px;
+  border-bottom: 2px solid #555;
+  background-image: linear-gradient(#BA3A81, #3A56B0);
+}
+
+.songs-header .songs-title {
+  width: 100%;
+  position: relative;
+  margin-top: -1.2rem;
+  text-align: center;
+  cursor: default
+}
+
+.songs-playlist {
+  width: 100%;
+}
+
+.songs-box {
+  width: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.songs-box::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.songs-info {
+  width: 100%;
+  height: 0.5rem;
+  display: flex;
+}
+
+.songs-name {
+  width: 300px;
+  padding: 0 5px;
+  height: 50px;
+}
+
+.songs-name h6 {
+  margin-top: 7px;
+  font-size: 15px;
+  font-weight: normal;
+  letter-spacing: 0.5px;
+  cursor: default;
+  line-height: 15px;
+}
+
+.songs-name p {
+  font-size: 10px;
+  line-height: 1px;
+  letter-spacing: 0.5px;
+  color: #e1e1e1;
+  cursor: default;
+}
+
+hr {
+  width: 95%;
 }
