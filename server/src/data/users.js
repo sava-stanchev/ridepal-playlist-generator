@@ -1,5 +1,48 @@
-import pool from './pool.js';
+// import pool from './pool.js';
 
+import mariadb from 'mariadb';
+
+
+const HOST = 'localhost';
+const DBPORT = 3306;
+const USER = 'root';
+const PASSWORD = 'Pr0t0dqk0n';
+const DATABASE = 'playlist_generator';
+const NB_GENRES = 2000;
+const TIME = 150;
+const NB_ARTISTS = 10;
+const NB_ALBUMS = 30;
+const NB_TRACKS = 3000;
+
+
+const pool = mariadb.createPool({
+  host: HOST,
+  port: DBPORT,
+  user: USER,
+  password: PASSWORD,
+  database: DATABASE,
+});
+
+/**
+ *
+ * @param {string} username
+ * @return {Object | undefined}
+ */
+const getUserByName = async (username) =>{
+  const sql = `
+  SELECT * FROM users
+  WHERE username = ?
+  `;
+  const result = await pool.query(sql, [username]);
+  return result[0];
+};
+
+
+/**
+ *
+ * @param {Object} user
+ * @return {Object} - created user
+ */
 const createUser = async (user) => {
   const sqlNewUser = `
     INSERT INTO users (username, password, e_mail, is_admin, is_deleted) 
@@ -18,26 +61,13 @@ const createUser = async (user) => {
   return createdUser;
 };
 
-const validateUser = async ({username, password}) => {
-  const userData = await pool.query('SELECT * FROM users u WHERE u.username = ?', [username]);
 
-  if (userData.length === 0) {
-    throw new Error('Username does not exist!');
-  }
-
-  if (await bcrypt.compare(password, userData[0].password)) {
-    return userData[0];
-  }
-
-  return null;
-};
-
-const logoutUser = async (token) => {
+const logout = async (token) => {
   return await pool.query('INSERT INTO tokens (token) VALUES (?)', [token]);
 };
 
 export default {
+  getUserByName,
   createUser,
-  validateUser,
-  logoutUser,
+  logout,
 };

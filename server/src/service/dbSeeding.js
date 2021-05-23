@@ -10,9 +10,9 @@ const PASSWORD = 'Pr0t0dqk0n';
 const DATABASE = 'playlist_generator';
 const NB_GENRES = 2000;
 const TIME = 150;
-const NB_ARTISTS = 10;
+// const NB_ARTISTS = 10;
 const NB_ALBUMS = 30;
-const NB_TRACKS = 3000;
+// const NB_TRACKS = 3000;
 
 
 const pool = mariadb.createPool({
@@ -107,6 +107,7 @@ const setTracks = async () => {
                 await Promise.all(
                     tracks.data.map(async track => {
                       if (!tracksId.includes(track.id)) {
+                        tracksId.push(track.id);
                         const sql = `
                         INSERT INTO tracks (deez_tracks_id, track_title, duration, rank, artist, genre)
                         VALUES (?, ?, ?, ?, ?, ?)
@@ -292,6 +293,6 @@ const setMainGenres = async () => {
   // await setMainGenres();
   // await setArtistByGenre();
   // await setAlbumByArtist();
-  // await setTracks();
-  setTimeout(() => pool.end(), 500000);
+  await setTracks();
+  setTimeout(() => pool.end(), 100000);
 })();

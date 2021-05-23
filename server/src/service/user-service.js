@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 const createUser = async (userData) => {
   const usernameExists = await usersData.getUserByName(userData.username);
-  if (usernameExists[0]) {
+  if (usernameExists === undefined) {
     return null;
   }
 
@@ -12,6 +12,30 @@ const createUser = async (userData) => {
   return newUser;
 };
 
+const validateUser = async ({username, password}) => {
+  const userData = await userData.getUserByName(username);
+
+  if (userData === undefined) {
+    throw new Error('Username does not exist!');
+  }
+
+  if (await bcrypt.compare(password, userData.password)) {
+    return userData;
+  }
+
+  return null;
+};
+
+/**
+ *
+ * @param {string} token
+ */
+const logout = async (token) => {
+  const logoutUser = await usersData.logout(token);
+};
+
 export default {
   createUser,
+  validateUser,
+  logout,
 };

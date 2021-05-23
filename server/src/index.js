@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import createToken from './auth/create-token.js';
-import usersData from './data/users.js';
+import userService from './service/user-service.js';
 import {authMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
@@ -39,7 +39,7 @@ app.post('/register', async (req, res) => {
 /** Login */
 app.post('/login', async (req, res) => {
   try {
-    const user = await usersData.validateUser(req.body);
+    const user = await userService.validateUser(req.body);
     if (user) {
       const token = createToken({
         users_id: user.users_id,
@@ -64,7 +64,7 @@ app.post('/login', async (req, res) => {
 /** Logout */
 app.delete('/logout', authMiddleware, async (req, res) => {
   try {
-    await usersData.logoutUser(req.headers.authorization.replace('Bearer ', ''));
+    await userService.logout(req.headers.authorization.replace('Bearer ', ''));
 
     res.json({
       message: 'Successfully logged out!',
