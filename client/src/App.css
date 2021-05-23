@@ -153,26 +153,26 @@ body {
 
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 256px);
+  grid-template-columns: repeat(auto-fill, 286px);
   justify-content: center;
-  grid-gap: 75px;
+  grid-gap: 40px;
   padding-bottom: 2rem;
 }
 
 .card {
-  width: 256px;
+  width: 286px;
   padding: 15px;
-  background: #171717;
+  background: #202027;
   border-radius: 0.5rem;
   transition: background 320ms;
 }
 
 .card:hover {
-  background: #242424;
+  background: #393959;
 }
 
 .cover {
-  width: 226px;
+  width: 256px;
   height: 226px;
   position: relative;
   background: linear-gradient(#3A56B0, #BA3A81);
@@ -262,11 +262,12 @@ body {
   display: flex;
   align-items: center;
   flex-grow: 1;
+  justify-content: center;
 }
 
 .songs-container {
-  width: 50vw;
-  max-width: 50%;
+  width: 60vw;
+  max-width: 100%;
   display: block;
   background-image: linear-gradient(#3A56B0, #BA3A81);
   height: 70%;
@@ -274,65 +275,76 @@ body {
   overflow-y: scroll;
 }
 
-.songs-header {
-  width: 100%;
-  height: 50px;
-  border-bottom: 2px solid #555;
-  background-image: linear-gradient(#BA3A81, #3A56B0);
-}
-
-.songs-header .songs-title {
-  width: 100%;
-  position: relative;
-  margin-top: -1.2rem;
+.playlist-header {
+  padding: 0.8rem;
   text-align: center;
-  cursor: default
+  font-size: 1.5rem;
+  background: #202027;
 }
 
-.songs-playlist {
-  width: 100%;
+.playlist-title {
+  margin: 0;
 }
 
-.songs-box {
-  width: 100%;
-  overflow: scroll;
-  overflow-x: hidden;
-}
 
-.songs-box::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
-}
 
 .songs-info {
-  width: 100%;
+  max-width: 100%;
   height: 0.5rem;
   display: flex;
 }
 
 .songs-name {
-  width: 300px;
-  padding: 0 5px;
+  max-width: 100%;
   height: 50px;
+  padding-left: 4.5rem;
 }
 
 .songs-name h6 {
+  width: 100%;
+  max-width: 100%;
   margin-top: 7px;
   font-size: 15px;
   font-weight: normal;
   letter-spacing: 0.5px;
+  display: inline-flex;
   cursor: default;
   line-height: 15px;
+  flex-direction: column;
 }
 
 .songs-name p {
-  font-size: 10px;
-  line-height: 1px;
+  font-size: 12px;
+  line-height: 0;
   letter-spacing: 0.5px;
   color: #e1e1e1;
   cursor: default;
+  
 }
 
 hr {
   width: 95%;
+  margin: 0.75rem;
+}
+
+.album-img {
+  width: 70px;
+  height: 70px;
+}
+
+.album-img img {
+  width: 60px;
+  height: 60px;
+  margin: 6px 6px;
+  padding: 1px;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  background: #202027;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #adadad;
+  border-radius: calc(12px / 2);
 }
