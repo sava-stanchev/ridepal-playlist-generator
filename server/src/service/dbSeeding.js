@@ -113,6 +113,11 @@ const setTracks = async () => {
                         `;
                         const res = await pool.query(sql, [track.id, track.title, track.duration, track.rank, album.artist, album.genre]);
                       }
+                      const sqlMap = `
+                      INSERT INTO album_track_map (album, track)
+                      VALUES (?, ?)
+                      `;
+                      const resMap = await pool.query(sqlMap, [album.deez_albums_id, track.id]);
                     }));
               }, timer);
         }));
@@ -287,6 +292,6 @@ const setMainGenres = async () => {
   // await setMainGenres();
   // await setArtistByGenre();
   // await setAlbumByArtist();
-  await setTracks();
+  // await setTracks();
   setTimeout(() => pool.end(), 500000);
 })();
