@@ -9,15 +9,10 @@ const USER = 'root';
 const PASSWORD = 'Pr0t0dqk0n';
 const DATABASE = 'playlist_generator';
 const NB_GENRES = 2000;
-const TIME = 200;
-const ARTISTS_BLACKLIST = [5429322, 5475614, 5195381, 6937433];
-const ALBUMS_BLACKLIST = [230188352, 14499818, 11713634, 183332312, 179431712, 170480242, 160041702, 217614992, 186174392, 75228792, 7991214, 9854796, 128110722, 184596992, 97645982];
-const TRACKS_BLACKLIST = [671847, 747522];
-const NB_ARTISTS = 3000;
-const NB_ALBUMS = 2000;
-const ALBUMS_START_POINT = 82000;
+const TIME = 150;
+const NB_ARTISTS = 10;
+const NB_ALBUMS = 30;
 const NB_TRACKS = 3000;
-const TRACKS_START_POINT = 999999;
 
 
 const pool = mariadb.createPool({
@@ -33,13 +28,15 @@ const pool = mariadb.createPool({
  */
 const getAllArtists = async () => {
   const sql = `
-  SELECT * FROM artists
+  SELECT a.artists_id, a.deez_artists_id, ga.genre FROM artists AS a
+  LEFT JOIN genre_artist_map AS ga
+  ON a.deez_artists_id = ga.artist
+  ORDER BY ga.genre
   `;
   const result = await pool.query(sql);
   const artists = result.filter(data => data.hasOwnProperty('artists_id'));
   return artists;
 };
-// getAllArtists();
 
 
 /** Get main genres from DB
@@ -54,7 +51,6 @@ const getMainGenres = async () => {
   const genres = result.filter(data => data.hasOwnProperty('genres_id'));
   return genres;
 };
-// getMainGenres();
 
 
 // /** Get all genres from DB
@@ -71,80 +67,92 @@ const getMainGenres = async () => {
 
 
 /** Get all albums from DB
+ * @param {number} - number of rows from genre to return
  * @return {Array}
  */
-const getAllAlbums = async () => {
+const getNumberOfAlbums = async (n) => {
   const mainGenres = await getMainGenres();
-  const mainGenresIndex = mainGenres.map(genre => genre.genres_id);
+  const mainGenresIndex = mainGenres.map(genre => genre.deez_genres_id);
   const sql = `
-  SELECT * FROM albums
+      select albums_id, deez_albums_id, artist, genre
+      from
+      (
+      select albums_id, deez_albums_id, artist, genre, 
+      (@num:=if(@group=genre, @num +1, if(@group := genre, 1, 1))) row_number
+      from albums
+      cross join (select @num:=0, @group:=null) c
+      order by genre
+      ) as x
+      where x.row_number <=${n};
   `;
   const result = await pool.query(sql);
-  const albums = result.filter(data => data.hasOwnProperty('albums_id')).filter(album => mainGenresIndex.includes(album.genre));
-  console.log(albums);
+  const albums = result.filter(data => data.hasOwnProperty('albums_id'));
   return albums;
 };
-// getAllAlbums();
 
 
 /** Set tracks from Deezer */
 const setTracks = async () => {
   try {
     let timer = 0;
-    const albums = await getAllAlbums();
-    // console.log(albums);
+    const tracksId = [];
+    const albums = await getNumberOfAlbums(NB_ALBUMS);
     await Promise.all(
         albums.map(async album => {
           timer +=TIME;
           setTimeout(
               async () => {
-                // const tracksId = [];
                 const response = await fetch(`https://api.deezer.com/album/${album.deez_albums_id}/tracks`);
                 const tracks = await response.json();
-                // console.log(tracks);
                 await Promise.all(
                     tracks.data.map(async track => {
-                        // tracksId.push(track.id);
+                      if (!tracksId.includes(track.id)) {
                         const sql = `
                         INSERT INTO tracks (deez_tracks_id, track_title, duration, rank, artist, genre)
                         VALUES (?, ?, ?, ?, ?, ?)
                         `;
                         const res = await pool.query(sql, [track.id, track.title, track.duration, track.rank, album.artist, album.genre]);
                       }
-                    ));
+                      const sqlMap = `
+                      INSERT INTO album_track_map (album, track)
+                      VALUES (?, ?)
+                      `;
+                      const resMap = await pool.query(sqlMap, [album.deez_albums_id, track.id]);
+                    }));
               }, timer);
         }));
   } catch (error) {
     console.log(error);
   }
 };
-// setTracks();
 
 
 /** Set albums by artist from Deezer*/
 const setAlbumByArtist = async () => {
   try {
     let timer = 0;
+    const albumIds = [];
+    const genres = await getMainGenres();
+    const genresId = genres.map(genre => genre.deez_genres_id);
     const artists = await getAllArtists();
     await Promise.all(
         artists.map(async artist => {
           timer += TIME;
           setTimeout(
               async () => {
-                const albumIds = [];
                 const response = await fetch(`https://api.deezer.com/artist/${artist.deez_artists_id}/albums`);
                 const resJSON = await response.json();
                 const albums = resJSON.data;
                 if (albums !== 'undefined') {
                   await Promise.all(
-                      albums.map(async album => {
-                        if (!(album.genre_id === -1)) {
+                      albums.map(async (album) => {
+                        if (genresId.includes(album.genre_id)) {
                           albumIds.push(album.id);
                           const sql = `
                           INSERT INTO albums (deez_albums_id, album_title, genre, artist)
                           VALUES (?, ?, ?, ?)
                           `;
-                          const res = await pool.query(sql, [album.id, album.title, album.genre_id, artist.deez_artists_id]);
+                          const res = await pool.query(sql, [album.id, album.title, artist.genre, artist.deez_artists_id]);
                         }
                       }));
                 }
@@ -154,13 +162,12 @@ const setAlbumByArtist = async () => {
     console.log(error);
   }
 };
-// setAlbumByArtist();
-
 
 /** Set artists by genres */
 const setArtistByGenre = async () => {
   try {
     let timer = 0;
+    const artistsId = [];
     const genres = await getMainGenres();
 
     const req = await Promise.all(
@@ -169,14 +176,23 @@ const setArtistByGenre = async () => {
           setTimeout(
               async () => {
                 const response = await fetch(`https://api.deezer.com/genre/${genre.deez_genres_id}/artists`);
-                const artists = await response.json();
-                const rep = await Promise.all(
-                    artists.data.map(async artist => {
-                      const sql = `
-                      INSERT INTO artists (deez_artists_id, artist_name)
-                      VALUES (?, ?)
+                const resJSON = await response.json();
+                const artists = resJSON.data;
+                const req = await Promise.all(
+                    artists.map(async (artist) => {
+                      if (!(artistsId.includes(artist.id))) {
+                        artistsId.push(artist.id);
+                        const sql = `
+                        INSERT INTO artists (deez_artists_id, artist_name)
+                        VALUES (?, ?)
+                        `;
+                        const res = await pool.query(sql, [artist.id, artist.name]);
+                      }
+                      const sqlMap = `
+                      INSERT INTO genre_artist_map (genre, artist)
+                      VALUES (?, ?);
                       `;
-                      const res = await pool.query(sql, [artist.id, artist.name]);
+                      const resMap = await pool.query(sqlMap, [genre.deez_genres_id, artist.id]);
                     }));
               }, timer);
         }));
@@ -184,7 +200,6 @@ const setArtistByGenre = async () => {
     console.log(error);
   }
 };
-// setArtistByGenre();
 
 
 /** Set all genres from Deezer
@@ -192,26 +207,21 @@ const setArtistByGenre = async () => {
  */
 const allGenresSeeding = async () => {
   try {
-    let timer = 0;
     const responseArr = [];
+
     for (let i = 0; i < NB_GENRES; i++) {
       const response = await fetch(`https://api.deezer.com/genre/${i}`);
       responseArr[i] = await response.json();
     }
     const genres = responseArr.filter(genre => genre.hasOwnProperty('id'));
-    console.log(genres);
     const req = await Promise.all(
         genres.map(async (genre) => {
-          timer += TIME;
           if (genre.id !== 'undefined' && genre.name !== 'undefined') {
-            setTimeout(
-                async () => {
-                  const sql = `
-                  INSERT INTO genres (deez_genres_id, genre)
-                  VALUES (?, ?)
-                  `;
-                  const result = await pool.query(sql, [genre.id, genre.name]);
-                }, timer);
+            const sql = `
+            INSERT INTO genres (deez_genres_id, genre)
+            VALUES (?, ?)
+            `;
+            const result = await pool.query(sql, [genre.id, genre.name]);
           }
         }));
     return true;
@@ -219,7 +229,6 @@ const allGenresSeeding = async () => {
     console.log(error);
   }
 };
-// allGenresSeeding();
 
 
 /** Set main genres according to Deezer */
@@ -256,7 +265,6 @@ const setMainGenres = async () => {
     console.log(error);
   }
 };
-// setMainGenres();
 
 
 // /** Set number of artist from Deezer */
@@ -279,4 +287,11 @@ const setMainGenres = async () => {
 //   }
 // };
 // // setArtists();
-
+(async ()=>{
+  // await allGenresSeeding();
+  // await setMainGenres();
+  // await setArtistByGenre();
+  // await setAlbumByArtist();
+  // await setTracks();
+  setTimeout(() => pool.end(), 500000);
+})();
