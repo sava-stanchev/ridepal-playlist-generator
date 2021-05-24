@@ -4,25 +4,67 @@ const ViewPlaylist = () => {
     
   return(
     <div className="songs-container-main-section">
-    <div className="songs-container">
-      <div className="playlist-header">
-        <h5 className="playlist-title">Songs in this playlist fssfoisajfioashfioashg</h5>
-      </div>
-      <div className="playlist-songs">
-      <div classname="songs-box">
-        <div className="songs-info">
-          <div className="album-img">
-            <img src={albumCover} alt=""/>
-          </div>
+      <div className="songs-container">
+        <div className="playlist-header">
+          <h5 className="playlist-title">Songs in this playlist</h5>
         </div>
-        <div className="songs-name">
-          <h6>Single Song Title sgagjaoghsao3522 gagasgasgs asgsagasgasgas 35235uasagasg</h6>
-          <p>Some info stuff</p>
-          <hr/>
-        </div>
+        <table className="playlist-list">
+          <tr className="song">
+            <td className="song-album-cover">
+              <div className="album-img">
+                <img src={albumCover} alt=""/>
+              </div>
+            </td>
+            <td className="song-title"><h5>Song Title + Info</h5></td>
+            <td className="song-length"><h5>3:34</h5></td>
+          </tr>
+          <tr className="song">
+            <td className="song-album-cover">
+              <div className="album-img">
+                <img src={albumCover} alt=""/>
+              </div>
+            </td>
+            <td className="song-title"><h5>Song Title + Info</h5></td>
+            <td className="song-length"><h5>3:34</h5></td>
+          </tr>
+          <tr className="song">
+            <td className="song-album-cover">
+              <div className="album-img">
+                <img src={albumCover} alt=""/>
+              </div>
+            </td>
+            <td className="song-title"><h5>Song Title + Info</h5></td>
+            <td className="song-length"><h5>3:34</h5></td>
+          </tr>
+          <tr className="song">
+            <td className="song-album-cover">
+              <div className="album-img">
+                <img src={albumCover} alt=""/>
+              </div>
+            </td>
+            <td className="song-title"><h5>Song Title + Info</h5></td>
+            <td className="song-length"><h5>3:34</h5></td>
+          </tr>
+          <tr className="song">
+            <td className="song-album-cover">
+              <div className="album-img">
+                <img src={albumCover} alt=""/>
+              </div>
+            </td>
+            <td className="song-title"><h5>Song Title + Info</h5></td>
+            <td className="song-length"><h5>3:34</h5></td>
+          </tr>
+          <tr className="song">
+            <td className="song-album-cover">
+              <div className="album-img">
+                <img src={albumCover} alt=""/>
+              </div>
+            </td>
+            <td className="song-title"><h5>Song Title + Info</h5></td>
+            <td className="song-length"><h5>3:34</h5></td>
+          </tr>
+        </table>
       </div>
-      </div>
-    </div>
     </div>
   )    
 };
