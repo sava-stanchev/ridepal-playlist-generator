@@ -1,6 +1,33 @@
 const StartPage = () => {
     
   return(
+    <>
+    <div className="genres">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+      <section className="genre-section">
+        <button className="genre active">All</button>
+        <button className="genre">Genre 1</button>
+        <button className="genre">Genre 2</button>
+        <button className="genre">Genre 3</button>
+        <button className="genre">Genre 4</button>
+        <button className="genre">Genre 5</button>
+        <button className="genre">Genre 6</button>
+        <div className="boxContainer">
+          <table className = "elementsContainer">
+            <tbody><tr>
+              <td>
+                <input type="text" placeholder="search by name" className="search" />
+              </td>
+              <td>
+                <>
+                  <i className="material-icons">search</i>
+                </>
+              </td>
+            </tr></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
     <div className="cards-container">
       <article className="card">
         <div className="cover">
@@ -108,6 +135,7 @@ const StartPage = () => {
         </div>
       </article>
     </div>
+    </>
   )    
 };
 

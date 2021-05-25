@@ -15,7 +15,7 @@ const ViewPlaylist = () => {
                 <img src={albumCover} alt=""/>
               </div>
             </td>
-            <td className="song-title"><h5>Song Title + Info</h5></td>
+            <td className="song-title"><h5>Song Title, Artist + Info</h5></td>
             <td className="song-length"><h5>3:34</h5></td>
           </tr>
           <tr className="song">
