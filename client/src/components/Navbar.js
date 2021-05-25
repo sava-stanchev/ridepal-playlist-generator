@@ -23,6 +23,12 @@ const NavBar = () => {
       </Link>  
       <nav className="main-nav">
         <ul>
+          <Link to="/generate">
+            <li><a href="#generate">Generate</a></li>
+          </Link>
+          <Link to="/home">
+            <li><a href="#logout">Logout</a></li>
+          </Link>
           <Link to="/login">
             <li><a href="#login">Login</a></li>
           </Link>
