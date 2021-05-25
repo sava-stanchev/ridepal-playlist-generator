@@ -7,7 +7,8 @@ import AuthContext, {getUser} from './providers/auth-context';
 import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
 import StartPage from './components/StartPage';
 import ViewPlaylist from './components/ViewPlaylist';
-import GeneratePageOne from './components/Generate';
+import GenerateRoute from './components/GenerateRoute';
+import GeneratePlaylist from './components/GeneratePlaylist';
 
 const App = () => {
   const [authValue, setAuthValue] = useState({
@@ -25,7 +26,8 @@ const App = () => {
             <Route path="/home" exact component={StartPage} />
             <Route path="/login" exact component={Login} />       
             <Route path="/register" exact component={Register} />
-            <Route path="/generate" exact component={GeneratePageOne} />
+            <Route path="/generate-route" exact component={GenerateRoute} />
+            <Route path="/generate-playlist" exact component={GeneratePlaylist} />
             <Route path="/playlist" component={ViewPlaylist} />
           </Switch>
         </AuthContext.Provider>

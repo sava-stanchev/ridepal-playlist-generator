@@ -23,8 +23,8 @@ const NavBar = () => {
       </Link>  
       <nav className="main-nav">
         <ul>
-          <Link to="/generate">
-            <li><a href="#generate">Generate</a></li>
+          <Link to="/generate-route">
+            <li><a href="#generate-route">Generate</a></li>
           </Link>
           <Link to="/home">
             <li><a href="#logout">Logout</a></li>
