@@ -12,6 +12,7 @@ const NavBar = () => {
       isLoggedIn: false,
     });
   };
+  console.log(auth.isLoggedIn);
 
   return(
     <header className="main-header">
@@ -22,20 +23,27 @@ const NavBar = () => {
         </a>
       </Link>  
       <nav className="main-nav">
-        <ul>
-          <Link to="/generate-route">
-            <li><a href="#generate-route">Generate</a></li>
-          </Link>
-          <Link to="/home">
-            <li><a href="#logout">Logout</a></li>
-          </Link>
-          <Link to="/login">
-            <li><a href="#login">Login</a></li>
-          </Link>
-          <Link to="/register">
-            <li><a href="#register">Register</a></li>
-          </Link>
-        </ul>
+        {
+          auth.isLoggedIn
+          ?
+          <ul>
+            <Link to="/generate-route">
+              <li><a href="#generate-route">Generate</a></li>
+            </Link>
+            <Link to="/home">
+              <li><a href="#logout" onClick={() => logout()}>Logout</a></li>
+            </Link>
+          </ul>
+          :
+          <ul>
+            <Link to="/login">
+              <li><a href="#login">Login</a></li>
+            </Link>
+            <Link to="/register">
+              <li><a href="#register">Register</a></li>
+            </Link>
+          </ul>
+        }
       </nav>
     </header>
   )
