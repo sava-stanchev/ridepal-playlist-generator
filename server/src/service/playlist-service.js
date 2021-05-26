@@ -3,7 +3,7 @@ import tracksData from '../data/tracks.js';
 
 /**
  *
- * @param {Array} data - array of object{genre:, duration:}
+ * @param {Array} data - array of object{genre:xx, duration:xx}
  * @return {Array} array of objects
  */
 const playlistGenerator = async (data) => {
