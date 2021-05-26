@@ -4,6 +4,7 @@ const StartPage = () => {
     <>
     <div className="genres">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+      {/* /playlists/?rock=(null/? ? ? ? ) */}
       <section className="genre-section">
         <button className="genre active">All</button>
         <button className="genre">Genre 1</button>

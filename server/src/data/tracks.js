@@ -1,4 +1,4 @@
-// import pool from './pool.js';
+//import pool from './pool.js';
 
 import mariadb from 'mariadb';
 
@@ -29,20 +29,41 @@ const pool = mariadb.createPool({
  * @return {object} tracks
  */
 const getTracksByGenre = async ({genre, duration}) => {
-  // console.log(genre);
-  // console.log(duration);
   const sql = `
-  CALL select_random_tracks_from_genre(?, ?)
+  CALL select_rand_tracks(?, ?)
   `;
-  const a = await pool.query(sql, [genre, duration]);
+  const a = await pool.query(sql, [duration, genre]);
   const tracks = await pool.query(`SELECT * FROM temp`);
-  // const truncateTable = await pool.query(`truncate temp`);
+  const truncateTable = await pool.query(`truncate temp`);
+  console.log(tracks);
 
-  //console.log(tracks);
+
   return tracks;
 };
 
+// getTracksByGenre({genre: 132, duration: 1000});
+
+
+/**
+ * @param {number} genre
+ * @return {object} tracks
+ */
+ const getTracksByGenreNotRepeatArtist = async ({genre, duration}) => {
+  const sql = `
+  CALL select_rand_tracks_not_artist(?, ?)
+  `;
+  const a = await pool.query(sql, [duration, genre]);
+  const tracks = await pool.query(`SELECT * FROM temp_not_artist`);
+  const truncateTable = await pool.query(`truncate temp_not_artist`);
+  console.log(tracks);
+
+
+  return tracks;
+};
+
+// getTracksByGenreNotRepeatArtist({genre:132, duration:1000});
 
 export default {
   getTracksByGenre,
+  getTracksByGenreNotRepeatArtist,
 };

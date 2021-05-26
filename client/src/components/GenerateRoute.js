@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import { useHistory } from 'react-router-dom';
 
 const GenerateRoute = () => {
   const [duration, setDuration] = useState(null);
@@ -6,6 +7,8 @@ const GenerateRoute = () => {
     from: '',
     to: '',
   });
+
+  const history = useHistory();
 
   const updateRoute = (prop, value) => {
     setRoute({
@@ -22,7 +25,8 @@ const GenerateRoute = () => {
       method: 'GET',
     })
     .then(res => res.json())
-    .then(data => setDuration(data.resourceSets[0].resources[0].travelDuration))
+    .then(data => setDuration(data.resourceSets[0].resource[0].travelDuration))
+    .catch(error => console.log(error))
   }
   console.log(duration);
   return(
@@ -41,7 +45,7 @@ const GenerateRoute = () => {
           <input type="text" name="to" value={route.to} onChange={e => updateRoute('to', e.target.value)}/>
         </div>
         <div className="input-group">
-          <button type="submit" className="btn" onClick={() => getDuration()}>Next</button>
+          <button type="submit" className="btn"  onSubmit={() => getDuration()}>Next</button>
         </div>
       </form>
     </section>
