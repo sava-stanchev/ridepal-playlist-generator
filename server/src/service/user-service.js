@@ -3,8 +3,9 @@ import bcrypt from 'bcrypt';
 
 const createUser = async (userData) => {
   const usernameExists = await usersData.getUserByName(userData.username);
-  if (usernameExists === undefined) {
-    return null;
+  if (usernameExists !== undefined) {
+    const massage = {massage: `Username ${usernameExists.username} exist`};
+    return massage;
   }
 
   userData.password = await bcrypt.hash(userData.password, 10);
@@ -13,7 +14,7 @@ const createUser = async (userData) => {
 };
 
 const validateUser = async ({username, password}) => {
-  const userData = await userData.getUserByName(username);
+  const userData = await usersData.getUserByName(username);
 
   if (userData === undefined) {
     throw new Error('Username does not exist!');

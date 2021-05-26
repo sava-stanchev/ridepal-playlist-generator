@@ -14,7 +14,6 @@ const getTracksByGenre = async ({genre, duration}) => {
   const a = await pool.query(sql, [duration, genre]);
   const tracks = await pool.query(`SELECT * FROM temp`);
   truncateTable = await pool.query(`truncate temp`);
-  console.log(tracks);
   return tracks;
 };
 
@@ -33,7 +32,6 @@ const getTracksByGenre = async ({genre, duration}) => {
   const a = await pool.query(sql, [duration, genre]);
   const tracks = await pool.query(`SELECT * FROM temp_not_artist`);
   truncateTable = await pool.query(`truncate temp_not_artist`);
-  console.log(tracks);
   return tracks;
 };
 

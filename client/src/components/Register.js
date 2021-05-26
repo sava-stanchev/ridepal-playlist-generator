@@ -1,10 +1,11 @@
 import {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
+import { HOST } from '../common/constants';
 
 const initialState = {
   username: '',
   password: '',
-  e_mail: '',
+  email: '',
 }
 
 const passVerificationError = {
@@ -55,8 +56,9 @@ const Register = () => {
     }
   };
 
-  const register = () => {
-    fetch(`http://localhost:5555/register`, {
+  const register = (e) => {
+    e.preventDefault();
+    fetch(`${HOST}/register`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -94,7 +96,7 @@ const Register = () => {
             <input type="password"/>
           </div>
           <div className="input-group">
-            <button type="submit" className="btn" onClick={() => register()}>Join Now</button>
+            <button type="submit" className="btn" onClick={(e) => register(e)}>Join Now</button>
           </div>
         </form>
       </section>

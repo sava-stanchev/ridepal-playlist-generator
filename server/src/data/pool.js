@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 import mariadb from 'mariadb';
 
 const config = dotenv.config().parsed;
-console.log(config);
 
 const pool = mariadb.createPool({
   host: config.HOST,

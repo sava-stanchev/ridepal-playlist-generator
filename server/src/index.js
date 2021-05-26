@@ -40,12 +40,11 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   try {
     const user = await userService.validateUser(req.body);
-    console.log(req.body);
     if (user) {
       const token = createToken({
         users_id: user.users_id,
         username: user.username,
-        is_admin: user.is_admin,
+        user_role: user.user_role,
       });
       res.json({
         token,

@@ -7,7 +7,7 @@ import AuthContext from '../providers/auth-context.js';
 
 
 const Login = () => {
-
+  
   const history = useHistory();
   const auth = useContext(AuthContext);
   const [user, setUser] = useState({
@@ -27,8 +27,10 @@ const Login = () => {
     history.push(path);
   };
 
+  
   const login = (e) => {
     e.preventDefault();
+    
     fetch(`${HOST}/login`, {
       method: 'POST',
       headers: {
@@ -68,7 +70,7 @@ const Login = () => {
           <input type="password" onChange={e => updateUser('password', e.target.value)}/>
         </div>
         <div className="input-group">
-          <button className="btn" onClick={() => login()}>Sign in</button>
+          <button className="btn" onClick={(e) => login(e)}>Sign in</button>
         </div>
       </form>
     </section>

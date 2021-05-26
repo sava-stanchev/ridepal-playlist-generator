@@ -1,27 +1,5 @@
-// import pool from './pool.js';
+import pool from './pool.js';
 
-import mariadb from 'mariadb';
-
-
-const HOST = 'localhost';
-const DBPORT = 3306;
-const USER = 'root';
-const PASSWORD = 'Pr0t0dqk0n';
-const DATABASE = 'playlist_generator';
-const NB_GENRES = 2000;
-const TIME = 150;
-const NB_ARTISTS = 10;
-const NB_ALBUMS = 30;
-const NB_TRACKS = 3000;
-
-
-const pool = mariadb.createPool({
-  host: HOST,
-  port: DBPORT,
-  user: USER,
-  password: PASSWORD,
-  database: DATABASE,
-});
 
 /**
  *
@@ -45,18 +23,17 @@ const getUserByName = async (username) =>{
  */
 const createUser = async (user) => {
   const sqlNewUser = `
-    INSERT INTO users (username, password, e_mail, is_admin, is_deleted) 
-    VALUES (?, ?, ?, 0, 0)
+    INSERT INTO users (username, password, email, user_role, is_deleted) 
+    VALUES (?, ?, ?, 2, null)
   `;
   const result = await pool.query(sqlNewUser,
-      [user.username, user.password, user.e_mail]);
+      [user.username, user.password, user.email]);
 
   const sql = `
-    SELECT u.username, u.e_mail,
+    SELECT u.username, u.email
     FROM users AS u
     WHERE u.users_id = ?
   `;
-
   const createdUser = (await pool.query(sql, [result.insertId]))[0];
   return createdUser;
 };
