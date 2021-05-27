@@ -421,3 +421,31 @@ body {
 ::placeholder {
   color: #adadad;
 }
+
+.slider-main {
+  width: 60%;
+  margin: 24% auto;
+  position: relative;
+}
+
+#slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 7px;
+  outline: none;
+  border-radius: 3px;
+}
+
+#slider::-webkit-slider-thumb {
+  padding: 12px;
+}
+
+.SelectBtn {
+  height: 48px;
+  width: 48px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0;
+}
