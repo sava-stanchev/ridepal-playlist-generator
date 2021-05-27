@@ -1,11 +1,11 @@
 import {useState} from "react";
 
 const GeneratePlaylist = () => {
-  const [sliderJazz, setSliderJazz] = useState(50);
-  const [sliderRock, setSliderRock] = useState(50);
-  const [sliderBlues, setSliderBlues] = useState(50);
-  const [sliderDisco, setSliderDisco] = useState(50);
-  const [sliderPop, setSliderPop] = useState(50);
+  const [sliderJazz, setSliderJazz] = useState(0);
+  const [sliderRock, setSliderRock] = useState(0);
+  const [sliderBlues, setSliderBlues] = useState(0);
+  const [sliderDisco, setSliderDisco] = useState(0);
+  const [sliderPop, setSliderPop] = useState(0);
 
   return(
     <section className="join-login-main-section">
@@ -52,7 +52,7 @@ const GeneratePlaylist = () => {
         </tr>
         </table>
         <div className="input-group">
-          <button type="submit" className="btn">Generate</button>
+          <button type="submit" className="btn">Generate Playlist</button>
         </div>
       </form>
     </section>
