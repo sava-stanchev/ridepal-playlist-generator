@@ -8,6 +8,8 @@ import fetch from 'node-fetch';
  * @return {Array} array of objects
  */
 const playlistGenerator = async (data) => {
+
+
   const req = await Promise.all(data.map(obj => tracksData.getTracksByGenre(obj)));
   const tracks = await a.reduce((acc, c)=>[...acc, ...c], []);
   console.log(tracks);
@@ -20,7 +22,7 @@ const playlistGenerator = async (data) => {
  * @return {Array} array of objects
  */
 const playlistGeneratorNotRepArtist = async (data) => {
-  const req = await Promise.all(data.map(obj => tracksData.getTracksByGenre(obj)));
+  const req = await Promise.all(data.map(obj => tracksData.getTracksByGenreNotRepeatArtist(obj)));
   const tracks = await a.reduce((acc, c)=>[...acc, ...c], []);
   console.log(tracks);
   return tracks;
