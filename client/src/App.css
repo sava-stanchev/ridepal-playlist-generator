@@ -451,21 +451,18 @@ body {
 
 .genre-col {
   padding-right: 1rem;
-  padding-left: 1rem;
   padding-bottom: 0.65rem;
 }
 
 .percent-col {
-  padding-right: 1rem;
   padding-left: 1rem;
   padding-bottom: 0.65rem;
 }
 
 .slider-col {
-  width: 100%;
-  text-align: left;
+  width: 375px;
+  text-align: center;
   padding-right: 1rem;
-  padding-left: 1rem;
   padding-bottom: 0.65rem;
   transition: all 0.3s ease-in;
 }
