@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import { useHistory } from 'react-router-dom';
 
+
 const GenerateRoute = () => {
   const [duration, setDuration] = useState(null);
   const [route, setRoute] = useState({
@@ -9,6 +10,10 @@ const GenerateRoute = () => {
   });
 
   const history = useHistory();
+  const routeChange = () =>{ 
+    const path = `/generate-playlist`; 
+    history.push(path);
+  };
 
   const updateRoute = (prop, value) => {
     setRoute({
@@ -18,15 +23,16 @@ const GenerateRoute = () => {
   };
 
   console.log(route);
-  const getDuration = (ev) => {
+  const getDuration = (e) => {
     console.log('hi');
-    ev.preventDefault();
+    e.preventDefault();
     fetch(`http://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0=${route.from}&wp.1=${route.to}&routeAttributes=excludeItinerary&key=AlyPtpHnx-TC4cf6hqJyd2oQKsQwnovawxxxnua_ml-uIxALhwZ__iJg9izB3iHr`, {
-      method: 'GET',
-    })
+    method: 'GET',
+  })
     .then(res => res.json())
-    .then(data => setDuration(data.resourceSets[0].resource[0].travelDuration))
+    .then(data => setDuration(data.resourceSets[0].resources[0].travelDuration))
     .catch(error => console.log(error))
+    .then(() => routeChange())
   }
   console.log(duration);
   return(
@@ -45,7 +51,7 @@ const GenerateRoute = () => {
           <input type="text" name="to" value={route.to} onChange={e => updateRoute('to', e.target.value)}/>
         </div>
         <div className="input-group">
-          <button type="submit" className="btn"  onSubmit={() => getDuration()}>Next</button>
+          <button type="submit" className="btn"  onClick={(e) => getDuration(e)}>Next</button>
         </div>
       </form>
     </section>
