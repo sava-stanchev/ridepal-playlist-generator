@@ -10,8 +10,7 @@ const GeneratePlaylist = () => {
   const [sliderDisco, setSliderDisco] = useState(0);
   const [sliderPop, setSliderPop] = useState(0);
   const [playlistName, setPlaylistName] = useState('');
-
-  
+  const [repeatArtists, setRepeatArtists] = useState(false);
 
   const updatePlaylistName = (prop, value) => {
     setPlaylistName({
@@ -20,38 +19,35 @@ const GeneratePlaylist = () => {
     })
   };
 
-  const updateGenres = (prop, e) => {
-    //const a = playlistData[prop.toLowerCase()];
-    console.log(e);
+  const updateGenres = (prop, value) => {
     totalDuration = Number(sliderJazz)
       + Number(sliderRock)
       + Number(sliderBlues)
       + Number(sliderDisco)
       + Number(sliderPop) 
-      + Number(e)
+      + Number(value)
       - playlistData[prop.toLowerCase()];
-    console.log(totalDuration);
-    if (totalDuration>100) {
-      console.log('ehooooo');
-      return ;
+    
+      if (totalDuration > 100) {
+      return;
     }
-    // ['setSlider' + prop](e);
+
     switch (prop) {
       case 'Jazz':
-        setSliderJazz(e);
+        setSliderJazz(value);
         break;
       case 'Rock':
-        setSliderRock(e);
+        setSliderRock(value);
         break;
-        case 'Blues':
-          setSliderBlues(e);
-          break;
-        case 'Disco':
-          setSliderDisco(e);
-          break;
-        case 'Pop':
-          setSliderPop(e);
-          break;    
+      case 'Blues':
+        setSliderBlues(value);
+        break;
+      case 'Disco':
+        setSliderDisco(value);
+        break;
+      case 'Pop':
+        setSliderPop(value);
+        break;    
       default:
         break;
     }
@@ -67,26 +63,22 @@ const GeneratePlaylist = () => {
     duration: duration,
   };
 
-  console.log(playlistName);
-  console.log(playlistData);
-
   return(
     <section className="join-login-main-section">
       <h1 className="join-login-text">
-        Generate your own
+        Generate your
         <span className="accent-text"> playlist!</span>
       </h1>
       <form className="join-login-form">
       <div className="input-group">
-          <p>Duration of your travel is: {Math.round(duration/60)} min.</p>
-          <label>Please enter playlist name:</label>
+          <p>Travel duration: {Math.round(duration/60)} min.</p>
+          <label>Playlist name:</label>
           <input type="text" onChange={(e) => updatePlaylistName('playlistName', e.target.value)}/>
       </div>
       <table className="genres-list">
         <tr className="genre-row">
           <td className="genre-col">Jazz:</td>
           <td className="slider-col">
-          {/* <input type="range" min={0} max={100} value={sliderJazz} id="slider" onChange={(e) => setSliderJazz(e.target.value)}/> */}
           <input type="range" min={0} max={100} value={sliderJazz} id="slider" onChange={(e) => updateGenres('Jazz', e.target.value)}/>
           </td>
           <td className="percent-col">{sliderJazz}%</td>
@@ -121,6 +113,10 @@ const GeneratePlaylist = () => {
         </tr>
         </table>
         <div className="input-group">
+          <div className="checkbox-container">
+            <input type="checkbox" id="checkbox" checked={repeatArtists} onChange={() => setRepeatArtists(!repeatArtists)}/>
+            <label>Allow tracks from the same artist</label>
+          </div>
           <button type="submit" className="btn">Generate Playlist</button>
         </div>
       </form>

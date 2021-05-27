@@ -470,3 +470,22 @@ body {
 .input-group h4 {
   margin-bottom: 0.75rem;
 }
+
+.checkbox-container {
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  display: inline;
+}
+
+.checkbox-container label {
+  font-size: 1.15rem;
+  font-weight: 400 !important;
+}
+
+#checkbox {
+  margin-right: 0.7rem;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  vertical-align: middle;
+}
