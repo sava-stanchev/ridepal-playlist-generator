@@ -1,9 +1,8 @@
-import { useState} from "react";
+import { useState } from "react";
+import { useHistory } from 'react-router-dom';
+import { HOST } from '../common/constants.js';
 
-const GeneratePlaylist = () => {
-  const duration = localStorage.getItem('duration');
-  let totalDuration = 0;
-
+const GeneratePlaylist = ({duration}) => {
   const [sliderJazz, setSliderJazz] = useState(0);
   const [sliderRock, setSliderRock] = useState(0);
   const [sliderBlues, setSliderBlues] = useState(0);
@@ -11,6 +10,7 @@ const GeneratePlaylist = () => {
   const [sliderPop, setSliderPop] = useState(0);
   const [playlistName, setPlaylistName] = useState('');
   const [repeatArtists, setRepeatArtists] = useState(false);
+  const [totalDuration, setTotalDuration] = useState(0);
 
   const updatePlaylistName = (prop, value) => {
     setPlaylistName({
@@ -20,17 +20,17 @@ const GeneratePlaylist = () => {
   };
 
   const updateGenres = (prop, value) => {
-    totalDuration = Number(sliderJazz)
+    const a = Number(sliderJazz)
       + Number(sliderRock)
       + Number(sliderBlues)
       + Number(sliderDisco)
       + Number(sliderPop) 
       + Number(value)
       - playlistData[prop.toLowerCase()];
-    
-      if (totalDuration > 100) {
-      return;
-    }
+      if (a > 100) {
+        return;
+      }
+      setTotalDuration(a);
 
     switch (prop) {
       case 'Jazz':
@@ -61,6 +61,28 @@ const GeneratePlaylist = () => {
     disco: sliderDisco,
     pop: sliderPop,
     duration: duration,
+    repeatArtist:repeatArtists,
+  };
+
+  const history = useHistory();
+  const routeChange = () =>{ 
+    const path = `/playlist`; 
+    history.push(path);
+  };
+
+  const generatePlaylist = (playlistData) => {
+    fetch(`${HOST}/playlist`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(playlistData),
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .then(() => routeChange())
+    .catch(console.error())
+
   };
 
   return(
@@ -117,7 +139,17 @@ const GeneratePlaylist = () => {
             <input type="checkbox" id="checkbox" checked={repeatArtists} onChange={() => setRepeatArtists(!repeatArtists)}/>
             <label>Allow tracks from the same artist</label>
           </div>
-          <button type="submit" className="btn">Generate Playlist</button>
+          <>
+            {
+              totalDuration < 100
+              ?
+              <div>
+                <p>Total pers mast be 100 %</p>
+              </div>
+              :
+              <button type="submit" className="btn" onClick={() => generatePlaylist(playlistData)}>Generate Playlist</button>
+            }
+          </>
         </div>
       </form>
     </section>

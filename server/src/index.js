@@ -77,5 +77,13 @@ app.delete('/logout', authMiddleware, async (req, res) => {
   }
 });
 
+app.post('/playlist', authMiddleware, async (req, res) => {
+  try {
+    
+  } catch (error) {
+    
+  }
+});
+
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
