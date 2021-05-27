@@ -1,17 +1,17 @@
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import { useHistory } from 'react-router-dom';
 import GeneratePlaylist from './GeneratePlaylist';
 
 
 const GenerateRoute = () => {
-  const [duration, setDuration] = useState(null);
-  const [route, setRoute] = useState({
+    const [route, setRoute] = useState({
     from: '',
     to: '',
   });
 
+
   const history = useHistory();
-  const routeChange = (duration) =>{ 
+  const routeChange = () =>{ 
     const path = `/generate-playlist`; 
     history.push(path);
   };
@@ -22,23 +22,19 @@ const GenerateRoute = () => {
       [prop]: value,
     });
   };
-  useEffect(() => {
-    
-  }, [duration])
+  
 
-  console.log(route);
   const getDuration = (e) => {
-    console.log('hi');
     e.preventDefault();
     fetch(`http://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0=${route.from}&wp.1=${route.to}&routeAttributes=excludeItinerary&key=AlyPtpHnx-TC4cf6hqJyd2oQKsQwnovawxxxnua_ml-uIxALhwZ__iJg9izB3iHr`, {
     method: 'GET',
   })
     .then(res => res.json())
-    .then(data => setDuration(data.resourceSets[0].resources[0].travelDuration))
+    .then(data => localStorage.setItem('duration', data.resourceSets[0].resources[0].travelDuration))
     .catch(error => console.log(error))
-    // .then(() => routeChange())
+    .then(() => routeChange())
   }
-  console.log(duration);
+  
   return(
     <section className="join-login-main-section">
       <h1 className="join-login-text">

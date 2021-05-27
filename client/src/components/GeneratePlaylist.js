@@ -1,6 +1,23 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 
 const GeneratePlaylist = () => {
+  const [genres, setGenres] = useState({
+    jazz: '',
+    rock: '',
+    blues: '',
+    disco: '',
+    pop: '',
+  });
+
+  const updateGenres = (prop, value) => {
+    setGenres({
+      ...genres,
+      [prop]: value,
+    });
+  };
+
+  console.log(genres);
+
   const [sliderJazz, setSliderJazz] = useState(0);
   const [sliderRock, setSliderRock] = useState(0);
   const [sliderBlues, setSliderBlues] = useState(0);
@@ -18,9 +35,10 @@ const GeneratePlaylist = () => {
         <tr className="genre-row">
           <td className="genre-col">Jazz:</td>
           <td className="slider-col">
-          <input type="range" min={0} max={100} value={sliderJazz} id="slider" onChange={(e) => setSliderJazz(e.target.value)}/>
+          {/* <input type="range" min={0} max={100} value={sliderJazz} id="slider" onChange={(e) => setSliderJazz(e.target.value)}/> */}
+          <input type="range" min={0} max={100} value={genres.jazz} id="slider" onChange={(e) => updateGenres('jazz', e.target.value)}/>
           </td>
-          <td className="percent-col">{sliderJazz}%</td>
+          <td className="percent-col">{genres.jazz}%</td>
         </tr>
         <tr className="genre-row">
           <td className="genre-col">Rock:</td>
