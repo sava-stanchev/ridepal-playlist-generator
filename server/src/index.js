@@ -7,6 +7,7 @@ import userService from './service/user-service.js';
 import {authMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
+import playlistService from './service/playlist-service.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
@@ -75,5 +76,6 @@ app.delete('/logout', authMiddleware, async (req, res) => {
     });
   }
 });
+
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
