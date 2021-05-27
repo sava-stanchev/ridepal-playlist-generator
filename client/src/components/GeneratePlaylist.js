@@ -10,11 +10,12 @@ const GeneratePlaylist = () => {
   return(
     <section className="join-login-main-section">
       <h1 className="join-login-text">
-        Create your own
+        Generate your own
         <span className="accent-text"> playlist!</span>
       </h1>
       <form className="join-login-form">
       <div className="input-group">
+          <p>Duration of travel: </p>
           <label>Playlist Name:</label>
           <input type="text"/>
       </div>

@@ -466,3 +466,7 @@ body {
   padding-bottom: 0.65rem;
   transition: all 0.3s ease-in;
 }
+
+.input-group h4 {
+  margin-bottom: 0.75rem;
+}

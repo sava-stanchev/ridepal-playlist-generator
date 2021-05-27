@@ -36,7 +36,7 @@ const GenerateRoute = () => {
     .then(res => res.json())
     .then(data => setDuration(data.resourceSets[0].resources[0].travelDuration))
     .catch(error => console.log(error))
-    // .then(() => routeChange())
+    .then(() => routeChange())
   }
   console.log(duration);
   return(
