@@ -12,7 +12,7 @@ const NavBar = () => {
       isLoggedIn: false,
     });
   };
-  console.log(auth.isLoggedIn);
+
 
   return(
     <header className="main-header">
