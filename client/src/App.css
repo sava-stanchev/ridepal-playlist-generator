@@ -423,9 +423,8 @@ body {
 }
 
 .slider-main {
-  width: 60%;
-  margin: 24% auto;
-  position: relative;
+  width: 65%;
+  margin: 3%;
 }
 
 #slider {
@@ -438,14 +437,4 @@ body {
 
 #slider::-webkit-slider-thumb {
   padding: 12px;
-}
-
-.SelectBtn {
-  height: 48px;
-  width: 48px;
-  background-size: cover;
-  background-position: center;
-  border-radius: 50%;
-  position: absolute;
-  bottom: 0;
 }
