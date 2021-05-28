@@ -54,7 +54,7 @@ const GeneratePlaylist = ({points}) => {
   }
 
   const playlistData= {
-    playlistName: playlistName,
+    playlistName: playlistName.playlistName,
     genres: {
       jazz: sliderJazz,
       rock: sliderRock,
@@ -63,7 +63,7 @@ const GeneratePlaylist = ({points}) => {
       pop: sliderPop,
     },
     points: points,
-    repeatArtist:repeatArtists,
+    repeatArtist: repeatArtists,
   };
 
   const history = useHistory();

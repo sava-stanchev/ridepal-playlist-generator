@@ -1,5 +1,6 @@
 import tracksData from '../data/tracks.js';
 import objectHash from 'object-hash';
+import playlistData from '../data/playlists.js';
 
 
 /**
@@ -9,7 +10,7 @@ import objectHash from 'object-hash';
  */
 
 // {
-//   playlistName: { playlistName: 'sad' },
+//   playlistName: 'sad',
 //   genres: { jazz: '100', rock: 0, blues: 0, disco: 0, pop: 0 },
 //   points: { duration: 2397, from: 'sofia', to: 'pernik' },
 //   repeatArtist: true
@@ -22,10 +23,10 @@ const playlistGenerator = async (req) => {
   const to = req.body.points.to;
   if (req.body.repeatArtist === true) {
     const keys = Object.keys(req.body.genres);
-    await Promise.all(
+    const result = await Promise.all(
         keys.map( async key => {
           if (req.body.genres[key] !== 0) {
-            const duration = Math.round(req.body.route.duration * (req.body.genres[key]/100));
+            const duration = Math.round(req.body.points.duration * (req.body.genres[key]/100));
             console.log(duration);
             const a = await tracksData.getTracksByGenre(key, duration);
             const b = await a.filter(c => c.hasOwnProperty('tracks_id'));
@@ -34,16 +35,19 @@ const playlistGenerator = async (req) => {
         }));
 
     const playlistDuration = tracks.reduce((acc, t) => acc + t.duration, 0); // result int
-    console.log('pl list dur');
-    console.log(playlistDuration);
     const tracksId = tracks.reduce((acc, t) => acc + t.tracks_id, ''); // result string
-    console.log('tracks ID');
-    console.log(tracksId);
     const hash = objectHash(tracksId + req.user.user_id + from.toLowerCase() + to.toLowerCase());
-    console.log('hash');
-    console.log(hash);
-    console.log('tracks');
-    console.log(tracks);
+    const rank = Math.round((tracks.reduce((acc, t) => acc + t.rank, 0))/tracks.length);
+    const plData = {
+      name: req.body.playlistName,
+      duration: playlistDuration,
+      user: req.user.user_id,
+      rank: rank,
+      hash: hash,
+    };
+    const newPlaylist = await playlistData.setPlaylist(plData);
+    console.log(newPlaylist);
+
     return tracks;
   }
 };

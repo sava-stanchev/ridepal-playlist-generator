@@ -1,5 +1,4 @@
 import pool from './pool.js';
-import mariadb from 'mariadb';
 
 
 /**
@@ -13,14 +12,10 @@ const getTracksByGenre = async (genre, duration) => {
     CALL select_rand_tracks(?, ?)
   `;
   const a = await pool.query(sql, [duration, genre]);
-  // onsole.log('a');
-  // console.log(a);
   const tracks = await pool.query(`SELECT * FROM temp`);
-  // truncateTable = await pool.query(`truncate temp`);
+  truncateTable = await pool.query(`truncate temp`);
   return tracks;
 };
-
-// getTracksByGenre({genre: 132, duration: 1000});
 
 
 /**
@@ -34,11 +29,10 @@ const getTracksByGenre = async (genre, duration) => {
   `;
   const a = await pool.query(sql, [duration, genre]);
   const tracks = await pool.query(`SELECT * FROM temp_not_artist`);
-  //truncateTable = await pool.query(`truncate temp_not_artist`);
+  truncateTable = await pool.query(`truncate temp_not_artist`);
   return tracks;
 };
 
-// getTracksByGenreNotRepeatArtist({genre:132, duration:1000});
 
 export default {
   getTracksByGenre,
