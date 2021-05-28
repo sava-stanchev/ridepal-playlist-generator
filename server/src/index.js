@@ -79,9 +79,9 @@ app.delete('/logout', authMiddleware, async (req, res) => {
 
 app.post('/playlist', authMiddleware, async (req, res) => {
   try {
-    
+    const playlist = await playlistService.playlistGenerator(req);
   } catch (error) {
-    
+
   }
 });
 

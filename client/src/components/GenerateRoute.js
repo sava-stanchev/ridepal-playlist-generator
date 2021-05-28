@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import GeneratePlaylist from './GeneratePlaylist';
 
 
-const GenerateRoute = ({ setDuration }) => {
+const GenerateRoute = ({ setPoints }) => {
     const [route, setRoute] = useState({
     from: '',
     to: '',
@@ -30,7 +29,11 @@ const GenerateRoute = ({ setDuration }) => {
     method: 'GET',
   })
     .then(res => res.json())
-    .then(data => setDuration(data.resourceSets[0].resources[0].travelDuration))
+    .then(data => setPoints({
+      duration: data.resourceSets[0].resources[0].travelDuration,
+      from: route.from,
+      to: route.to,
+    }))
     .catch(error => console.log(error))
     .then(() => routeChange())
   }

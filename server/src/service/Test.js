@@ -1,4 +1,7 @@
 
-import duration from './duration.js';
+import objectHash from 'object-hash';
 
-const b = {from: 'Sofia', to: 'Pernik'};
+
+const hash = objectHash('12356871'+'sofia'+'pernik'+'nam');
+
+console.log(hash);

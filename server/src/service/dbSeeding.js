@@ -67,7 +67,7 @@ const getMainGenres = async () => {
 
 
 /** Get all albums from DB
- * @param {number} - number of rows from genre to return
+ * @param {number} n - number of rows from genre to return
  * @return {Array}
  */
 const getNumberOfAlbums = async (n) => {

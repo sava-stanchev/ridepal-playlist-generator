@@ -16,7 +16,11 @@ const App = () => {
     isLoggedIn: Boolean(getUser()),
   })
 
-  const [duration, setDuration] = useState(0);
+  const [points, setPoints] = useState({
+    duration: 0,
+    from: '',
+    to: '',
+  });
 
   return (
     <div className="App">
@@ -28,8 +32,8 @@ const App = () => {
             <Route path="/home" exact component={StartPage} />
             <Route path="/login" exact component={Login} />       
             <Route path="/register" exact component={Register} />
-            <Route path="/generate-route" exact component={(props) => <GenerateRoute {...props} setDuration={setDuration}/>} />
-            <Route path="/generate-playlist" exact component={(props) => <GeneratePlaylist {...props} duration={duration}/>} />
+            <Route path="/generate-route" exact component={(props) => <GenerateRoute {...props} setPoints={setPoints}/>} />
+            <Route path="/generate-playlist" exact component={(props) => <GeneratePlaylist {...props} points={points}/>} />
             <Route path="/playlist" component={ViewPlaylist} />
           </Switch>
         </AuthContext.Provider>

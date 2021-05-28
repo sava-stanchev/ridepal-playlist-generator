@@ -3,17 +3,20 @@ import mariadb from 'mariadb';
 
 
 /**
- * @param {number} genre
+ * @param {string} genre
+ * @param {number} duration
  * @return {object} tracks
  */
-const getTracksByGenre = async ({genre, duration}) => {
-  const truncateTable = await pool.query(`truncate temp`);
+const getTracksByGenre = async (genre, duration) => {
+  let truncateTable = await pool.query(`truncate temp`);
   const sql = `
-  CALL select_rand_tracks(?, ?)
+    CALL select_rand_tracks(?, ?)
   `;
   const a = await pool.query(sql, [duration, genre]);
+  // onsole.log('a');
+  // console.log(a);
   const tracks = await pool.query(`SELECT * FROM temp`);
-  truncateTable = await pool.query(`truncate temp`);
+  // truncateTable = await pool.query(`truncate temp`);
   return tracks;
 };
 
@@ -31,7 +34,7 @@ const getTracksByGenre = async ({genre, duration}) => {
   `;
   const a = await pool.query(sql, [duration, genre]);
   const tracks = await pool.query(`SELECT * FROM temp_not_artist`);
-  truncateTable = await pool.query(`truncate temp_not_artist`);
+  //truncateTable = await pool.query(`truncate temp_not_artist`);
   return tracks;
 };
 

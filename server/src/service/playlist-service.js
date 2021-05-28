@@ -1,19 +1,51 @@
 import tracksData from '../data/tracks.js';
-import fetch from 'node-fetch';
+import objectHash from 'object-hash';
 
 
 /**
  *
- * @param {Array} data - array of object{genre:xx, duration:xx}
+ * @param {Object} req
  * @return {Array} array of objects
  */
-const playlistGenerator = async (data) => {
 
+// {
+//   playlistName: { playlistName: 'sad' },
+//   genres: { jazz: '100', rock: 0, blues: 0, disco: 0, pop: 0 },
+//   points: { duration: 2397, from: 'sofia', to: 'pernik' },
+//   repeatArtist: true
+// }
 
-  const req = await Promise.all(data.map(obj => tracksData.getTracksByGenre(obj)));
-  const tracks = await a.reduce((acc, c)=>[...acc, ...c], []);
-  console.log(tracks);
-  return tracks;
+const playlistGenerator = async (req) => {
+  console.log(req.body);
+  let tracks = [];
+  const from = req.body.points.from;
+  const to = req.body.points.to;
+  if (req.body.repeatArtist === true) {
+    const keys = Object.keys(req.body.genres);
+    await Promise.all(
+        keys.map( async key => {
+          if (req.body.genres[key] !== 0) {
+            const duration = Math.round(req.body.route.duration * (req.body.genres[key]/100));
+            console.log(duration);
+            const a = await tracksData.getTracksByGenre(key, duration);
+            const b = await a.filter(c => c.hasOwnProperty('tracks_id'));
+            tracks = [...tracks, ...b];
+          }
+        }));
+
+    const playlistDuration = tracks.reduce((acc, t) => acc + t.duration, 0); // result int
+    console.log('pl list dur');
+    console.log(playlistDuration);
+    const tracksId = tracks.reduce((acc, t) => acc + t.tracks_id, ''); // result string
+    console.log('tracks ID');
+    console.log(tracksId);
+    const hash = objectHash(tracksId + req.user.user_id + from.toLowerCase() + to.toLowerCase());
+    console.log('hash');
+    console.log(hash);
+    console.log('tracks');
+    console.log(tracks);
+    return tracks;
+  }
 };
 
 /**

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { HOST } from '../common/constants.js';
 
-const GeneratePlaylist = ({duration}) => {
+const GeneratePlaylist = ({points}) => {
   const [sliderJazz, setSliderJazz] = useState(0);
   const [sliderRock, setSliderRock] = useState(0);
   const [sliderBlues, setSliderBlues] = useState(0);
@@ -26,7 +26,7 @@ const GeneratePlaylist = ({duration}) => {
       + Number(sliderDisco)
       + Number(sliderPop) 
       + Number(value)
-      - playlistData[prop.toLowerCase()];
+      - playlistData.genres[prop.toLowerCase()];
       if (a > 100) {
         return;
       }
@@ -55,12 +55,14 @@ const GeneratePlaylist = ({duration}) => {
 
   const playlistData= {
     playlistName: playlistName,
-    jazz: sliderJazz,
-    rock: sliderRock,
-    blues: sliderBlues,
-    disco: sliderDisco,
-    pop: sliderPop,
-    duration: duration,
+    genres: {
+      jazz: sliderJazz,
+      rock: sliderRock,
+      blues: sliderBlues,
+      disco: sliderDisco,
+      pop: sliderPop,
+    },
+    points: points,
     repeatArtist:repeatArtists,
   };
 
@@ -70,17 +72,18 @@ const GeneratePlaylist = ({duration}) => {
     history.push(path);
   };
 
-  const generatePlaylist = (playlistData) => {
+  const generatePlaylist = () => {
     fetch(`${HOST}/playlist`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify(playlistData),
     })
     .then(res => res.json())
     .then(data => console.log(data))
-    .then(() => routeChange())
+    .then()
     .catch(console.error())
 
   };
@@ -93,7 +96,7 @@ const GeneratePlaylist = ({duration}) => {
       </h1>
       <form className="join-login-form">
       <div className="input-group">
-          <p>Travel duration: {Math.round(duration/60)} min.</p>
+          <p>Travel duration: {Math.round(points.duration/60)} min.</p>
           <label>Playlist name:</label>
           <input type="text" onChange={(e) => updatePlaylistName('playlistName', e.target.value)}/>
       </div>
