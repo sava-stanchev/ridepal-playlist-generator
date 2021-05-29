@@ -1,6 +1,11 @@
 import usersData from '../data/users.js';
 import bcrypt from 'bcrypt';
 
+/** create new user
+ *
+ * @param {object} userData
+ * @return {object} created user
+ */
 const createUser = async (userData) => {
   const usernameExists = await usersData.getUserByName(userData.username);
   if (usernameExists !== undefined) {
@@ -13,6 +18,10 @@ const createUser = async (userData) => {
   return newUser;
 };
 
+/** validate sername and password
+ *
+ * @param {object}
+ */
 const validateUser = async ({username, password}) => {
   const userData = await usersData.getUserByName(username);
 
@@ -27,7 +36,7 @@ const validateUser = async ({username, password}) => {
   return null;
 };
 
-/**
+/** logout user and delete token from localStorage
  *
  * @param {string} token
  */

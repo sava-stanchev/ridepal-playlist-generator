@@ -55,6 +55,7 @@ const Register = () => {
       setUsernameError({...usernameError, properLength});
     }
   };
+  console.log(newUser);
 
   const register = (e) => {
     e.preventDefault();
