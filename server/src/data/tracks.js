@@ -7,13 +7,13 @@ import pool from './pool.js';
  * @return {object} tracks
  */
 const getTracksByGenre = async (genre, duration) => {
-  let truncateTable = await pool.query(`truncate temp`);
+  //let truncateTable = await pool.query(`truncate temp`);
   const sql = `
     CALL select_rand_tracks(?, ?)
   `;
   const a = await pool.query(sql, [duration, genre]);
   const tracks = await pool.query(`SELECT * FROM temp`);
-  truncateTable = await pool.query(`truncate temp`);
+  //truncateTable = await pool.query(`truncate temp`);
   return tracks;
 };
 

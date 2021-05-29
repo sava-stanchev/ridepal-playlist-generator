@@ -17,36 +17,46 @@ import playlistData from '../data/playlists.js';
 // }
 
 const playlistGenerator = async (req) => {
-  console.log(req.body);
+  // console.log(req.body);
   let tracks = [];
   const from = req.body.points.from;
   const to = req.body.points.to;
   if (req.body.repeatArtist === true) {
     const keys = Object.keys(req.body.genres);
-    const result = await Promise.all(
+    const result = await Promise.allSettled(
         keys.map( async key => {
           if (req.body.genres[key] !== 0) {
             const duration = Math.round(req.body.points.duration * (req.body.genres[key]/100));
             console.log(duration);
-            const a = await tracksData.getTracksByGenre(key, duration);
-            const b = await a.filter(c => c.hasOwnProperty('tracks_id'));
-            tracks = [...tracks, ...b];
+            console.log(key);
+            return await tracksData.getTracksByGenre(key, duration);
+            // const b = await a.filter(c => c.hasOwnProperty('tracks_id'));
           }
         }));
+        // generate view or drop table create name by genre
+        console.log('result');
+        console.log(result);
+        // tracks = [...tracks, ...b];
+        // console.log(tracks);
+        // console.log(tracks);
 
     const playlistDuration = tracks.reduce((acc, t) => acc + t.duration, 0); // result int
     const tracksId = tracks.reduce((acc, t) => acc + t.tracks_id, ''); // result string
     const hash = objectHash(tracksId + req.user.user_id + from.toLowerCase() + to.toLowerCase());
+    // check is_hash exist - to do
     const rank = Math.round((tracks.reduce((acc, t) => acc + t.rank, 0))/tracks.length);
-    const plData = {
+    const playlistDataObject = {
       name: req.body.playlistName,
       duration: playlistDuration,
       user: req.user.user_id,
       rank: rank,
       hash: hash,
     };
-    const newPlaylist = await playlistData.setPlaylist(plData);
-    console.log(newPlaylist);
+    const newPlaylist = await playlistData.setPlaylist(playlistDataObject);
+    await Promise.all(
+      tracks.map( async track => playlistData.setPlaylistTrackMap(newPlaylist.playlists_id, track.deez_tracks_id));
+    )
+    // console.log(newPlaylist);
 
     return tracks;
   }

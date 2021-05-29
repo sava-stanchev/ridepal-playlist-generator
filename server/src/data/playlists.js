@@ -7,19 +7,30 @@ import pool from './pool.js';
  * @return {Object}
  */
 const setPlaylist = async (data) => {
-  console.log(data);
+  console.log('sql');
+  // console.log(data);
   const sql = `
   INSERT INTO playlists (playlist_name, duration, created_by, rank, hash, created_on)
   VALUES (?, ?, ?, ?, ?, NOW())
   `;
 
   const result = await pool.query(sql, [data.name, data.duration, data.user, data.rank, data.hash]);
-  const newPlaylist = await pool.query(`SELECT * FROM playlists WHERE playlists_id = ${result.insertID}`)[0];
-
+  console.log(result);
+  const newSql = `SELECT * FROM playlists WHERE playlists_id = ?`;
+  const newPlaylist = await pool.query(newSql, [result.insertId])[0];
   return newPlaylist;
 };
 
+const setPlaylistTrackMap = async (data) => {
+
+};
+
+const 
+
 
 export default {
+  getPlaylistById,
+  getPlaylistAll,
   setPlaylist,
+  setPlaylistTrackMap,
 }
