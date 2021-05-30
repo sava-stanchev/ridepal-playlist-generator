@@ -29,7 +29,8 @@ const playlistGenerator = async (req) => {
             const duration = Math.round(req.body.points.duration * (req.body.genres[key]/100));
             console.log(duration);
             console.log(key);
-            return await tracksData.getTracksByGenre(key, duration);
+            const genre = await genresData.getGenreByName(key);
+            return await tracksData.getTracksByGenre(genre.deez_genres_id, duration);
           }
         }));
     // generate view or drop table create name by genre
