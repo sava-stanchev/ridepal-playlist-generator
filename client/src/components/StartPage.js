@@ -1,4 +1,79 @@
+import { HOST } from '../common/constants.js';
+import {useEffect, useState} from 'react';
+import ReactPaginate from "react-paginate";
+
 const StartPage = () => {
+  const [playlists, setPlaylists] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [search, setSearch] = useState('');
+  const [filteredPlaylists, setFilteredPlaylists] = useState([]);
+
+  const playlistsPerPage = 8;
+  const pagesVisited = pageNumber * playlistsPerPage;
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(`${HOST}/playlists`, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => setPlaylists(data))
+      .catch((error) => setError(error.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    setFilteredPlaylists(
+      playlists.filter(playlist => {
+        return playlist.playlist_name.toLowerCase().includes(search.toLowerCase())
+      })
+    )
+  }, [search, playlists]);
+
+  const foundPlaylists = filteredPlaylists.slice();
+
+  const showError = () => {
+    if (error) {
+      return <h4><i>An error has occured: </i>{error}</h4>
+    }
+  }
+
+  const Loader = () => <div className="Loader"></div>;
+
+  const showLoader = () => {
+    if (loading) {
+      return <Loader />
+    }
+  }
+
+  const displayPlaylists = foundPlaylists
+  .slice(pagesVisited, pagesVisited + playlistsPerPage)
+  .map((playlist) => {
+    return (
+      <article className="card">
+        <div className="cover">
+          <div className="cover-text">
+            <h1 className="cover-title">{playlist.playlist_name}</h1>
+            <h4 className="cover-subtitle">{playlist.duration}</h4>
+          </div>
+          <div className="view-btn-wrapper">
+            <button className="view-btn">Details</button>
+          </div>
+        </div>
+        <div className="description">
+          <h1 className="pl-name">{playlist.rank}</h1>
+          <p className="pl-about">{playlist.created_on}, {playlist.created_by}</p>
+        </div>
+      </article>
+    );
+  });
+
+  const pageCount = Math.ceil(foundPlaylists.length / playlistsPerPage);
+  const changePage = ({selected}) => {
+    setPageNumber(selected);
+  };
     
   return(
     <>
@@ -17,7 +92,7 @@ const StartPage = () => {
           <table className = "elementsContainer">
             <tbody><tr>
               <td>
-                <input type="text" placeholder="search by name" className="search" />
+                <input type="text" placeholder="search by name" className="search" onChange={e => setSearch(e.target.value)}/>
               </td>
               <td>
                 <>
@@ -30,112 +105,21 @@ const StartPage = () => {
       </section>
     </div>
     <div className="cards-container">
-      <article className="card">
-        <div className="cover">
-          <div className="cover-text">
-            <h1 className="cover-title">Title</h1>
-            <h4 className="cover-subtitle">Subtitle</h4>
-          </div>
-          <div className="view-btn-wrapper">
-            <button className="view-btn">Details</button>
-          </div>
-        </div>
-        <div className="description">
-          <h1 className="pl-name">Some name</h1>
-          <p className="pl-about">Some info about this</p>
-        </div>
-      </article>
-      <article className="card">
-        <div className="cover">
-          <div className="cover-text">
-            <h1 className="cover-title">Title</h1>
-            <h4 className="cover-subtitle">Subtitle</h4>
-          </div>
-          <div className="view-btn-wrapper">
-            <button className="view-btn">Details</button>
-          </div>
-        </div>
-        <div className="description">
-          <h1 className="pl-name">Some name</h1>
-          <p className="pl-about">Some info about this</p>
-        </div>
-      </article>
-      <article className="card">
-        <div className="cover">
-          <div className="cover-text">
-            <h1 className="cover-title">Title</h1>
-            <h4 className="cover-subtitle">Subtitle</h4>
-          </div>
-          <div className="view-btn-wrapper">
-            <button className="view-btn">Details</button>
-          </div>
-        </div>
-        <div className="description">
-          <h1 className="pl-name">Some name</h1>
-          <p className="pl-about">Some info about this</p>
-        </div>
-      </article>
-      <article className="card">
-        <div className="cover">
-          <div className="cover-text">
-            <h1 className="cover-title">Title</h1>
-            <h4 className="cover-subtitle">Subtitle</h4>
-          </div>
-          <div className="view-btn-wrapper">
-            <button className="view-btn">Details</button>
-          </div>
-        </div>
-        <div className="description">
-          <h1 className="pl-name">Some name</h1>
-          <p className="pl-about">Some info about this</p>
-        </div>
-      </article>
-      <article className="card">
-        <div className="cover">
-          <div className="cover-text">
-            <h1 className="cover-title">Title</h1>
-            <h4 className="cover-subtitle">Subtitle</h4>
-          </div>
-          <div className="view-btn-wrapper">
-            <button className="view-btn">Details</button>
-          </div>
-        </div>
-        <div className="description">
-          <h1 className="pl-name">Some name</h1>
-          <p className="pl-about">Some info about this</p>
-        </div>
-      </article>
-      <article className="card">
-        <div className="cover">
-          <div className="cover-text">
-            <h1 className="cover-title">Title</h1>
-            <h4 className="cover-subtitle">Subtitle</h4>
-          </div>
-          <div className="view-btn-wrapper">
-            <button className="view-btn">Details</button>
-          </div>
-        </div>
-        <div className="description">
-          <h1 className="pl-name">Some name</h1>
-          <p className="pl-about">Some info about this</p>
-        </div>
-      </article>
-      <article className="card">
-        <div className="cover">
-          <div className="cover-text">
-            <h1 className="cover-title">Title</h1>
-            <h4 className="cover-subtitle">Subtitle</h4>
-          </div>
-          <div className="view-btn-wrapper">
-            <button className="view-btn">Details</button>
-          </div>
-        </div>
-        <div className="description">
-          <h1 className="pl-name">Some name</h1>
-          <p className="pl-about">Some info about this</p>
-        </div>
-      </article>
+      {showLoader()}
+      {showError()}
+      {displayPlaylists}
     </div>
+    <ReactPaginate
+      previousLabel={"<"}
+      nextLabel={">"}
+      pageCount={pageCount}
+      onPageChange={changePage}
+      containerClassName={"paginationBttns"}
+      previousLinkClassName={"previousBttn"}
+      nextLinkClassName={"nextBttn"}
+      disabledClassName={"paginationDisabled"}
+      activeClassName={"paginationActive"}
+    />
     </>
   )    
 };

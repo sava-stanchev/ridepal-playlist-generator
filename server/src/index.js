@@ -86,7 +86,7 @@ app.post('/playlist', authMiddleware, async (req, res) => {
   }
 });
 
-app.get('/playlists', authMiddleware, async (req, res) => {
+app.get('/playlists', async (req, res) => {
   try {
     const thePlaylists = await playlistsData.getAllPlaylists();
     res.json(thePlaylists);

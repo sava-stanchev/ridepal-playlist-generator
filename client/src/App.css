@@ -489,3 +489,60 @@ body {
   cursor: pointer;
   vertical-align: middle;
 }
+
+.Loader {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+
+.Loader:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #58f;
+  border-color: #58f transparent #58f transparent;
+  animation: Loader 1.2s linear infinite;
+}
+
+@keyframes Loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.paginationBttns {
+  width: 80%;
+  height: 40px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+.paginationBttns a {
+  padding: 10px;
+  margin: 8px;
+  border-radius: 35%;
+  border: 2.5px solid #007BFF;
+  font-family: 'Cardo', serif;
+  color: #007BFF !important;
+  cursor: pointer;
+  font-size: large;
+}
+
+.paginationBttns a:hover {
+  color: white !important;
+  background-color: #007BFF;
+  text-decoration-line: none;
+}
+
+.paginationActive a {
+  color: white !important;
+  background-color: #007BFF;
+}
