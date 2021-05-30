@@ -529,20 +529,19 @@ body {
   padding: 10px;
   margin: 8px;
   border-radius: 35%;
-  border: 2.5px solid #007BFF;
-  font-family: 'Cardo', serif;
-  color: #007BFF !important;
+  border: 2.5px solid #E7E7E7;
+  color: #E7E7E7 !important;
   cursor: pointer;
   font-size: large;
 }
 
 .paginationBttns a:hover {
-  color: white !important;
-  background-color: #007BFF;
+  color: black !important;
+  background-color: #E7E7E7;
   text-decoration-line: none;
 }
 
 .paginationActive a {
-  color: white !important;
-  background-color: #007BFF;
+  color: black !important;
+  background-color: #E7E7E7;
 }

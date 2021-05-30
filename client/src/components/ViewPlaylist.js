@@ -33,22 +33,24 @@ const ViewPlaylist = props => {
     }
   }
 
-  if  (playlistData === null || playlistData === undefined) {
+  if  (playlistData === null) {
     return <div className="Loader"></div>;
   }
 
-  console.log(playlistData);
+  const trackTimeFormat = (s) => {
+    return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0' ) + s;
+  };
 
   const displayTracks = playlistData.map((track) => {
     return (
       <tr className="song">
-      <td className="song-album-cover">
-        <div className="album-img">
-          <img src={albumCover} alt=""/>
-        </div>
-      </td>
-      <td className="song-title"><h5>{track.track_title}, {track.artist_name}</h5></td>
-      <td className="song-length"><h5>{track.track_duration/60} min.</h5></td>
+        <td className="song-album-cover">
+          <div className="album-img">
+            <img src={albumCover} alt=""/>
+          </div>
+        </td>
+        <td className="song-title"><h5>{track.artist_name} - {track.track_title}</h5></td>
+        <td className="song-length"><h5>{trackTimeFormat(track.track_duration)}</h5></td>
       </tr>
     )
   })
@@ -59,7 +61,7 @@ const ViewPlaylist = props => {
       {showLoader()}
       <div className="songs-container">
         <div className="playlist-header">
-          <h5 className="playlist-title">Songs in this playlist</h5>
+          <h5 className="playlist-title">Tracklist for {playlistData[0].playlist_name}</h5>
         </div>
         <table className="playlist-list">
           {displayTracks}

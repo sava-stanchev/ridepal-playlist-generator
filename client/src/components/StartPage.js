@@ -62,7 +62,7 @@ const StartPage = () => {
             <h4 className="cover-subtitle">{Math.round(playlist.duration/60)} min.</h4>
           </div>
           <div className="view-btn-wrapper">
-            <button className="view-btn" onClick = {() => history.push(`/playlists/${playlist.playlists_id}`)}>Details</button>
+            <button className="view-btn" onClick = {() => history.push(`/playlists/${playlist.playlists_id}`)}>Tracklist</button>
           </div>
         </div>
         <div className="description">
