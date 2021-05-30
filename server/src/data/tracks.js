@@ -7,28 +7,36 @@ import pool from './pool.js';
  * @return {object} tracks
  */
 const getTracksByGenre = async (genre, duration) => {
+  console.log('track sql');
+  console.log(duration);
+  console.log(genre);
   const sql = `
     CALL rand_track(?, ?)
   `;
   const a = await pool.query(sql, [duration, genre]);
+  console.log(a);
   const tracks = await pool.query(`SELECT * FROM temp_table_${genre}`);
-  // const dropTable = await pool.query(`drop table temp_table_${genre}`);
+  const dropTable = await pool.query(`drop table temp_table_${genre}`);
   return tracks;
 };
 
 
 /**
  * @param {number} genre
+ * @param {number} duration
  * @return {object} tracks
  */
- const getTracksByGenreNotRepeatArtist = async ({genre, duration}) => {
-  const truncateTable = await pool.query(`truncate temp_not_artist`);
+const getTracksByGenreNotRepeatArtist = async (genre, duration) => {
+  console.log('track sql');
+  console.log(duration);
+  console.log(genre);
   const sql = `
-  CALL select_rand_tracks_not_artist(?, ?)
+    CALL rand_track_not_rep_artist(?, ?)
   `;
   const a = await pool.query(sql, [duration, genre]);
-  const tracks = await pool.query(`SELECT * FROM temp_not_artist`);
-  truncateTable = await pool.query(`truncate temp_not_artist`);
+  console.log(a);
+  const tracks = await pool.query(`SELECT * FROM temp_table_${genre}`);
+  const dropTable = await pool.query(`drop table temp_table_${genre}`);
   return tracks;
 };
 
