@@ -48,8 +48,10 @@ const setPlaylistGenreMap = async (playlist, genre) => {
 };
 
 
-const getPlaylistAll = async () => {
-
+const getAllPlaylists = async () => {
+  return await pool.query(`
+    SELECT * FROM playlists p
+  `);
 };
 
 const getPlaylistById = async (id) => {
@@ -73,7 +75,7 @@ const getHash = async (hash) => {
 
 export default {
   getPlaylistById,
-  getPlaylistAll,
+  getAllPlaylists,
   setPlaylist,
   setPlaylistTrackMap,
   setPlaylistGenreMap,

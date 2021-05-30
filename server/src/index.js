@@ -8,6 +8,7 @@ import {authMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
 import playlistService from './service/playlist-service.js';
+import playlistsData from './data/playlists.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
@@ -82,6 +83,17 @@ app.post('/playlist', authMiddleware, async (req, res) => {
     const playlist = await playlistService.playlistGenerator(req);
   } catch (error) {
 
+  }
+});
+
+app.get('/playlists', authMiddleware, async (req, res) => {
+  try {
+    const thePlaylists = await playlistsData.getAllPlaylists();
+    res.json(thePlaylists);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
   }
 });
 
