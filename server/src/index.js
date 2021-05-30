@@ -8,6 +8,7 @@ import {authMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
 import playlistService from './service/playlist-service.js';
+import playlistsData from './data/playlists.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
@@ -85,5 +86,29 @@ app.post('/playlist', authMiddleware, async (req, res) => {
   }
 });
 
+app.get('/playlists', async (req, res) => {
+  try {
+    const thePlaylists = await playlistsData.getAllPlaylists();
+    res.json(thePlaylists);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+app.get('/playlists/:id', async (req, res) => {
+  try {
+    const playlistId = +req.params.id;
+    const playlist = await playlistsData.getPlaylistById(playlistId);
+    const filteredPlaylist = playlist.filter((t) => t.hasOwnProperty('playlist_name'));
+    console.log(filteredPlaylist);
+    res.json(filteredPlaylist);
+  } catch (error) {
+    return res.status(404).json({
+      error: error.message,
+    });
+  }
+});
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
