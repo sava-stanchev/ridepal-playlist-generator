@@ -97,5 +97,18 @@ app.get('/playlists', async (req, res) => {
   }
 });
 
+app.get('/playlists/:id', async (req, res) => {
+  try {
+    const playlistId = +req.params.id;
+    const playlist = await playlistsData.getPlaylistById(playlistId);
+    const filteredPlaylist = playlist.filter((t) => t.hasOwnProperty('playlist_name'));
+    console.log(filteredPlaylist);
+    res.json(filteredPlaylist);
+  } catch (error) {
+    return res.status(404).json({
+      error: error.message,
+    });
+  }
+});
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));

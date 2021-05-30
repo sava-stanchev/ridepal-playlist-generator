@@ -1,6 +1,7 @@
-import { HOST } from '../common/constants.js';
+import {HOST} from '../common/constants.js';
 import {useEffect, useState} from 'react';
 import ReactPaginate from "react-paginate";
+import {useHistory} from "react-router-dom";
 
 const StartPage = () => {
   const [playlists, setPlaylists] = useState([]);
@@ -48,6 +49,8 @@ const StartPage = () => {
     }
   }
 
+  const history = useHistory();
+
   const displayPlaylists = foundPlaylists
   .slice(pagesVisited, pagesVisited + playlistsPerPage)
   .map((playlist) => {
@@ -56,15 +59,15 @@ const StartPage = () => {
         <div className="cover">
           <div className="cover-text">
             <h1 className="cover-title">{playlist.playlist_name}</h1>
-            <h4 className="cover-subtitle">{playlist.duration}</h4>
+            <h4 className="cover-subtitle">{Math.round(playlist.duration/60)} min.</h4>
           </div>
           <div className="view-btn-wrapper">
-            <button className="view-btn">Details</button>
+            <button className="view-btn" onClick = {() => history.push(`/playlists/${playlist.playlists_id}`)}>Details</button>
           </div>
         </div>
         <div className="description">
-          <h1 className="pl-name">{playlist.rank}</h1>
-          <p className="pl-about">{playlist.created_on}, {playlist.created_by}</p>
+          <h1 className="pl-name">Rank: {playlist.rank}</h1>
+          <p className="pl-about">Created: {new Date(playlist.created_on).toLocaleDateString("en-US")} by {playlist.created_by}</p>
         </div>
       </article>
     );

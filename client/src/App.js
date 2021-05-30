@@ -34,7 +34,7 @@ const App = () => {
             <Route path="/register" exact component={Register} />
             <Route path="/generate-route" exact component={(props) => <GenerateRoute {...props} setPoints={setPoints}/>} />
             <Route path="/generate-playlist" exact component={(props) => <GeneratePlaylist {...props} points={points}/>} />
-            <Route path="/playlist" component={ViewPlaylist} />
+            <Route path="/playlists/:id" exact component={ViewPlaylist} />
           </Switch>
         </AuthContext.Provider>
       </BrowserRouter>
