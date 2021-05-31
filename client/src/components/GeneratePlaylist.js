@@ -20,18 +20,18 @@ const GeneratePlaylist = ({points}) => {
   };
 
   const updateGenres = (prop, value) => {
-    const a = Number(sliderJazz)
+    const sumOfSliders = Number(sliderJazz)
       + Number(sliderRock)
       + Number(sliderBlues)
       + Number(sliderDisco)
       + Number(sliderPop) 
       + Number(value)
-      - playlistData.genres[prop.toLowerCase()];
-      if (a > 100) {
+      - playlistData.genres.filter(g => g.name === prop.toLowerCase())[0].duration;
+      if (sumOfSliders > 100) {
         return;
       }
-      setTotalDuration(a);
-
+      setTotalDuration(sumOfSliders);
+      
     switch (prop) {
       case 'Jazz':
         setSliderJazz(value);
@@ -53,15 +53,16 @@ const GeneratePlaylist = ({points}) => {
     }
   }
 
-  const playlistData= {
+  
+  const playlistData = {
     playlistName: playlistName.playlistName,
-    genres: {
-      jazz: sliderJazz,
-      rock: sliderRock,
-      blues: sliderBlues,
-      disco: sliderDisco,
-      pop: sliderPop,
-    },
+    genres: [
+      {name: 'jazz', duration: sliderJazz},
+      {name: 'rock', duration: sliderRock},
+      {name: 'blues', duration: sliderBlues},
+      {name: 'disco', duration: sliderDisco},
+      {name: 'pop', duration: sliderPop},
+    ],
     points: points,
     repeatArtist: repeatArtists,
   };
@@ -86,7 +87,7 @@ const GeneratePlaylist = ({points}) => {
     .then(() => routeChange())
     .catch(console.error())
   };
-
+  console.log(playlistData.genres);
   return(
     <section className="join-login-main-section">
       <h1 className="join-login-text">
