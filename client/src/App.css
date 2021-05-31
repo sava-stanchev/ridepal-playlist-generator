@@ -227,6 +227,25 @@ body {
   padding: 0.5rem 1rem;
   border-radius: .5rem;
   text-decoration: none;
+  font-size: 1rem;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  bottom: 1rem;
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: 
+    transform 320ms,
+    opacity 320ms;
+}
+
+.delete-btn, .edit-btn {
+  color: white;
+  background-color: transparent;
+  padding: 0 0;
+  margin-left: 1rem;
+  border-radius: .5rem;
+  text-decoration: none;
   font-size: .9rem;
   outline: none;
   border: none;
@@ -240,6 +259,16 @@ body {
 }
 
 .card:hover .view-btn {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.card:hover .delete-btn {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.card:hover .edit-btn {
   transform: translateY(0);
   opacity: 1;
 }

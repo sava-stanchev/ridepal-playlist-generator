@@ -2,6 +2,8 @@ import {HOST} from '../common/constants.js';
 import {useEffect, useState} from 'react';
 import ReactPaginate from "react-paginate";
 import {useHistory} from "react-router-dom";
+import {FaTrashAlt} from "react-icons/fa";
+import {FaEdit} from "react-icons/fa";
 
 const StartPage = () => {
   const [playlists, setPlaylists] = useState([]);
@@ -85,6 +87,8 @@ const StartPage = () => {
           </div>
           <div className="view-btn-wrapper">
             <button className="view-btn" onClick = {() => history.push(`/playlists/${playlist.playlists_id}`)}>Tracklist</button>
+            <button className="edit-btn"><FaEdit/></button>
+            <button className="delete-btn"><FaTrashAlt/></button>
           </div>
         </div>
         <div className="description">
