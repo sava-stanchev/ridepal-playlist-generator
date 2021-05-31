@@ -97,7 +97,7 @@ const StartPage = () => {
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       {/* /playlists/?rock=(null/? ? ? ? ) */}
       <section className="genre-section">
-        <button className="genre active" onClick={() => setFpl(null)}>All</button>
+        <button className="genre" onClick={() => setFpl(null)}>All</button>
         <button className="genre" onClick={() => genreFilter(129)}>Jazz</button>
         <button className="genre" onClick={() => genreFilter(132)}>Pop</button>
         <button className="genre" onClick={() => genreFilter(152)}>Rock</button>
