@@ -9,14 +9,6 @@ import genresData from '../data/genresData.js';
  * @param {Object} req
  * @return {Array} array of objects
  */
-
-// {
-//   playlistName: 'sad',
-//   genres: { jazz: '100', rock: 0, blues: 0, disco: 0, pop: 0 },
-//   points: { duration: 2397, from: 'sofia', to: 'pernik' },
-//   repeatArtist: true
-// }
-
 const playlistGenerator = async (req) => {
   let tracks = [];
   const from = req.body.points.from;
