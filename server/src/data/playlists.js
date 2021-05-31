@@ -94,6 +94,13 @@ const getHash = async (hash) => {
   return result[0];
 };
 
+const deletePlaylist = async (id) => {
+  const sql = `
+    UPDATE playlists SET playlists.is_deleted = 1
+    WHERE playlists.playlists_id = ?
+  `;
+  return await pool.query(sql, [id]);
+};
 
 export default {
   getPlaylistById,
@@ -102,4 +109,5 @@ export default {
   setPlaylistTrackMap,
   setPlaylistGenreMap,
   getHash,
+  deletePlaylist,
 };
