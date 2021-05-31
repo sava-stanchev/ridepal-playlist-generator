@@ -16,7 +16,7 @@ const StartPage = () => {
 
   const playlistsPerPage = 6;
   const pagesVisited = pageNumber * playlistsPerPage;
-  // reduce((acc, pl) => acc.some(el => el.playlists_id === pl.playlists_id)?acc:[...acc, pl],[])
+  
   const reducedPlaylists = playlists.reduce((acc, pl) => acc.some(el => el.playlists_id === pl.playlists_id)?acc:[...acc, pl],[]);
   useEffect(() => {
     setLoading(true);
@@ -33,7 +33,7 @@ const StartPage = () => {
     setFilteredPlaylists(reducedPlaylists.filter(playlist => {return playlist.playlist_name.toLowerCase().includes(search.toLowerCase())
       })
     );
-    setDurations(reducedPlaylists.map(track => track.duration).reduce((acc, d) => acc.includes(d)?acc:[...acc, d], []));
+    setDurations(reducedPlaylists.map(track => track.duration).reduce((acc, d) => acc.includes(d)?acc:[...acc, d], []).map(Number).sort((a,b) => a-b));
 
   }, [search, playlists, fpl]);
 
@@ -68,7 +68,8 @@ const StartPage = () => {
 
   const filterByDuration = (reducedPlaylists, duration) => {
     if (playlists !== null || playlists !== undefined) {
-      setTimePl(reducedPlaylists.filter(pl => pl.duration === +(duration.split(' ')[0].toString())))
+      console.log(duration);
+      setTimePl(reducedPlaylists.filter(pl => +pl.duration < duration.split(' ')[0]*60))
     }
   };
 
@@ -114,10 +115,10 @@ const StartPage = () => {
         {/* show only when user is logedin */}
         <button className="genre" onClick={() => myPlaylists()}>My playlists</button>
         <div>
-          <label for="cars">Select by total duration:</label>
+          <label for="duration">Select by total duration:</label>
           <select name="durations" id="durations" defaultValue="Choose..." onChange={e => filterByDuration(reducedPlaylists, e.target.value)}>            
             <option>Choose..</option>
-            {durations.map(d => <option>{d} sec.</option>)}
+            {durations.map(d => <option>{Math.round(d/60)} min.</option>)}
           </select>
         </div>
         <div className="boxContainer">
