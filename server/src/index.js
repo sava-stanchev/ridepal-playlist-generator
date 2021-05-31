@@ -9,6 +9,7 @@ import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
 import playlistService from './service/playlist-service.js';
 import playlistsData from './data/playlists.js';
+import {playlistGenerator} from './service/playlistServices.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
@@ -80,7 +81,7 @@ app.delete('/logout', authMiddleware, async (req, res) => {
 
 app.post('/playlist', authMiddleware, async (req, res) => {
   try {
-    const playlist = await playlistService.playlistGenerator(req);
+    const playlist = await playlistGenerator(req);
   } catch (error) {
 
   }
