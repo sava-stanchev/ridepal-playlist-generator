@@ -10,7 +10,8 @@ const StartPage = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState('');
   const [filteredPlaylists, setFilteredPlaylists] = useState([]);
-  const [fpl, setFpl] = useState(null);
+  const [fpl, setFpl] = useState(null); //filtered playlists by genre
+  const [duration, setDuration] = useState([]);
 
   const playlistsPerPage = 8;
   const pagesVisited = pageNumber * playlistsPerPage;
@@ -53,13 +54,14 @@ const StartPage = () => {
   const history = useHistory();
 
   const genreFilter = (genre) => {
-    let temp = [];
     if (playlists !== null || playlists !== undefined) {
-      temp = playlists.filter(track => track.deez_genres_id === genre);
-    }
-    console.log('filter');
-    console.log(temp);
-    setFpl(temp);
+      setFpl(playlists.filter(track => track.deez_genres_id === genre));
+    }    
+    setPageNumber(0);
+  };
+
+  const myPlaylists = () => {
+
   };
 
   const displayPlaylists = foundPlaylists
@@ -101,7 +103,8 @@ const StartPage = () => {
         <button className="genre" onClick={() => genreFilter(152)}>Rock</button>
         <button className="genre" onClick={() => genreFilter(153)}>Blues</button>
         <button className="genre" onClick={() => genreFilter(168)}>Disco</button>
-        <button className="genre">Genre 6</button>
+        {/* show only when user is logedin */}
+        <button className="genre" onClick={() => myPlaylists()}>My playlists</button>
         <div className="boxContainer">
           <table className = "elementsContainer">
             <tbody><tr>
