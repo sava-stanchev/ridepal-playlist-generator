@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useHistory } from 'react-router-dom';
-import { HOST } from '../common/constants.js';
+import {useState} from "react";
+import {useHistory} from 'react-router-dom';
+import {HOST} from '../common/constants.js';
 
 const GeneratePlaylist = ({points}) => {
   const [sliderJazz, setSliderJazz] = useState(0);
@@ -68,7 +68,7 @@ const GeneratePlaylist = ({points}) => {
 
   const history = useHistory();
   const routeChange = () =>{ 
-    const path = `/playlist`; 
+    const path = `/home`; 
     history.push(path);
   };
 
@@ -83,9 +83,8 @@ const GeneratePlaylist = ({points}) => {
     })
     .then(res => res.json())
     .then(data => console.log(data))
-    .then()
+    .then(() => routeChange())
     .catch(console.error())
-
   };
 
   return(
@@ -146,11 +145,15 @@ const GeneratePlaylist = ({points}) => {
             {
               totalDuration < 100
               ?
-              <div>
-                <p>Total percentage must be 100</p>
-              </div>
+              <>
+              <p className="reminderMsg" style={{color: 'red'}}>* total of percentages must equal 100</p>
+              <button type="submit" className="btn" disabled="true" onClick={() => generatePlaylist(playlistData)}>Generate Playlist</button>
+              </>
               :
+              <>
+              <p className="reminderMsg">* total of percentages must equal 100</p>
               <button type="submit" className="btn" onClick={() => generatePlaylist(playlistData)}>Generate Playlist</button>
+              </>
             }
           </>
         </div>

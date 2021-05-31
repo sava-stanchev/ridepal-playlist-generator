@@ -13,7 +13,7 @@ const StartPage = () => {
   const [fpl, setFpl] = useState(null); //filtered playlists by genre
   const [duration, setDuration] = useState([]);
 
-  const playlistsPerPage = 8;
+  const playlistsPerPage = 6;
   const pagesVisited = pageNumber * playlistsPerPage;
 
   useEffect(() => {

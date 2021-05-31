@@ -127,7 +127,7 @@ body {
 .input-group input {
   outline: none;
   background: none;
-  border: 1px solid #2E3852;
+  border: 1px solid #374669;
   font-size: 1em;
   padding: .5em;
   color: inherit;
@@ -153,14 +153,14 @@ body {
 
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 286px);
+  grid-template-columns: repeat(auto-fill, 346px);
   justify-content: center;
   grid-gap: 40px;
   padding-bottom: 2rem;
 }
 
 .card {
-  width: 286px;
+  width: 346px;
   padding: 15px;
   background: #202027;
   border-radius: 0.5rem;
@@ -172,8 +172,8 @@ body {
 }
 
 .cover {
-  width: 256px;
-  height: 226px;
+  width: 316px;
+  height: 166px;
   position: relative;
   background: linear-gradient(#3A56B0, #BA3A81);
   box-shadow: 
@@ -205,13 +205,14 @@ body {
 }
 
 .cover-title {
-  font-size: 2.4rem;
+  font-size: 1.3rem;
 }
 
 .cover-subtitle {
   text-transform: uppercase;
   letter-spacing: 3px;
   order: 1;
+  font-size: 1rem;
 }
 
 .view-btn-wrapper {
@@ -440,6 +441,7 @@ body {
 }
 
 .genres-list {
+  margin-top: -0.5rem;
   border-collapse: collapse;
   background: #202027;
   margin-bottom: 1rem;
@@ -457,6 +459,9 @@ body {
 .percent-col {
   padding-left: 1rem;
   padding-bottom: 0.65rem;
+  display: table-cell;
+  width: 62px;
+  min-width: 62px;
 }
 
 .slider-col {
@@ -473,7 +478,7 @@ body {
 
 .checkbox-container {
   margin-top: -0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: -0.3rem;
   display: inline;
 }
 
@@ -544,4 +549,13 @@ body {
 .paginationActive a {
   color: black !important;
   background-color: #E7E7E7;
+}
+
+.reminderMsg {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
