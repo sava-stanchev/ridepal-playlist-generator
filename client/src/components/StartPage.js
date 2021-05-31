@@ -74,6 +74,19 @@ const StartPage = () => {
       setTimePl(reducedPlaylists.filter(pl => +pl.duration < duration.split(' ')[0]*60))
     }
   };
+  
+  const deletePlaylist = (id) => {
+    fetch(`${HOST}/playlists/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+    })
+    .then((res) => res.json())
+    .then(data => setPlaylists(playlists.filter(p => p.playlists_id !== data.playlists_id)))
+    .catch((error) => setError(error.message));
+  };
 
   const displayPlaylists = foundPlaylists
   .slice(pagesVisited, pagesVisited + playlistsPerPage)
@@ -88,7 +101,7 @@ const StartPage = () => {
           <div className="view-btn-wrapper">
             <button className="view-btn" onClick = {() => history.push(`/playlists/${playlist.playlists_id}`)}>Tracklist</button>
             <button className="edit-btn"><FaEdit/></button>
-            <button className="delete-btn"><FaTrashAlt/></button>
+            <button className="delete-btn" onClick={() => deletePlaylist(playlist.playlists_id)}><FaTrashAlt/></button>
           </div>
         </div>
         <div className="description">
