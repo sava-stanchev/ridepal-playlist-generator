@@ -11,7 +11,7 @@ const StartPage = () => {
   const [search, setSearch] = useState('');
   const [filteredPlaylists, setFilteredPlaylists] = useState([]);
 
-  const playlistsPerPage = 8;
+  const playlistsPerPage = 6;
   const pagesVisited = pageNumber * playlistsPerPage;
 
   useEffect(() => {
