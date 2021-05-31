@@ -10,6 +10,7 @@ const StartPage = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState('');
   const [filteredPlaylists, setFilteredPlaylists] = useState([]);
+  const [fpl, setFpl] = useState(null);
 
   const playlistsPerPage = 8;
   const pagesVisited = pageNumber * playlistsPerPage;
@@ -33,7 +34,7 @@ const StartPage = () => {
     )
   }, [search, playlists]);
 
-  const foundPlaylists = filteredPlaylists.slice();
+  const foundPlaylists = fpl || filteredPlaylists.slice();
 
   const showError = () => {
     if (error) {
@@ -50,6 +51,16 @@ const StartPage = () => {
   }
 
   const history = useHistory();
+
+  const genreFilter = (genre) => {
+    let temp = [];
+    if (playlists !== null || playlists !== undefined) {
+      temp = playlists.filter(track => track.deez_genres_id === genre);
+    }
+    console.log('filter');
+    console.log(temp);
+    setFpl(temp);
+  };
 
   const displayPlaylists = foundPlaylists
   .slice(pagesVisited, pagesVisited + playlistsPerPage)
@@ -77,19 +88,19 @@ const StartPage = () => {
   const changePage = ({selected}) => {
     setPageNumber(selected);
   };
-    
+  
   return(
     <>
     <div className="genres">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       {/* /playlists/?rock=(null/? ? ? ? ) */}
       <section className="genre-section">
-        <button className="genre active">All</button>
-        <button className="genre">Genre 1</button>
-        <button className="genre">Genre 2</button>
-        <button className="genre">Genre 3</button>
-        <button className="genre">Genre 4</button>
-        <button className="genre">Genre 5</button>
+        <button className="genre active" onClick={() => setFpl(null)}>All</button>
+        <button className="genre" onClick={() => genreFilter(129)}>Jazz</button>
+        <button className="genre" onClick={() => genreFilter(132)}>Pop</button>
+        <button className="genre" onClick={() => genreFilter(152)}>Rock</button>
+        <button className="genre" onClick={() => genreFilter(153)}>Blues</button>
+        <button className="genre" onClick={() => genreFilter(168)}>Disco</button>
         <button className="genre">Genre 6</button>
         <div className="boxContainer">
           <table className = "elementsContainer">

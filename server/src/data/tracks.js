@@ -7,9 +7,6 @@ import pool from './pool.js';
  * @return {object} tracks
  */
 const getTracksByGenre = async (genre, duration) => {
-  console.log('track sql');
-  console.log(duration);
-  console.log(genre);
   const sql = `
     CALL rand_track(?, ?)
   `;
@@ -27,9 +24,6 @@ const getTracksByGenre = async (genre, duration) => {
  * @return {object} tracks
  */
 const getTracksByGenreNotRepeatArtist = async (genre, duration) => {
-  console.log('track sql');
-  console.log(duration);
-  console.log(genre);
   const sql = `
     CALL rand_track_not_rep_artist(?, ?)
   `;
