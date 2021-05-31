@@ -147,7 +147,7 @@ const GeneratePlaylist = ({points}) => {
               totalDuration < 100
               ?
               <div>
-                <p>Total pers mast be 100 %</p>
+                <p>Total percentage must be 100</p>
               </div>
               :
               <button type="submit" className="btn" onClick={() => generatePlaylist(playlistData)}>Generate Playlist</button>
