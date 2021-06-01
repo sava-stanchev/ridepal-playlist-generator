@@ -103,6 +103,18 @@ const deletePlaylist = async (id) => {
   return await pool.query(sql, [id]);
 };
 
+const updatePlaylistName = async (playlist) => {
+  const {playlists_id, playlist_name} = playlist;
+
+  const sql = `
+    UPDATE playlists AS p SET
+    p.playlist_name = ?
+    WHERE p.playlists_id = ?
+  `;
+
+  return await pool.query(sql, [playlist_name, playlists_id]);
+};
+
 export default {
   getPlaylistById,
   getAllPlaylists,
@@ -111,4 +123,5 @@ export default {
   setPlaylistGenreMap,
   getHash,
   deletePlaylist,
+  updatePlaylistName,
 };

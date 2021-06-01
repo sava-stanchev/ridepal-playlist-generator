@@ -84,4 +84,21 @@ export const playlistGenerator = async (req) => {
           }));
 };
 
+const updatePlaylist = async (id, data) => {
+  const playlist = await playlistData.getPlaylistById(id);
+
+  if (!playlist) {
+    return null;
+  }
+
+  const updated = {...playlist, ...data};
+  const _ = await playlistData.updatePlaylistName(updated);
+
+  return updated;
+};
+
+export default {
+  updatePlaylist,
+  playlistGenerator,
+};
 

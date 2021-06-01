@@ -7,9 +7,8 @@ import userService from './service/user-service.js';
 import {authMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
-import playlistService from './service/playlist-service.js';
 import playlistsData from './data/playlists.js';
-import {playlistGenerator} from './service/playlistServices.js';
+import playlistServices from './service/playlistServices.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
@@ -81,7 +80,7 @@ app.delete('/logout', authMiddleware, async (req, res) => {
 
 app.post('/playlist', authMiddleware, async (req, res) => {
   try {
-    const playlist = await playlistGenerator(req);
+    const playlist = await playlistServices.playlistGenerator(req);
   } catch (error) {
 
   }
@@ -123,6 +122,29 @@ app.delete('/playlists/:id', async (req, res) => {
     }
     await playlistsData.deletePlaylist(+req.params.id);
     res.status(200).send(playlist);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+app.patch('/playlists/:id', async (req, res) => {
+  const playlistId = req.params.id;
+  const updateData = req.body;
+  try {
+    const playlist = await playlistsData.getPlaylistById(+playlistId);
+    if (!playlist) {
+      res.status(404).send({
+        message: 'Playlist not found!',
+      });
+    }
+
+    const playlistUpdated = await playlistServices.updatePlaylist(+playlistId, updateData);
+
+    if (playlistUpdated) {
+      res.send(await playlistsData.getPlaylistById(+playlistId));
+    }
   } catch (error) {
     return res.status(400).json({
       error: error.message,
