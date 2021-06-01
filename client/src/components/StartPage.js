@@ -84,7 +84,7 @@ const StartPage = () => {
       },
     })
     .then((res) => res.json())
-    .then(data => setPlaylists(playlists.filter(p => p.playlists_id !== data.playlists_id)))
+    .then(() => setPlaylists(playlists.filter(p => p.playlists_id !== id)))
     .catch((error) => setError(error.message));
   };
 
