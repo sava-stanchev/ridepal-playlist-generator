@@ -11,7 +11,7 @@ const DATABASE = 'playlist_generator';
 const NB_GENRES = 2000;
 const TIME = 150;
 // const NB_ARTISTS = 10;
-const NB_ALBUMS = 50;
+const NB_ALBUMS = 100;
 // const NB_TRACKS = 3000;
 
 

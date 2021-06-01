@@ -12,6 +12,7 @@ const NavBar = () => {
       isLoggedIn: false,
     });
   };
+  console.log(auth.user);
 
 
   return(
@@ -21,8 +22,19 @@ const NavBar = () => {
           <img src={brandLogo} alt="logo"/>
           <div href="#home" className="brand-logo-name">RidePal</div>
         </a>
-      </Link>  
+      </Link>
       <nav className="main-nav">
+        {
+          auth.isLoggedIn && auth.user.user_role === 1
+          ?
+            <ul>
+              <Link to="/users">
+                <li><a href="#users">Users</a></li>
+              </Link>
+            </ul>
+            :
+            null
+        }
         {
           auth.isLoggedIn
           ?

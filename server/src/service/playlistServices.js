@@ -19,26 +19,63 @@ export const playlistGenerator = async (req) => {
       .reduce((acc, g) => {
         const a = {[g.name]: g.duration}; return {...acc, ...a};
       }, {});
-  const tracks = await tracksData.getTracks(genresName);
+
+  const result = await tracksData.getTracks(genresName);
+  let tracksAll = result.filter(t => t.hasOwnProperty('tracks_id'));
   const keys = Object.keys(genresName);
 
-  const generateTracksList = (tracks, genres) => {
-    console.log('Hi');
-    const result = genres.map(g => {
+
+  // console.log(tracksAll[tracksAll.length-1]);
+  if (req.body.repeatArtist === false) {
+    const temp = [...tracksAll];
+    console.log(temp[temp.length-1]);
+    console.log(tracksAll[tracksAll.length-1]);
+    const artists = [];
+    const tempFiltered = temp.reduce((acc, tr) => {
+      if (artists.includes(t.deez_artists_id)) {
+        return acc;
+      }
+      artists.push(t.deez_artists_id);
+      return [...acc, t];
+    });
+    tracksAll = [...tempFiltered];
+  };
+  // console.log(tracksAll);
+  // console.log(tracksAll.pop());
+
+  // const temp = [...tracksAll];
+  // // console.log(temp);
+  // const tempReduced = temp.reduce((acc, t, _, artistsArr = []) => {
+  //   if (artistsArr.includes(t.deez_artists_id)) {
+  //     return acc;
+  //   }
+  //   artistsArr.push(t.deez_artists_id);
+  //   return [...acc, t];
+  // }, []);
+
+  // tracksAll = [...tempReduced];
+
+  const generateTracksList = (tr, gen) => {
+    const result = gen.map(g => {
       let totalDuration = 0;
       const temp = [];
-      let tracksFiltered = tracks.filter(t => t.genre.toLowerCase() === g.name);
-      while (totalDuration < g.duration*0.95) {
+      console.log(g.name);
+      let tracksFiltered = tr.filter(t => t.genre.toLowerCase() === g.name);
+      while (totalDuration < g.duration) {
         temp.push(tracksFiltered.pop());
         totalDuration = temp.reduce((acc, t) => acc+=t.duration, 0);
         tracksFiltered = tracksFiltered.filter(t => t.duration < g.duration*1.05 - totalDuration);
+        // console.log(tracksFiltered);
       }
+      console.log('temp');
+      console.log(temp);
       return temp;
     });
     return result;
   };
 
-  const tracksList = generateTracksList(tracks, genresDuration).reduce((acc, arr) => [...acc, ...arr], []);
+
+  const tracksList = generateTracksList(tracksAll, genresDuration).reduce((acc, arr) => [...acc, ...arr], []);
   const tracksId = tracksList.reduce((acc, t) => acc + t.tracks_id, ''); // result string
   console.log(tracksId);
   const hash = objectHash(tracksId + req.user.user_id + from.toLowerCase() + to.toLowerCase());
@@ -46,6 +83,7 @@ export const playlistGenerator = async (req) => {
   if (is_hashExist !== undefined) {
     return console.log('playlist is repeated');
   }
+
   const playlistDuration = tracksList.reduce((acc, t) => acc+t.duration, 0);
   const averagePlaylistRank = Math.round(tracksList.reduce((acc, t) => acc+t.rank, 0)/tracksList.length);
   const playlistDataObject = {
