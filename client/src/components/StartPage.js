@@ -121,7 +121,6 @@ const StartPage = () => {
     <>
     <div className="genres">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-      {/* /playlists/?rock=(null/? ? ? ? ) */}
       <section className="genre-section">
         <button className="genre active" onClick={() => {setFpl(null); setTimePl(null);}}>All</button>
         <button className="genre" onClick={() => {genreFilter(129); setTimePl(null)}}>Jazz</button>
@@ -132,7 +131,7 @@ const StartPage = () => {
         {/* show only when user is logedin */}
         <button className="genre" onClick={() => myPlaylists()}>My playlists</button>
         <div>
-          <label for="duration">Select by total duration:</label>
+          <label for="duration">Duration: </label>
           <select name="durations" id="durations" defaultValue="Choose..." onChange={e => filterByDuration(reducedPlaylists, e.target.value)}>            
             <option>Choose..</option>
             {durations.map(d => <option>{Math.round(d/60)} min.</option>)}

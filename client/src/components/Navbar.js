@@ -24,38 +24,40 @@ const NavBar = () => {
         </a>
       </Link>
       <nav className="main-nav">
+      <ul>
         {
           auth.isLoggedIn && auth.user.user_role === 1
           ?
-            <ul>
+            
               <Link to="/users">
                 <li><a href="#users">Users</a></li>
               </Link>
-            </ul>
+            
             :
             null
         }
         {
           auth.isLoggedIn
           ?
-          <ul>
+          <>
             <Link to="/generate-route">
               <li><a href="#generate-route">Generate</a></li>
             </Link>
             <Link to="/home">
               <li><a href="#logout" onClick={() => logout()}>Logout</a></li>
             </Link>
-          </ul>
+          </>
           :
-          <ul>
+          <>
             <Link to="/login">
               <li><a href="#login">Login</a></li>
             </Link>
             <Link to="/register">
               <li><a href="#register">Register</a></li>
             </Link>
-          </ul>
+          </>
         }
+        </ul>
       </nav>
     </header>
   )
