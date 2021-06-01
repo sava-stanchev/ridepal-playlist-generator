@@ -19,7 +19,7 @@ const getTracksByGenre = async (genre, duration) => {
 
 const getTracks = async ({jazz, rock, blues, disco, pop}) => {
   const sql = `
-  select t.tracks_id, t.deez_tracks_id, t.track_title, t.duration, t.rank, a.artist_name as artist, g.genre from tracks as t
+  select t.tracks_id, t.deez_tracks_id, t.track_title, t.duration, t.rank, a.deez_artists_id, a.artist_name as artist, g.genre from tracks as t
   join genres as g
   on g.deez_genres_id = t.genre
   join artists as a
