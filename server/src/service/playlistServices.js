@@ -27,10 +27,11 @@ export const playlistGenerator = async (req) => {
     const result = genres.map(g => {
       let totalDuration = 0;
       const temp = [];
-      const tracksFiltered = tracks.filter(t => t.genre.toLowerCase() === g.name);
+      let tracksFiltered = tracks.filter(t => t.genre.toLowerCase() === g.name);
       while (totalDuration < g.duration*0.95) {
         temp.push(tracksFiltered.pop());
         totalDuration = temp.reduce((acc, t) => acc+=t.duration, 0);
+        tracksFiltered = tracksFiltered.filter(t => t.duration < g.duration*1.05 - totalDuration);
       }
       return temp;
     });
