@@ -24,36 +24,18 @@ export const playlistGenerator = async (req) => {
   let tracksAll = result.filter(t => t.hasOwnProperty('tracks_id'));
   const keys = Object.keys(genresName);
 
-
-  // console.log(tracksAll[tracksAll.length-1]);
   if (req.body.repeatArtist === false) {
     const temp = [...tracksAll];
-    console.log(temp[temp.length-1]);
-    console.log(tracksAll[tracksAll.length-1]);
     const artists = [];
-    const tempFiltered = temp.reduce((acc, tr) => {
-      if (artists.includes(t.deez_artists_id)) {
-        return acc;
+    temp.forEach(tr => {
+      if (artists.includes(tr.deez_artists_id)) {
+        return null;
       }
-      artists.push(t.deez_artists_id);
-      return [...acc, t];
+      artists.push(tr.deez_artists_id);
+      return tr;
     });
-    tracksAll = [...tempFiltered];
+    tracksAll = [...temp];
   };
-  // console.log(tracksAll);
-  // console.log(tracksAll.pop());
-
-  // const temp = [...tracksAll];
-  // // console.log(temp);
-  // const tempReduced = temp.reduce((acc, t, _, artistsArr = []) => {
-  //   if (artistsArr.includes(t.deez_artists_id)) {
-  //     return acc;
-  //   }
-  //   artistsArr.push(t.deez_artists_id);
-  //   return [...acc, t];
-  // }, []);
-
-  // tracksAll = [...tempReduced];
 
   const generateTracksList = (tr, gen) => {
     const result = gen.map(g => {
@@ -65,10 +47,7 @@ export const playlistGenerator = async (req) => {
         temp.push(tracksFiltered.pop());
         totalDuration = temp.reduce((acc, t) => acc+=t.duration, 0);
         tracksFiltered = tracksFiltered.filter(t => t.duration < g.duration*1.05 - totalDuration);
-        // console.log(tracksFiltered);
       }
-      console.log('temp');
-      console.log(temp);
       return temp;
     });
     return result;
@@ -77,7 +56,6 @@ export const playlistGenerator = async (req) => {
 
   const tracksList = generateTracksList(tracksAll, genresDuration).reduce((acc, arr) => [...acc, ...arr], []);
   const tracksId = tracksList.reduce((acc, t) => acc + t.tracks_id, ''); // result string
-  console.log(tracksId);
   const hash = objectHash(tracksId + req.user.user_id + from.toLowerCase() + to.toLowerCase());
   const is_hashExist = await playlistData.getHash(hash);
   if (is_hashExist !== undefined) {
@@ -94,8 +72,6 @@ export const playlistGenerator = async (req) => {
     hash: hash,
   };
   const newPlaylist = await playlistData.setPlaylist(playlistDataObject);
-  console.log(newPlaylist);
-  console.log(tracksList);
   await Promise.all(
       tracksList.map( async track => playlistData.setPlaylistTrackMap(newPlaylist.playlists_id, track.deez_tracks_id)));
   await Promise.all(
@@ -106,12 +82,6 @@ export const playlistGenerator = async (req) => {
               await playlistData.setPlaylistGenreMap(newPlaylist.playlists_id, genreId.deez_genres_id);
             };
           }));
-
-
-
-  // console.log(from);
-  // console.log(to);
-  // console.log(playlistName);
 };
 
 
