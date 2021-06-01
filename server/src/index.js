@@ -112,4 +112,17 @@ app.get('/playlists/:id', async (req, res) => {
   }
 });
 
+app.delete('playlists/:id', async (req, res) => {
+  try {
+    await playlistsData.deletePlaylist(+req.params.id);
+    res.json({
+      message: `Playlist deleted`,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
