@@ -50,14 +50,15 @@ const setPlaylistGenreMap = async (playlist, genre) => {
 
 const getAllPlaylists = async () => {
   return await pool.query(`
-    SELECT p.playlists_id, p.playlist_name, p.created_on, p.duration, u.username AS created_by, p.rank, g.deez_genres_id, g.genre 
+    SELECT p.playlists_id, p.playlist_name, p.created_on, p.duration, u.username AS created_by, p.rank, g.deez_genres_id, g.genre, p.is_deleted
     FROM playlists p
     JOIN users AS u 
     ON p.created_by = u.users_id
     JOIN playlist_genre_map AS pgm
     ON p.playlists_id = pgm.playlist
     JOIN genres AS g
-    ON pgm.genre = g.deez_genres_id; 
+    ON pgm.genre = g.deez_genres_id
+    WHERE p.is_deleted != 1;
   `);
 };
 

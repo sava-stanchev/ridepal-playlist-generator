@@ -112,12 +112,17 @@ app.get('/playlists/:id', async (req, res) => {
   }
 });
 
-app.delete('playlists/:id', async (req, res) => {
+app.delete('/playlists/:id', async (req, res) => {
+  console.log(+req.params.id);
   try {
+    const playlist = await playlistsData.getPlaylistById(+req.params.id);
+    if (!playlist || playlist.is_deleted === 1) {
+      return res.status(400).json({
+        message: 'Playlist not found!',
+      });
+    }
     await playlistsData.deletePlaylist(+req.params.id);
-    res.json({
-      message: `Playlist deleted`,
-    });
+    res.status(200).send(playlist);
   } catch (error) {
     return res.status(400).json({
       error: error.message,
