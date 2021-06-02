@@ -1,25 +1,29 @@
 import {HOST} from '../common/constants.js';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import ReactPaginate from "react-paginate";
 import {useHistory} from "react-router-dom";
-import {FaTrashAlt} from "react-icons/fa";
-import {FaEdit} from "react-icons/fa";
+import {FaTrashAlt, FaEdit} from "react-icons/fa";
+import AuthContext from '../providers/auth-context';
 
 const StartPage = () => {
+  const auth = useContext(AuthContext);
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState('');
   const [filteredPlaylists, setFilteredPlaylists] = useState([]);
-  const [fpl, setFpl] = useState(null); //filtered playlists by genre
+  const [filteredGenres, setFilteredGenres] = useState(null);
   const [timePl, setTimePl] = useState(null);
   const [durations, setDurations] = useState([]);
+  const [myPlaylists, setMyPlaylists] = useState(null);
 
   const playlistsPerPage = 6;
   const pagesVisited = pageNumber * playlistsPerPage;
   
-  const reducedPlaylists = playlists.reduce((acc, pl) => acc.some(el => el.playlists_id === pl.playlists_id)?acc:[...acc, pl],[]);
+  const reducedPlaylists = playlists.reduce((acc, pl) => acc
+  .some(el => el.playlists_id === pl.playlists_id) ? acc : [...acc, pl], []);
+
   useEffect(() => {
     setLoading(true);
     fetch(`${HOST}/playlists`, {
@@ -32,14 +36,16 @@ const StartPage = () => {
   }, []);
 
   useEffect(() => {
-    setFilteredPlaylists(reducedPlaylists.filter(playlist => {return playlist.playlist_name.toLowerCase().includes(search.toLowerCase())
-      })
-    );
-    setDurations(reducedPlaylists.map(track => track.duration).reduce((acc, d) => acc.includes(d)?acc:[...acc, d], []).map(Number).sort((a,b) => a-b));
+    setFilteredPlaylists(reducedPlaylists.filter(playlist => {
+      return playlist.playlist_name.toLowerCase().includes(search.toLowerCase())
+    }));
+    setDurations(reducedPlaylists.map(track => track.duration)
+    .reduce((acc, dur) => acc.includes(dur) ? acc : [...acc, dur], [])
+    .map(Number).sort((a, b) => a - b));
 
-  }, [search, playlists, fpl]);
+  }, [search, playlists, filteredGenres]);
 
-  const foundPlaylists = timePl || fpl || filteredPlaylists.slice();
+  let foundPlaylists = myPlaylists || timePl || filteredGenres || filteredPlaylists;
 
   const showError = () => {
     if (error) {
@@ -59,13 +65,15 @@ const StartPage = () => {
 
   const genreFilter = (genre) => {
     if (playlists !== null || playlists !== undefined) {
-      setFpl(playlists.filter(track => track.deez_genres_id === genre));
+      setFilteredGenres(playlists.filter(track => track.deez_genres_id === genre));
     }    
     setPageNumber(0);
   };
 
-  const myPlaylists = () => {
-
+  const showMyPlaylists = (reducedPlaylists) => {
+    if (playlists !== null || playlists !== undefined) {
+      setMyPlaylists(reducedPlaylists.filter(pl => pl.user_id === auth.user.users_id));
+    }
   };
 
   const filterByDuration = (reducedPlaylists, duration) => {
@@ -122,14 +130,14 @@ const StartPage = () => {
     <div className="genres">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       <section className="genre-section">
-        <button className="genre active" onClick={() => {setFpl(null); setTimePl(null);}}>All</button>
+        <button className="genre" onClick={() => {setFilteredGenres(null); setTimePl(null); setMyPlaylists(null)}}>All</button>
         <button className="genre" onClick={() => {genreFilter(129); setTimePl(null)}}>Jazz</button>
         <button className="genre" onClick={() => {genreFilter(132); setTimePl(null)}}>Pop</button>
         <button className="genre" onClick={() => {genreFilter(152); setTimePl(null)}}>Rock</button>
         <button className="genre" onClick={() => {genreFilter(153); setTimePl(null)}}>Blues</button>
         <button className="genre" onClick={() => {genreFilter(168); setTimePl(null)}}>Disco</button>
         {/* show only when user is logedin */}
-        <button className="genre" onClick={() => myPlaylists()}>My playlists</button>
+        <button className="genre" onClick={() => showMyPlaylists(reducedPlaylists)}>My playlists</button>
         <div>
           <label for="duration">Duration: </label>
           <select name="durations" id="durations" defaultValue="Choose..." onChange={e => filterByDuration(reducedPlaylists, e.target.value)}>            
