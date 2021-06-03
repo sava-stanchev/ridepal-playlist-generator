@@ -4,6 +4,7 @@ import ReactPaginate from "react-paginate";
 import {useHistory} from "react-router-dom";
 import {FaTrashAlt, FaEdit} from "react-icons/fa";
 import AuthContext from '../providers/auth-context';
+import Modal from './Modal.js';
 
 const StartPage = () => {
   const auth = useContext(AuthContext);
@@ -17,6 +18,7 @@ const StartPage = () => {
   const [timePl, setTimePl] = useState(null);
   const [durations, setDurations] = useState([]);
   const [myPlaylists, setMyPlaylists] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const playlistsPerPage = 6;
   const pagesVisited = pageNumber * playlistsPerPage;
@@ -108,7 +110,12 @@ const StartPage = () => {
           </div>
           <div className="view-btn-wrapper">
             <button className="view-btn" onClick = {() => history.push(`/playlists/${playlist.playlists_id}`)}>Tracklist</button>
-            <button className="edit-btn"><FaEdit/></button>
+            <>
+              <button className="edit-btn" onClick={() => setIsOpen(true)}><FaEdit/></button>
+              <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+                Fancy Modal
+              </Modal>
+            </>
             <button className="delete-btn" onClick={() => deletePlaylist(playlist.playlists_id)}><FaTrashAlt/></button>
           </div>
         </div>
