@@ -18,7 +18,7 @@ const createUser = async (userData) => {
   return newUser;
 };
 
-/** validate sername and password
+/** validate username and password
  *
  * @param {object}
  */
@@ -44,8 +44,19 @@ const logout = async (token) => {
   const logoutUser = await usersData.logout(token);
 };
 
+
+/**
+ *
+ * @return {Array} - list of users
+ */
+const getUsers = async () => {
+  const users = await usersData.getUsers();
+  return users;
+};
+
 export default {
   createUser,
   validateUser,
   logout,
+  getUsers,
 };

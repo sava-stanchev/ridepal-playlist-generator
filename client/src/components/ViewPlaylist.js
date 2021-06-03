@@ -43,7 +43,7 @@ const ViewPlaylist = props => {
 
   const displayTracks = playlistData.map((track) => {
     return (
-      <tr className="song">
+      <tr className="song" key={track.tracks_id}>
         <td className="song-album-cover">
           <div className="album-img">
             <img src={albumCover} alt=""/>

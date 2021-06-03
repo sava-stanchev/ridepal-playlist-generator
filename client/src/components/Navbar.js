@@ -16,7 +16,7 @@ const NavBar = () => {
   return(
     <header className="main-header">
       <Link to="/home">
-        <a href="#home" class="brand-logo">
+        <a href="#home" className="brand-logo">
           <img src={brandLogo} alt="logo"/>
           <div href="#home" className="brand-logo-name">RidePal</div>
         </a>
@@ -24,14 +24,18 @@ const NavBar = () => {
       <nav className="main-nav">
       <ul>
         {
-          auth.isLoggedIn && auth.user.user_role === 1
+          auth.isLoggedIn
           ?
-            
-              <Link to="/users">
-                <li><a href="#users">Users</a></li>
+            auth.user.user_role === 1
+              ?            
+                  <Link to="/users">
+                    <li><a href="#users">Users</a></li>
+                  </Link>
+              :  
+              <Link to="/user">
+                  <li><a href="#users">User</a></li>
               </Link>
-            
-            :
+          :
             null
         }
         {

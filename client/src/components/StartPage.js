@@ -148,7 +148,7 @@ const StartPage = () => {
         {/* show only when user is logedin */}
         <button className="genre" onClick={() => showMyPlaylists(reducedPlaylists)}>My playlists</button>
         <div>
-          <label for="duration">Duration: </label>
+          <label htmlFor="duration">Duration: </label>
           <select name="durations" id="durations" defaultValue="Choose..." onChange={e => filterByDuration(reducedPlaylists, e.target.value)}>            
             <option>Choose..</option>
             {durations.map(d => <option>{Math.round(d/60)} min.</option>)}

@@ -152,4 +152,15 @@ app.patch('/playlists/:id', async (req, res) => {
   }
 });
 
+app.get('/users', async (req, res) => {
+  try {
+    const users = await userService.getUsers();
+    res.json(users);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));

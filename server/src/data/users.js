@@ -38,6 +38,18 @@ const createUser = async (user) => {
   return createdUser;
 };
 
+/**
+ *
+ * @return {Array} - list of users
+ */
+const getUsers = async () => {
+  const sql = `
+  SELECT * FROM users
+  `;
+  const result = await pool.query(sql);
+  return result;
+};
+
 
 const logout = async (token) => {
   return await pool.query('INSERT INTO tokens (token) VALUES (?)', [token]);
@@ -46,5 +58,6 @@ const logout = async (token) => {
 export default {
   getUserByName,
   createUser,
+  getUsers,
   logout,
 };
