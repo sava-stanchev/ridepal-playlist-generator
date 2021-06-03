@@ -12,8 +12,6 @@ const NavBar = () => {
       isLoggedIn: false,
     });
   };
-  console.log(auth.user);
-
 
   return(
     <header className="main-header">
