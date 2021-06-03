@@ -1,6 +1,7 @@
 import ReactDom from 'react-dom'
 
-export default function Modal({playlist, updatePlaylistProps, updatePlaylist, open, onClose}) {
+export default function Modal({playlist, updatePlaylistProps, open, onClose}) {
+  if (!playlist) return null;
   if (!open) return null;
   console.log(playlist);
   return ReactDom.createPortal(

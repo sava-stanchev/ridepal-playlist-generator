@@ -19,6 +19,7 @@ const StartPage = () => {
   const [durations, setDurations] = useState([]);
   const [myPlaylists, setMyPlaylists] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [currentPlaylist, setCurrentPlaylist] = useState(null);
 
   const playlistsPerPage = 6;
   const pagesVisited = pageNumber * playlistsPerPage;
@@ -98,6 +99,11 @@ const StartPage = () => {
     .catch((error) => setError(error.message));
   };
 
+  const editFunction = (playlist) => {
+    setCurrentPlaylist(playlist);
+    setIsOpen(true);
+  }
+  
   const displayPlaylists = foundPlaylists
   .slice(pagesVisited, pagesVisited + playlistsPerPage)
   .map((playlist) => {
@@ -110,10 +116,7 @@ const StartPage = () => {
           </div>
           <div className="view-btn-wrapper">
             <button className="view-btn" onClick = {() => history.push(`/playlists/${playlist.playlists_id}`)}>Tracklist</button>
-            <>
-              <button className="edit-btn" onClick={() => setIsOpen(true)}><FaEdit/></button>
-              <UpdatePlaylistModal open={isOpen} onClose={() => setIsOpen(false)} playlist={playlist.playlist_name}/>
-            </>
+            <button className="edit-btn" onClick={() => editFunction(playlist)}><FaEdit/></button>
             <button className="delete-btn" onClick={() => deletePlaylist(playlist.playlists_id)}><FaTrashAlt/></button>
           </div>
         </div>
@@ -132,6 +135,7 @@ const StartPage = () => {
   
   return(
     <>
+    <UpdatePlaylistModal open={isOpen} onClose={() => setIsOpen(false)} playlist={currentPlaylist}/>
     <div className="genres">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       <section className="genre-section">
