@@ -100,7 +100,7 @@ app.get('/playlists', async (req, res) => {
 app.get('/playlists/:id', async (req, res) => {
   try {
     const playlistId = +req.params.id;
-    const playlist = await playlistsData.getPlaylistById(playlistId);
+    const playlist = await playlistsData.getTracksForPlaylistById(playlistId);
     const filteredPlaylist = playlist.filter((t) => t.hasOwnProperty('playlist_name'));
     console.log(filteredPlaylist);
     res.json(filteredPlaylist);
@@ -141,9 +141,9 @@ app.patch('/playlists/:id', async (req, res) => {
     }
 
     const playlistUpdated = await playlistServices.updatePlaylist(+playlistId, updateData);
-
+    const newPlaylist = await playlistsData.getPlaylistById(+playlistId);
     if (playlistUpdated) {
-      res.send(await playlistsData.getPlaylistById(+playlistId));
+      res.status(200).send(newPlaylist[0]);
     }
   } catch (error) {
     return res.status(400).json({

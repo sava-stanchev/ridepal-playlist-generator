@@ -2,24 +2,19 @@ import { useState } from 'react';
 import ReactDom from 'react-dom';
 import {HOST} from '../common/constants.js';
 
-export default function Modal({playlist, open, onClose}) {
+export default function Modal({playlist, open, onClose, playlists, setPlaylists}) {
   const [thePlaylist, setThePlaylist] = useState(null);
-  console.log(playlist);
+
   if (!playlist) return null;
   if (!open) return null;
 
-  console.log('first playlist');
-  console.log(thePlaylist);
-
-  const updatePlaylistProps = (prop, value) => {
-    console.log(value);
+  const updatePlaylistProperties = (prop, value) => {
     setThePlaylist({
       ...thePlaylist,
       [prop]: value,
     });
-    console.log(thePlaylist);
   };
-  
+
   const updatePlaylist = () => {
     fetch(`${HOST}/playlists/${playlist.playlists_id}`, {
       method: 'PATCH',
@@ -29,6 +24,11 @@ export default function Modal({playlist, open, onClose}) {
       body: JSON.stringify(thePlaylist),
     })
     .then((res) => res.json())
+    .then((data) => {
+      const editedPlaylist = data;
+      const newPlaylists = playlists.map(p => p.playlists_id === editedPlaylist.playlists_id ? editedPlaylist : p);
+      setPlaylists(newPlaylists);
+    })
   };
 
   const closeFunction = () => {
@@ -43,13 +43,10 @@ export default function Modal({playlist, open, onClose}) {
         <div className="input-group">
           <label>New playlist name:</label>
           <input type="text" name="playlist_name" value={thePlaylist ? thePlaylist.playlist_name : playlist.playlist_name}
-          onChange={e => updatePlaylistProps('playlist_name', e.target.value)} />
+          onChange={e => updatePlaylistProperties('playlist_name', e.target.value)} />
         </div>
         <div className="input-group">
-          <button type="submit" className="btn" onClick={closeFunction}>Update</button>
-        </div>
-        <div className="input-group">
-          <button type="submit" className="btn" onClick={onClose}>Back</button>
+          <button className="btn" onClick={closeFunction}>Update</button>
         </div>
       </div>
     </>,
