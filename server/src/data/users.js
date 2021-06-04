@@ -44,7 +44,10 @@ const createUser = async (user) => {
  */
 const getUsers = async () => {
   const sql = `
-  SELECT * FROM users
+    SELECT u.users_id, u.username, u.password, u.email, r.role, u.is_deleted
+    FROM users AS u
+    JOIN roles AS r
+    ON u.user_role = r.roles_id
   `;
   const result = await pool.query(sql);
   return result;
