@@ -40,6 +40,7 @@ export default function Modal({playlist, open, onClose, playlists, setPlaylists}
     <>
       <div className="overlay-styles" />
       <div className="modal-styles">
+      <button className="close-button" onClick={onClose}>&times;</button>
         <div className="input-group">
           <label>New playlist name:</label>
           <input type="text" name="playlist_name" value={thePlaylist ? thePlaylist.playlist_name : playlist.playlist_name}

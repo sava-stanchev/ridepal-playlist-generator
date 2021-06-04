@@ -595,6 +595,7 @@ button:disabled {
   transform: translate(-50%, -50%);
   background-color: #202027;
   padding: 50px;
+  padding-top: 27px;
   z-index: 1000;
 }
 
@@ -606,4 +607,18 @@ button:disabled {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
+}
+
+.close-button {
+  position: relative;
+  left: 17rem;
+  top: -1rem;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  color: white;
+  font-size: 1.5rem;
+  margin-top: 0;
+  font-weight: bold;
 }
