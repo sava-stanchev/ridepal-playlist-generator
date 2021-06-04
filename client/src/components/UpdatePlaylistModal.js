@@ -48,6 +48,9 @@ export default function Modal({playlist, open, onClose}) {
         <div className="input-group">
           <button type="submit" className="btn" onClick={closeFunction}>Update</button>
         </div>
+        <div className="input-group">
+          <button type="submit" className="btn" onClick={onClose}>Back</button>
+        </div>
       </div>
     </>,
     document.getElementById('portal')

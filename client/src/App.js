@@ -2,6 +2,7 @@ import './App.css';
 import NavBar from "./components/Navbar";
 import Login from './components/Login';
 import Register from './components/Register';
+import Users from './components/Users';
 import {useState} from 'react';
 import AuthContext, {getUser} from './providers/auth-context';
 import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
@@ -32,6 +33,7 @@ const App = () => {
             <Route path="/home" exact component={StartPage} />
             <Route path="/login" exact component={Login} />       
             <Route path="/register" exact component={Register} />
+            <Route path="/users" exact component={Users} />
             <Route path="/generate-route" exact component={(props) => <GenerateRoute {...props} setPoints={setPoints}/>} />
             <Route path="/generate-playlist" exact component={(props) => <GeneratePlaylist {...props} points={points}/>} />
             <Route path="/playlists/:id" exact component={ViewPlaylist} />
