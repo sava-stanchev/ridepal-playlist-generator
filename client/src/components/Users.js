@@ -37,9 +37,8 @@ const Users = () => {
 
   let foundUsers = filteredUsers;
 
-  console.log(users);
   const deleteUser = (id) => {
-    fetch(`${HOST}/playlists/${id}`, {
+    fetch(`${HOST}/users/${id}`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',
@@ -88,7 +87,7 @@ const Users = () => {
 
   return(
     <>
-      <UpdateUserModal open={isOpen} onClose={() => setIsOpen(false)} user={currentUser}/>
+      <UpdateUserModal open={isOpen} onClose={() => setIsOpen(false)} user={currentUser} users={users} setUsers={setUsers}/>
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       <section className="genre-section">
         <div className="boxContainer">
