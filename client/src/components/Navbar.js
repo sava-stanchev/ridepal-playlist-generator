@@ -33,7 +33,7 @@ const NavBar = () => {
                   </Link>
               :  
               <Link to="/user">
-                  <li><a href="#users">User</a></li>
+                  <li><a href="#users">User info</a></li>
               </Link>
           :
             null
