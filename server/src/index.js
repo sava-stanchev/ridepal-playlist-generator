@@ -9,6 +9,7 @@ import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
 import playlistsData from './data/playlists.js';
 import playlistServices from './service/playlistServices.js';
+import usersData from './data/users.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
@@ -112,7 +113,6 @@ app.get('/playlists/:id', async (req, res) => {
 });
 
 app.delete('/playlists/:id', async (req, res) => {
-  console.log(+req.params.id);
   try {
     const playlist = await playlistsData.getPlaylistById(+req.params.id);
     if (!playlist || playlist.is_deleted === 1) {
@@ -154,8 +154,25 @@ app.patch('/playlists/:id', async (req, res) => {
 
 app.get('/users', async (req, res) => {
   try {
-    const users = await userService.getUsers();
+    const users = await userService.getAllUsers();
     res.json(users);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+app.delete('/users/:id', async (req, res) => {
+  try {
+    const user = await usersData.getUserById(+req.params.id);
+    if (!user || user.is_deleted === 1) {
+      return res.status(400).json({
+        message: 'User not found!',
+      });
+    }
+    await usersData.deleteUser(+req.params.id);
+    res.status(200).send(user);
   } catch (error) {
     return res.status(400).json({
       error: error.message,

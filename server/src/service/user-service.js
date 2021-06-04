@@ -49,8 +49,8 @@ const logout = async (token) => {
  *
  * @return {Array} - list of users
  */
-const getUsers = async () => {
-  const users = await usersData.getUsers();
+const getAllUsers = async () => {
+  const users = await usersData.getAllUsers();
   return users;
 };
 
@@ -58,5 +58,5 @@ export default {
   createUser,
   validateUser,
   logout,
-  getUsers,
+  getAllUsers,
 };

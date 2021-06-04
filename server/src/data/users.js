@@ -42,7 +42,7 @@ const createUser = async (user) => {
  *
  * @return {Array} - list of users
  */
-const getUsers = async () => {
+const getAllUsers = async () => {
   const sql = `
     SELECT u.users_id, u.username, u.password, u.email, r.role, u.is_deleted
     FROM users AS u
@@ -53,6 +53,25 @@ const getUsers = async () => {
   return result;
 };
 
+const getUserById = async (id) => {
+  const sql = `
+    SELECT u.users_id, u.username, u.password, u.email, r.role, u.is_deleted
+    FROM users AS u
+    JOIN roles AS r
+    ON u.user_role = r.roles_id
+    WHERE u.users_id = ?
+  `;
+  const result = await pool.query(sql, [id]);
+  return result;
+};
+
+const deleteUser = async (id) => {
+  const sql = `
+    UPDATE users SET users.is_deleted = 1
+    WHERE users.users_id = ?
+  `;
+  return await pool.query(sql, [id]);
+};
 
 const logout = async (token) => {
   return await pool.query('INSERT INTO tokens (token) VALUES (?)', [token]);
@@ -61,6 +80,8 @@ const logout = async (token) => {
 export default {
   getUserByName,
   createUser,
-  getUsers,
+  getAllUsers,
+  getUserById,
+  deleteUser,
   logout,
 };
