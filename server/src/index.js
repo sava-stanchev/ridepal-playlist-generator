@@ -106,7 +106,7 @@ app.get('/playlists/:id', async (req, res) => {
     const playlistId = +req.params.id;
     const playlist = await playlistsData.getTracksForPlaylistById(playlistId);
     const filteredPlaylist = playlist.filter((t) => t.hasOwnProperty('playlist_name'));
-    console.log(filteredPlaylist);
+    // console.log(filteredPlaylist);
     res.json(filteredPlaylist);
   } catch (error) {
     return res.status(404).json({

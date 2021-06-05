@@ -10,6 +10,8 @@ import genresData from '../data/genresData.js';
  * @return {Array} array of objects
  */
 export const playlistGenerator = async (req) => {
+
+  console.log('odsdsdfsdfsdfsdfdfgsdfsdfsd');
   const from = req.body.points.from;
   const to = req.body.points.to;
   const duration = req.body.points.duration;
@@ -22,12 +24,13 @@ export const playlistGenerator = async (req) => {
 
   const result = await tracksData.getTracks(genresName);
   let tracksAll = result.filter(t => t.hasOwnProperty('tracks_id'));
+
   const keys = Object.keys(genresName);
 
   if (req.body.repeatArtist === false) {
     const temp = [...tracksAll];
     const artists = [];
-    temp.forEach(tr => {
+    temp.forEach( tr => {
       if (artists.includes(tr.deez_artists_id)) {
         return null;
       }
@@ -40,14 +43,17 @@ export const playlistGenerator = async (req) => {
   const generateTracksList = (tr, gen) => {
     const result = gen.map(g => {
       let totalDuration = 0;
-      const temp = [];
-      console.log(g.name);
+      let a = [];
+      const temp = new Set;
+      // console.log(g.name);
       let tracksFiltered = tr.filter(t => t.genre.toLowerCase() === g.name);
       while (totalDuration < g.duration) {
-        temp.push(tracksFiltered.pop());
-        totalDuration = temp.reduce((acc, t) => acc+=t.duration, 0);
+        temp.add(tracksFiltered.pop());
+        a = [...temp];
+        totalDuration = a.reduce((acc, t) => acc+=t.duration, 0);
         tracksFiltered = tracksFiltered.filter(t => t.duration < g.duration*1.05 - totalDuration);
       }
+      // console.log(temp);
       return temp;
     });
     return result;
@@ -55,6 +61,7 @@ export const playlistGenerator = async (req) => {
 
 
   const tracksList = generateTracksList(tracksAll, genresDuration).reduce((acc, arr) => [...acc, ...arr], []);
+  console.log(tracksList.length);
   const tracksId = tracksList.reduce((acc, t) => acc + t.tracks_id, ''); // result string
   const hash = objectHash(tracksId + req.user.user_id + from.toLowerCase() + to.toLowerCase());
   const is_hashExist = await playlistData.getHash(hash);

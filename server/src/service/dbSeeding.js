@@ -10,9 +10,8 @@ const PASSWORD = 'Pr0t0dqk0n';
 const DATABASE = 'playlist_generator';
 const NB_GENRES = 2000;
 const TIME = 150;
-// const NB_ARTISTS = 10;
 const NB_ALBUMS = 100;
-// const NB_TRACKS = 3000;
+
 
 
 const pool = mariadb.createPool({
@@ -51,19 +50,6 @@ const getMainGenres = async () => {
   const genres = result.filter(data => data.hasOwnProperty('genres_id'));
   return genres;
 };
-
-
-// /** Get all genres from DB
-//  * @return {Array}
-//  */
-// const getAllGenres = async () => {
-//   const sql = `
-//   SELECT * FROM genres
-//   `;
-//   const result = await pool.query(sql);
-//   const genres = result.filter(data => data.hasOwnProperty('genres_id'));
-//   return genres;
-// };
 
 
 /** Get all albums from DB
@@ -150,10 +136,10 @@ const setAlbumByArtist = async () => {
                         if (genresId.includes(album.genre_id)) {
                           albumIds.push(album.id);
                           const sql = `
-                          INSERT INTO albums (deez_albums_id, album_title, genre, artist)
-                          VALUES (?, ?, ?, ?)
+                          INSERT INTO albums (deez_albums_id, album_title, genre, artist, album_cover)
+                          VALUES (?, ?, ?, ?, ?)
                           `;
-                          const res = await pool.query(sql, [album.id, album.title, artist.genre, artist.deez_artists_id]);
+                          const res = await pool.query(sql, [album.id, album.title, artist.genre, artist.deez_artists_id, album.cover_medium]);
                         }
                       }));
                 }
@@ -268,31 +254,11 @@ const setMainGenres = async () => {
 };
 
 
-// /** Set number of artist from Deezer */
-// const setArtists = async () => {
-//   try {
-//     const artists = [];
-//     for (let i = 1; i < NB_ARTISTS; i++) {
-//       const response = await fetch(`https://api.deezer.com/artist/${i}`);
-//       artists[i-1] = await response.json();
-//     }
-//     const req = await Promise.all(artists.map(async (artist) => {
-//       const sql = `
-//       INSERT INTO artists (artists_id, artist_name)
-//       VALUES (?, ?)
-//       `;
-//       const result = await pool.query(sql, [artist.id, artist.name]);
-//     }));
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-// // setArtists();
 (async ()=>{
   // await allGenresSeeding();
   // await setMainGenres();
   // await setArtistByGenre();
   // await setAlbumByArtist();
-  await setTracks();
+  // await setTracks();
   setTimeout(() => pool.end(), 100000);
 })();
