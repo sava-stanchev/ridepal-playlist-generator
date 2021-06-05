@@ -68,23 +68,23 @@ const GeneratePlaylist = ({points}) => {
   };
 
   const history = useHistory();
-  const routeChange = () =>{ 
-    const path = `/home`; 
+  const routeChange = (id) =>{ 
+    const path = `/playlists/${id}`; 
     history.push(path);
   };
 
-  const generatePlaylist = () => {
+  const generatePlaylist = (data, e) => {
+    e.preventDefault();
     fetch(`${HOST}/playlist`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
         'authorization': `bearer ${localStorage.getItem('token')}`,
       },
-      body: JSON.stringify(playlistData),
+      body: JSON.stringify(data),
     })
     .then(res => res.json())
-    .then(data => console.log(data))
-    .then(() => routeChange())
+    .then(data => routeChange(data.playlists_id))
     .catch(console.error())
   };
   console.log(playlistData.genres);
@@ -152,8 +152,8 @@ const GeneratePlaylist = ({points}) => {
               </>
               :
               <>
-              <p className="reminderMsg">* total of percentages must equal 100</p>
-              <button type="submit" className="btn" onClick={() => generatePlaylist(playlistData)}>Generate Playlist</button>
+              <p className ="reminderMsg">* total of percentages must equal 100</p>
+              <button type ='submit' className="btn" onClick={(e) => generatePlaylist(playlistData, e)}>Generate Playlist</button>
               </>
             }
           </>

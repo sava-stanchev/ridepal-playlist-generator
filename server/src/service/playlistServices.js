@@ -58,6 +58,7 @@ export const playlistGenerator = async (req) => {
   const tracksId = tracksList.reduce((acc, t) => acc + t.tracks_id, ''); // result string
   const hash = objectHash(tracksId + req.user.user_id + from.toLowerCase() + to.toLowerCase());
   const is_hashExist = await playlistData.getHash(hash);
+
   if (is_hashExist !== undefined) {
     return console.log('playlist is repeated');
   }
@@ -82,6 +83,7 @@ export const playlistGenerator = async (req) => {
               await playlistData.setPlaylistGenreMap(newPlaylist.playlists_id, genreId.deez_genres_id);
             };
           }));
+  return newPlaylist;
 };
 
 const updatePlaylist = async (id, data) => {

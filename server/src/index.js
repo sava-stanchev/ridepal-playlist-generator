@@ -82,8 +82,11 @@ app.delete('/logout', authMiddleware, async (req, res) => {
 app.post('/playlist', authMiddleware, async (req, res) => {
   try {
     const playlist = await playlistServices.playlistGenerator(req);
+    res.status(200).send(playlist);
   } catch (error) {
-
+    return res.status(400).json({
+      error: error.message,
+    });
   }
 });
 
