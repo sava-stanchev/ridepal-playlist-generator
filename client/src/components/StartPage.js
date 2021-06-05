@@ -20,12 +20,14 @@ const StartPage = () => {
   const [myPlaylists, setMyPlaylists] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
+  const [slider, setSlider] = useState(null);
 
   const playlistsPerPage = 6;
   const pagesVisited = pageNumber * playlistsPerPage;
-  
-  const reducedPlaylists = playlists.reduce((acc, pl) => acc
-  .some(el => el.playlists_id === pl.playlists_id) ? acc : [...acc, pl], []);
+
+  useEffect(() => {
+    setSlider(Math.ceil(durations[durations.length - 1]/60))
+  }, [durations]);
 
   useEffect(() => {
     setLoading(true);
@@ -37,6 +39,9 @@ const StartPage = () => {
       .catch((error) => setError(error.message))
       .finally(() => setLoading(false));
   }, []);
+
+  const reducedPlaylists = playlists.reduce((acc, pl) => acc
+  .some(el => el.playlists_id === pl.playlists_id) ? acc : [...acc, pl], []);
 
   useEffect(() => {
     setFilteredPlaylists(reducedPlaylists.filter(playlist => {
@@ -79,12 +84,13 @@ const StartPage = () => {
     }
   };
 
-  const filterByDuration = (reducedPlaylists, duration) => {
-    if (playlists !== null || playlists !== undefined) {
-      console.log(duration);
-      setTimePl(reducedPlaylists.filter(pl => +pl.duration < duration.split(' ')[0]*60))
+  useEffect(() => {
+    console.log(reducedPlaylists);
+    if (reducedPlaylists !== null && reducedPlaylists !== undefined) {
+      console.log('vutre');
+      setTimePl(reducedPlaylists.filter(pl => +pl.duration < slider*60))
     }
-  };
+  }, [slider]);
   
   const deletePlaylist = (id) => {
     fetch(`${HOST}/playlists/${id}`, {
@@ -102,6 +108,10 @@ const StartPage = () => {
   const editFunction = (playlist) => {
     setCurrentPlaylist(playlist);
     setIsOpen(true);
+  }
+
+  const updateSlider = (value) => {
+      setSlider(value);
   }
   
   const displayPlaylists = foundPlaylists
@@ -147,10 +157,16 @@ const StartPage = () => {
         <button className="genre" onClick={() => {genreFilter(168); setTimePl(null)}}>Disco</button>
         {/* show only when user is logedin */}
         <button className="genre" onClick={() => showMyPlaylists(reducedPlaylists)}>My playlists</button>
-          <select name="durations" defaultValue="Duration" onChange={e => filterByDuration(reducedPlaylists, e.target.value)}>
+          {/* <select name="durations" defaultValue="Duration" onChange={e => filterByDuration(reducedPlaylists, e.target.value)}>
             <option>Duration</option>
             {durations.map(d => <option>{Math.round(d/60)} min.</option>)}
-          </select>
+          </select> */}
+          <div>
+          <td className="slider-col">
+          <input type="range" min={Math.round(durations[0]/60)} max={Math.ceil(durations[durations.length - 1]/60)} value={slider ? slider : Math.ceil(durations[durations.length - 1]/60)} id="slider" onChange={(e) => updateSlider(e.target.value)}/>
+          </td>
+          <td className="percent-col">{slider} min.</td>
+          </div>
         <div className="boxContainer">
           <table className = "elementsContainer">
             <tbody><tr>
