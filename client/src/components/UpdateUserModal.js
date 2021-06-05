@@ -1,10 +1,15 @@
 import ReactDom from 'react-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {HOST} from '../common/constants.js';
 
 export default function Modal({user, open, onClose, users, setUsers}) {
   const [theUser, setTheUser] = useState(null);
 
+
+  useEffect(() => {
+    setTheUser(user);
+  }, [user])
+  
   if (!user) return null;
   if (!open) return null;
 
@@ -14,12 +19,13 @@ export default function Modal({user, open, onClose, users, setUsers}) {
       [prop]: value,
     });
   };
-
+  
   const updateUser = () => {
     fetch(`${HOST}/users/${user.users_id}`, {
       method: 'PATCH',
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify(theUser),
     })
@@ -30,11 +36,11 @@ export default function Modal({user, open, onClose, users, setUsers}) {
       setUsers(newUsers);
     })
   };
-
+  
   const closeFunction = () => {
     updateUser();
     onClose();
-  }
+  };
 
   return ReactDom.createPortal(
     <>
@@ -43,12 +49,12 @@ export default function Modal({user, open, onClose, users, setUsers}) {
         <button className="close-button" onClick={onClose}>&times;</button>
         <div className="input-group">
           <label>New username:</label>
-          <input type="text" name="username" value={theUser ? theUser.username : user.username}
+          <input type="text" name="username" value={theUser ? theUser.username : users.filter(u => u.users_id === user.users_id)[0].username}
           onChange={e => updateUserProperties('username', e.target.value)} />
         </div>
         <div className="input-group">
           <label>New email:</label>
-          <input type="text" name="email" value={theUser ? theUser.email : user.email}
+          <input type="text" name="email" value={theUser ? theUser.email : users.filter(u => u.users_id === user.users_id)[0].email}
           onChange={e => updateUserProperties('email', e.target.value)} />
         </div>
         <div className="input-group">

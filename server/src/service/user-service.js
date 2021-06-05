@@ -81,4 +81,6 @@ export default {
   validateUser,
   logout,
   getAllUsers,
+  getUserById,
+  updateUser,
 };

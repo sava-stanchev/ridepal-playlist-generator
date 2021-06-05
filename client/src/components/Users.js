@@ -67,7 +67,8 @@ const Users = () => {
     if (loading) {
       return <Loader />
     }
-  }
+  };
+
 
   const displayUsers = foundUsers.map((user) => {
     return (
@@ -76,7 +77,7 @@ const Users = () => {
         <td className="user-email"><h5>{user.email}</h5></td>
         <td className="user-role"><h5>{user.role}</h5></td>
         <td className="song-length">
-          <button className="edit-btn-users" onClick={() => editFunction(user.users_id)}><FaEdit/></button>
+          <button className="edit-btn-users" onClick={() => editFunction(user)}><FaEdit/></button>
         </td>
         <td className="song-length">
           <button className="delete-btn-users" onClick={() => deleteUser(user.users_id)}><FaTrashAlt/></button>
@@ -84,6 +85,8 @@ const Users = () => {
       </tr>
     )
   });
+  // console.log(currentUser);
+  // console.log(users);
 
   return(
     <>

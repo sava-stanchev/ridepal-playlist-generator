@@ -53,6 +53,12 @@ const getAllUsers = async () => {
   return result;
 };
 
+
+/**
+ *
+ * @param {number} id
+ * @return {Object}
+ */
 const getUserById = async (id) => {
   const sql = `
     SELECT u.users_id, u.username, u.password, u.email, r.role, u.is_deleted
@@ -61,32 +67,22 @@ const getUserById = async (id) => {
     ON u.user_role = r.roles_id
     WHERE u.users_id = ?
   `;
-  const result = await pool.query(sql, [id]);
-  return result;
+  const user = await pool.query(sql, [id]);
+  return user;
 };
 
+
+/**
+ *
+ * @param {number} id
+ * @return {Object}
+ */
 const deleteUser = async (id) => {
   const sql = `
     UPDATE users SET users.is_deleted = 1
     WHERE users.users_id = ?
   `;
   return await pool.query(sql, [id]);
-};
-
-/**
- *
- * @param {number} userId
- * @return {Object} user data
- */
-const getUserById = async (userId) => {
-  const sql = `
-  SELECT users_id, username, email, user_role
-  FROM users AS u
-  WHERE u.users_id = ?
-  `;
-
-  const user = await pool.query(sql, [userId]);
-  return user[0];
 };
 
 
@@ -99,14 +95,13 @@ const getUserById = async (userId) => {
 const updateUser = async (userId, data) => {
   const sql = `
   UPDATE users AS u
-  SET username = ?  
+  SET username = ?, email = ? 
   WHERE u.users_id = ?
   `;
 
-  const result = await pool.query(sql, [data.username, userId]);
-  const user = getUserById(userId);
-  console.log(result);
-  return user;
+  const result = await pool.query(sql, [data.username, data.email, userId]);
+  const user = await getUserById(userId);
+  return user[0];
 };
 
 
@@ -120,5 +115,6 @@ export default {
   getAllUsers,
   getUserById,
   deleteUser,
+  updateUser,
   logout,
 };
