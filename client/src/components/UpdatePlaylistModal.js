@@ -8,9 +8,6 @@ export default function Modal({playlist, open, onClose}) {
   if (!playlist) return null;
   if (!open) return null;
 
-  console.log('first playlist');
-  console.log(thePlaylist);
-
   const updatePlaylistProps = (prop, value) => {
     console.log(value);
     setThePlaylist({

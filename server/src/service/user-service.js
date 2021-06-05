@@ -54,9 +54,33 @@ const getUsers = async () => {
   return users;
 };
 
+/**
+ *
+ * @param {number} userId
+ * @param {string} data
+ * @return {Object}
+ */
+const updateUser = async (userId, data) => {
+  const updatedUser = await usersData.updateUser(userId, data);
+  return updatedUser;
+};
+
+
+/**
+ *
+ * @param {number} userId
+ * @return {Object}
+ */
+const getUserById = async (userId) => {
+  const user = await usersData.getUserById(userId);
+  return user;
+};
+
 export default {
   createUser,
   validateUser,
   logout,
   getUsers,
+  updateUser,
+  getUserById,
 };

@@ -163,4 +163,41 @@ app.get('/users', async (req, res) => {
   }
 });
 
+
+app.patch('/users/:id', async (req, res) => {
+  const userId = req.params.id;
+  const data = req.body;
+  try {
+    const user = await userService.getUserById(userId);
+    if (!user) {
+      res.status(404).send({
+        message: 'User not found!',
+      });
+    }
+
+    const updatedUser = await userService.updateUser(userId, data);
+
+    if (updatedUser) {
+      res.send(await userService.getUserById(userId));
+    }
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+// app.patch('/users/:id', async (req, res) => {
+//   const userId = req.params.id;
+//   const updateData = req.body;
+//   try {
+//     const updatedUser = await userService.updateUser(userId, updateData);
+//     if (!updatedUser) {
+//       res.status(404).send({
+//         message: 'User not found!',
+//       });
+//     }
+//   }
+//   )
+
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));

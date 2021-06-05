@@ -15,6 +15,7 @@ const [isOpen, setIsOpen] = useState(false);
 const [pageNumber, setPageNumber] = useState(0);
 const [currentUser, setCurrentUser] = useState(null);
 const [search, setSearch] = useState('');
+const [filteredUsers, setFilteredUsers] = useState(null);
 
 const usersPerPage = 6;
 const pagesVisited = pageNumber * usersPerPage;
@@ -33,6 +34,16 @@ useEffect(() => {
   .then(() => setLoading(false))
   .catch(error => setError(error.massage))
 }, []);
+
+
+useEffect(() => {
+  setFilteredUsers(users.filter(user => {
+    return user.username.toLowerCase().includes(search.toLowerCase())
+  }));
+
+}, [search, users]);
+
+let foundUsers = filteredUsers || users;
 
 
 const deletePlaylist = (id) => {
@@ -68,7 +79,7 @@ const showLoader = () => {
   }
 }
 
-const displayUser = users
+const displayUser = foundUsers
   .slice(pagesVisited, pagesVisited + usersPerPage)
   .map((user) => {
     return (
@@ -81,8 +92,7 @@ const displayUser = users
             <button className="edit-btn" onClick={() => editFunction(user)}><FaEdit/></button>
             <button className="delete-btn" onClick={() => deletePlaylist(user.users_id)}><FaTrashAlt/></button>
           </div>
-        </div>
-        
+        </div>        
       </article>
     );
   });
