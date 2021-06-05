@@ -648,3 +648,13 @@ button:disabled {
   margin-top: 0;
   font-weight: bold;
 }
+
+select {
+  margin-right: 1rem;
+  border: 1px solid #606060;
+  border-radius: 900px;
+  background-color: #E7E7E7;
+  padding: .4rem .8rem;
+  font-size: inherit;
+  cursor: pointer;
+}
