@@ -9,6 +9,7 @@ import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
 import playlistsData from './data/playlists.js';
 import playlistServices from './service/playlistServices.js';
+import usersData from './data/users.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
@@ -100,7 +101,7 @@ app.get('/playlists', async (req, res) => {
 app.get('/playlists/:id', async (req, res) => {
   try {
     const playlistId = +req.params.id;
-    const playlist = await playlistsData.getPlaylistById(playlistId);
+    const playlist = await playlistsData.getTracksForPlaylistById(playlistId);
     const filteredPlaylist = playlist.filter((t) => t.hasOwnProperty('playlist_name'));
     console.log(filteredPlaylist);
     res.json(filteredPlaylist);
@@ -112,7 +113,6 @@ app.get('/playlists/:id', async (req, res) => {
 });
 
 app.delete('/playlists/:id', async (req, res) => {
-  console.log(+req.params.id);
   try {
     const playlist = await playlistsData.getPlaylistById(+req.params.id);
     if (!playlist || playlist.is_deleted === 1) {
@@ -141,9 +141,9 @@ app.patch('/playlists/:id', async (req, res) => {
     }
 
     const playlistUpdated = await playlistServices.updatePlaylist(+playlistId, updateData);
-
+    const newPlaylist = await playlistsData.getPlaylistById(+playlistId);
     if (playlistUpdated) {
-      res.send(await playlistsData.getPlaylistById(+playlistId));
+      res.status(200).send(newPlaylist[0]);
     }
   } catch (error) {
     return res.status(400).json({
@@ -154,7 +154,7 @@ app.patch('/playlists/:id', async (req, res) => {
 
 app.get('/users', async (req, res) => {
   try {
-    const users = await userService.getUsers();
+    const users = await userService.getAllUsers();
     res.json(users);
   } catch (error) {
     return res.status(400).json({
@@ -163,41 +163,21 @@ app.get('/users', async (req, res) => {
   }
 });
 
-
-app.patch('/users/:id', async (req, res) => {
-  const userId = req.params.id;
-  const data = req.body;
+app.delete('/users/:id', async (req, res) => {
   try {
-    const user = await userService.getUserById(userId);
-    if (!user) {
-      res.status(404).send({
+    const user = await usersData.getUserById(+req.params.id);
+    if (!user || user.is_deleted === 1) {
+      return res.status(400).json({
         message: 'User not found!',
       });
     }
-
-    const updatedUser = await userService.updateUser(userId, data);
-
-    if (updatedUser) {
-      res.send(await userService.getUserById(userId));
-    }
+    await usersData.deleteUser(+req.params.id);
+    res.status(200).send(user);
   } catch (error) {
     return res.status(400).json({
       error: error.message,
     });
   }
 });
-
-// app.patch('/users/:id', async (req, res) => {
-//   const userId = req.params.id;
-//   const updateData = req.body;
-//   try {
-//     const updatedUser = await userService.updateUser(userId, updateData);
-//     if (!updatedUser) {
-//       res.status(404).send({
-//         message: 'User not found!',
-//       });
-//     }
-//   }
-//   )
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));

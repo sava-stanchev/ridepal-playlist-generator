@@ -64,18 +64,34 @@ const getAllPlaylists = async () => {
 
 const getPlaylistById = async (id) => {
   const sql = `
-  SELECT p.playlist_name, p.created_on, u.username AS created_by,
-  p.playlists_id, p.rank, t.track_title, a.artist_name, t.duration AS track_duration
-  FROM playlists p
-  JOIN users AS u 
-  ON p.created_by = u.users_id
-  JOIN playlist_track_map AS ptm
-  ON p.playlists_id = ptm.playlist
-  JOIN tracks AS t
-  ON t.deez_tracks_id = ptm.track
-  JOIN artists AS a
-  ON a.deez_artists_id = t.artist
-  WHERE p.playlists_id = ?
+    SELECT p.playlists_id, p.playlist_name, p.created_on, p.duration, p.created_by as user_id, u.username AS created_by, p.rank, g.deez_genres_id, g.genre, p.is_deleted
+    FROM playlists p
+    JOIN users AS u 
+    ON p.created_by = u.users_id
+    JOIN playlist_genre_map AS pgm
+    ON p.playlists_id = pgm.playlist
+    JOIN genres AS g
+    ON pgm.genre = g.deez_genres_id
+    WHERE p.playlists_id = ?
+  `;
+  const result = await pool.query(sql, [id]);
+  return result;
+};
+
+const getTracksForPlaylistById = async (id) => {
+  const sql = `
+    SELECT p.playlist_name, p.created_on, u.username AS created_by,
+    p.playlists_id, p.rank, t.track_title, a.artist_name, t.duration AS track_duration
+    FROM playlists p
+    JOIN users AS u 
+    ON p.created_by = u.users_id
+    JOIN playlist_track_map AS ptm
+    ON p.playlists_id = ptm.playlist
+    JOIN tracks AS t
+    ON t.deez_tracks_id = ptm.track
+    JOIN artists AS a
+    ON a.deez_artists_id = t.artist
+    WHERE p.playlists_id = ?
   `;
   const result = await pool.query(sql, [id]);
   return result;
@@ -104,7 +120,8 @@ const deletePlaylist = async (id) => {
 };
 
 const updatePlaylistName = async (playlist) => {
-  const {playlists_id, playlist_name} = playlist;
+  const {playlist_name} = playlist;
+  const playlistId = playlist[0].playlists_id;
 
   const sql = `
     UPDATE playlists AS p SET
@@ -112,11 +129,12 @@ const updatePlaylistName = async (playlist) => {
     WHERE p.playlists_id = ?
   `;
 
-  return await pool.query(sql, [playlist_name, playlists_id]);
+  return await pool.query(sql, [playlist_name, playlistId]);
 };
 
 export default {
   getPlaylistById,
+  getTracksForPlaylistById,
   getAllPlaylists,
   setPlaylist,
   setPlaylistTrackMap,

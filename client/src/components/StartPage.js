@@ -135,7 +135,7 @@ const StartPage = () => {
   
   return(
     <>
-    <UpdatePlaylistModal open={isOpen} onClose={() => setIsOpen(false)} playlist={currentPlaylist}/>
+    <UpdatePlaylistModal open={isOpen} onClose={() => setIsOpen(false)} playlist={currentPlaylist} playlists={playlists} setPlaylists={setPlaylists}/>
     <div className="genres">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       <section className="genre-section">
@@ -147,13 +147,10 @@ const StartPage = () => {
         <button className="genre" onClick={() => {genreFilter(168); setTimePl(null)}}>Disco</button>
         {/* show only when user is logedin */}
         <button className="genre" onClick={() => showMyPlaylists(reducedPlaylists)}>My playlists</button>
-        <div>
-          <label htmlFor="duration">Duration: </label>
-          <select name="durations" id="durations" defaultValue="Choose..." onChange={e => filterByDuration(reducedPlaylists, e.target.value)}>            
-            <option>Choose..</option>
+          <select name="durations" defaultValue="Duration" onChange={e => filterByDuration(reducedPlaylists, e.target.value)}>
+            <option>Duration</option>
             {durations.map(d => <option>{Math.round(d/60)} min.</option>)}
           </select>
-        </div>
         <div className="boxContainer">
           <table className = "elementsContainer">
             <tbody><tr>

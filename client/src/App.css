@@ -258,6 +258,17 @@ body {
     opacity 320ms;
 }
 
+.delete-btn-users, .edit-btn-users {
+  color: white;
+  background-color: transparent;
+  outline: none;
+  padding: 0 0;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
 .card:hover .view-btn {
   transform: translateY(0);
   opacity: 1;
@@ -342,6 +353,21 @@ body {
 .song-title {
   width: 100%;
   text-align: left;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  transition: all 0.3s ease-in;
+}
+
+.user-email {
+  width: 100%;
+  text-align: center;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+.user-role {
+  width: 100%;
+  text-align: center;
   padding-right: 1rem;
   padding-left: 1rem;
   transition: all 0.3s ease-in;
@@ -595,6 +621,7 @@ button:disabled {
   transform: translate(-50%, -50%);
   background-color: #202027;
   padding: 50px;
+  padding-top: 27px;
   z-index: 1000;
 }
 
@@ -604,6 +631,30 @@ button:disabled {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
+}
+
+.close-button {
+  position: relative;
+  left: 17rem;
+  top: -1rem;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  color: white;
+  font-size: 1.5rem;
+  margin-top: 0;
+  font-weight: bold;
+}
+
+select {
+  margin-right: 1rem;
+  border: 1px solid #606060;
+  border-radius: 900px;
+  background-color: #E7E7E7;
+  padding: .4rem .8rem;
+  font-size: inherit;
+  cursor: pointer;
 }

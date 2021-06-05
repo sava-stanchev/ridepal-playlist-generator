@@ -1,35 +1,33 @@
-import ReactDom from 'react-dom'
-import { useState } from 'react/cjs/react.development';
-import { HOST } from '../common/constants.js';
+import ReactDom from 'react-dom';
+import { useState } from 'react';
+import {HOST} from '../common/constants.js';
 
-export default function Modal({user, open, onClose}) {
-  const [updatedUser, setUpdatedUser] = useState(null);
+export default function Modal({user, open, onClose, users, setUsers}) {
+  const [theUser, setTheUser] = useState(null);
 
   if (!user) return null;
   if (!open) return null;
-  console.log(user);
 
-  const updateUserProp = (prop, value) => {
-    console.log(value);
-    setUpdatedUser({
-      ...updatedUser,
+  const updateUserProperties = (prop, value) => {
+    setTheUser({
+      ...theUser,
       [prop]: value,
     });
-    console.log();
   };
 
   const updateUser = () => {
     fetch(`${HOST}/users/${user.users_id}`, {
       method: 'PATCH',
       headers: {
-        'content-type': 'application/json',
-        'authorization': `bearer ${localStorage.getItem('token')}`
+        'content-type': 'application/json'
       },
-      body: JSON.stringify(updatedUser),
+      body: JSON.stringify(theUser),
     })
     .then((res) => res.json())
-    .then(data => {
-
+    .then((data) => {
+      const editedUser = data;
+      const newUsers = users.map(u => u.users_id === editedUser.users_id ? editedUser : u);
+      setUsers(newUsers);
     })
   };
 
@@ -38,22 +36,23 @@ export default function Modal({user, open, onClose}) {
     onClose();
   }
 
-
-
   return ReactDom.createPortal(
     <>
       <div className="overlay-styles" />
       <div className="modal-styles">
+        <button className="close-button" onClick={onClose}>&times;</button>
         <div className="input-group">
-          <label>New user name:</label>
-          <input type="text" name="new-user-name" value={updatedUser?updatedUser.username:user.username}
-          onChange={e => updateUserProp('username', e.target.value)} />
+          <label>New username:</label>
+          <input type="text" name="username" value={theUser ? theUser.username : user.username}
+          onChange={e => updateUserProperties('username', e.target.value)} />
         </div>
         <div className="input-group">
-          <button type="submit" className="btn" onClick={closeFunction}>Update</button>
+          <label>New email:</label>
+          <input type="text" name="email" value={theUser ? theUser.email : user.email}
+          onChange={e => updateUserProperties('email', e.target.value)} />
         </div>
         <div className="input-group">
-          <button type="submit" className="btn" onClick={onClose}>Back</button>
+          <button className="btn" onClick={closeFunction}>Update</button>
         </div>
       </div>
     </>,
