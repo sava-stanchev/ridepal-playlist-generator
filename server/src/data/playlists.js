@@ -47,7 +47,10 @@ const setPlaylistGenreMap = async (playlist, genre) => {
   return result;
 };
 
-
+/**
+ *
+ * @return {Array}
+ */
 const getAllPlaylists = async () => {
   return await pool.query(`
     SELECT p.playlists_id, p.playlist_name, p.created_on, p.duration, p.created_by as user_id, u.username AS created_by, p.rank, g.deez_genres_id, g.genre, p.is_deleted
@@ -62,6 +65,12 @@ const getAllPlaylists = async () => {
   `);
 };
 
+
+/**
+ *
+ * @param {number} id
+ * @return {Array}
+ */
 const getPlaylistById = async (id) => {
   const sql = `
     SELECT p.playlists_id, p.playlist_name, p.created_on, p.duration, p.created_by as user_id, u.username AS created_by, p.rank, g.deez_genres_id, g.genre, p.is_deleted
@@ -77,6 +86,7 @@ const getPlaylistById = async (id) => {
   const result = await pool.query(sql, [id]);
   return result;
 };
+
 
 const getTracksForPlaylistById = async (id) => {
   const sql = `
