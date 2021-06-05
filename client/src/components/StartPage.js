@@ -149,7 +149,7 @@ const StartPage = () => {
     <div className="genres">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       <section className="genre-section">
-        <button className="genre" onClick={() => {setFilteredGenres(null); setTimePl(null); setMyPlaylists(null)}}>All</button>
+        <button className="genre" onClick={() => {setFilteredGenres(null); setTimePl(null); setMyPlaylists(null); setSlider(Math.ceil(durations[durations.length - 1]/60)) }}>All</button>
         <button className="genre" onClick={() => {genreFilter(129); setTimePl(null)}}>Jazz</button>
         <button className="genre" onClick={() => {genreFilter(132); setTimePl(null)}}>Pop</button>
         <button className="genre" onClick={() => {genreFilter(152); setTimePl(null)}}>Rock</button>
