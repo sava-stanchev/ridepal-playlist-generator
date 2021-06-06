@@ -10,6 +10,8 @@ import jwtStrategy from './auth/strategy.js';
 import playlistsData from './data/playlists.js';
 import playlistServices from './service/playlistServices.js';
 import usersData from './data/users.js';
+import dbSeeding from './service/dbSeeding.js';
+import pool from './data/pool.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
@@ -189,6 +191,73 @@ app.delete('/users/:id', async (req, res) => {
     }
     await usersData.deleteUser(+req.params.id);
     res.status(200).send(user);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+app.get('/setgenres', async (req, res) => {
+  try {
+    await dbSeeding.setGenres();
+    setTimeout(async () => {
+      pool.end();
+      res.status(200).send({message: 'Genres are seeded!'});
+    }, 5000);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+app.get('/setmaingenres', async (req, res) => {
+  try {
+    await dbSeeding.setMainGenres();
+    res.status(200).send({message: ' Main genres are set!'});
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+app.get('/setartistsbygenre', async (req, res) => {
+  try {
+    const result = await dbSeeding.setArtistsByGenre();
+    setTimeout(async () => {
+      pool.end();
+      res.status(200).send({message: 'Artists seeding is DONE!'});
+    }, 5000);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+app.get('/setalbums', async (req, res) => {
+  try {
+    const result = await dbSeeding.setAlbums();
+    setTimeout(async () => {
+      pool.end();
+      res.status(200).send({message: 'Albums are seeded!'});
+    }, 60000);
+  } catch (error) {
+    return res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+app.get('/settracks', async (req, res) => {
+  try {
+    const result = await dbSeeding.setTracks();
+    setTimeout(async () => {
+      pool.end();
+      res.status(200).send({message: 'Tracks are seeded!'});
+    }, 80000);
   } catch (error) {
     return res.status(400).json({
       error: error.message,

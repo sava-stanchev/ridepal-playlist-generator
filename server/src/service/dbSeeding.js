@@ -1,26 +1,9 @@
 /* eslint-disable max-len */
 import fetch from 'node-fetch';
 import mariadb from 'mariadb';
+import pool from '../data/pool.js';
+import { MAINGENRES, TIME, NB_ALBUMS, NB_GENRES } from '../common/constants.js';
 
-
-const HOST = 'localhost';
-const DBPORT = 3306;
-const USER = 'root';
-const PASSWORD = 'Pr0t0dqk0n';
-const DATABASE = 'playlist_generator';
-const NB_GENRES = 2000;
-const TIME = 150;
-const NB_ALBUMS = 100;
-
-
-
-const pool = mariadb.createPool({
-  host: HOST,
-  port: DBPORT,
-  user: USER,
-  password: PASSWORD,
-  database: DATABASE,
-});
 
 /** Get all artists from DB
  * @return {Array}
@@ -115,7 +98,7 @@ const setTracks = async () => {
 
 
 /** Set albums by artist from Deezer*/
-const setAlbumByArtist = async () => {
+const setAlbums = async () => {
   try {
     let timer = 0;
     const albumIds = [];
@@ -151,7 +134,7 @@ const setAlbumByArtist = async () => {
 };
 
 /** Set artists by genres */
-const setArtistByGenre = async () => {
+const setArtistsByGenre = async () => {
   try {
     let timer = 0;
     const artistsId = [];
@@ -189,13 +172,10 @@ const setArtistByGenre = async () => {
 };
 
 
-/** Set all genres from Deezer
- * @return {boolean | error} - true if input is successful
- */
-const allGenresSeeding = async () => {
+/** Set all genres from Deezer */
+const setGenres = async () => {
   try {
     const responseArr = [];
-
     for (let i = 0; i < NB_GENRES; i++) {
       const response = await fetch(`https://api.deezer.com/genre/${i}`);
       responseArr[i] = await response.json();
@@ -211,19 +191,15 @@ const allGenresSeeding = async () => {
             const result = await pool.query(sql, [genre.id, genre.name]);
           }
         }));
-    return true;
   } catch (error) {
     console.log(error);
   }
 };
 
 
-/** Set main genres according to Deezer */
+/** Set main genres */
 const setMainGenres = async () => {
   try {
-    const response = await fetch(`https://api.deezer.com/genre/`);
-    const mainGenres = await response.json();
-
     const sqlSetUpdateToZero = `
       SET SQL_SAFE_UPDATES = 0   
     `;
@@ -240,12 +216,12 @@ const setMainGenres = async () => {
     const resultToOne = await pool.query(sqlSetUpdateToOne);
 
     const result = await Promise.all(
-        mainGenres.data.map(async genre => {
+        MAINGENRES.map(async genre => {
           const sql = `
           UPDATE genres SET is_main = 1
           WHERE genres.deez_genres_id = ?
           `;
-          const result = await pool.query(sql, [genre.id]);
+          const result = await pool.query(sql, [genre]);
           return result;
         }));
   } catch (error) {
@@ -254,11 +230,10 @@ const setMainGenres = async () => {
 };
 
 
-(async ()=>{
-  // await allGenresSeeding();
-  // await setMainGenres();
-  // await setArtistByGenre();
-  // await setAlbumByArtist();
-  // await setTracks();
-  setTimeout(() => pool.end(), 100000);
-})();
+export default {
+  setGenres,
+  setMainGenres,
+  setArtistsByGenre,
+  setAlbums,
+  setTracks,
+}

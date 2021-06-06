@@ -35,13 +35,19 @@ const StartPage = () => {
       method: "GET",
     })
       .then((response) => response.json())
-      .then((data) => setPlaylists(data))
+      .then((data) => data.length?setPlaylists(data):setPlaylists([]))
       .catch((error) => setError(error.message))
       .finally(() => setLoading(false));
   }, []);
 
-  const reducedPlaylists = playlists.reduce((acc, pl) => acc
-  .some(el => el.playlists_id === pl.playlists_id) ? acc : [...acc, pl], []);
+  let reducedPlaylists = [];
+
+  console.log(playlists.length);
+
+  if (playlists.length !== 0) {
+    reducedPlaylists = playlists.reduce((acc, pl) => acc
+    .some(el => el.playlists_id === pl.playlists_id) ? acc : [...acc, pl], []);
+  }    
 
   useEffect(() => {
     setFilteredPlaylists(reducedPlaylists.filter(playlist => {
@@ -85,9 +91,7 @@ const StartPage = () => {
   };
 
   useEffect(() => {
-    console.log(reducedPlaylists);
     if (reducedPlaylists !== null && reducedPlaylists !== undefined) {
-      console.log('vutre');
       setTimePl(reducedPlaylists.filter(pl => +pl.duration < slider*60))
     }
   }, [slider]);

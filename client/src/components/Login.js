@@ -21,12 +21,6 @@ const Login = () => {
       [prop]: value,
     })
   };
-
-  const routeChange = () => {
-    const path = `/home`;
-    history.push(path);
-  };
-
   
   const login = (e) => {
     e.preventDefault();
@@ -42,13 +36,18 @@ const Login = () => {
     .then(({ token }) => {
       try {
         const user = decode(token);
+        console.log(user);
         localStorage.setItem('token', token);
         auth.setAuthState({user, isLoggedIn: true});
+        if (!user) {
+          history.push('/login');
+        } else {
+          history.push('/home');
+        }
       } catch (error) {
         window.alert('Invalid username or password!');
       }
     })
-    .then(() => routeChange())
     .catch(console.warn);
   };
 

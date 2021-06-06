@@ -1,0 +1,96 @@
+{
+	"info": {
+		"_postman_id": "5fe8079e-ca55-4903-b909-632aafd8bf83",
+		"name": "DB Seeding",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01. set genres",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5555/setgenres",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"setgenres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02. set mein genres",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		},
+		{
+			"name": "03. set artists by genre",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5555/setartistsbygenre",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"setartistsbygenre"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04. set albums",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5555/setalbums",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"setalbums"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05. set tracks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5555/settracks",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"settracks"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
