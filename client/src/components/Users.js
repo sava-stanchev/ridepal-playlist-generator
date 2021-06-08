@@ -69,7 +69,6 @@ const Users = () => {
     }
   };
 
-
   const displayUsers = foundUsers.map((user) => {
     return (
       <tr className="song" key={user.users_id}>
@@ -85,8 +84,6 @@ const Users = () => {
       </tr>
     )
   });
-  // console.log(currentUser);
-  // console.log(users);
 
   return(
     <>

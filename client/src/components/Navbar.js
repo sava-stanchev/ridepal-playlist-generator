@@ -2,6 +2,8 @@ import {Link} from 'react-router-dom';
 import AuthContext from '../providers/auth-context';
 import {useContext} from 'react';
 import brandLogo from '../images/logo.png';
+import {CgProfile} from "react-icons/cg";
+import ReactTooltip from 'react-tooltip';
 
 const NavBar = () => {
   const auth = useContext(AuthContext);
@@ -28,13 +30,11 @@ const NavBar = () => {
           ?
             auth.user.user_role === 1
               ?            
-                  <Link to="/users">
-                    <li><a href="#users">Users</a></li>
-                  </Link>
+                <Link to="/users">
+                  <li><a href="#users">Users</a></li>
+                </Link>
               :  
-              <Link to="/user">
-                  <li><a href="#users">User info</a></li>
-              </Link>
+               <></> 
           :
             null
         }
@@ -48,6 +48,10 @@ const NavBar = () => {
             <Link to="/home">
               <li><a href="#logout" onClick={() => logout()}>Logout</a></li>
             </Link>
+            <li><button className="brand-logo" data-tip data-for="userTip"><CgProfile size={27}/></button></li>
+            <ReactTooltip id="userTip" place="bottom" effect="solid">
+              {auth.user.username}
+            </ReactTooltip>
           </>
           :
           <>
@@ -59,6 +63,7 @@ const NavBar = () => {
             </Link>
           </>
         }
+
         </ul>
       </nav>
     </header>
