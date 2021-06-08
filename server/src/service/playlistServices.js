@@ -26,8 +26,10 @@ export const playlistGenerator = async (req) => {
   let tracksAll = result.filter(t => t.hasOwnProperty('tracks_id'));
 
   const keys = Object.keys(genresName);
+  console.log(req.body.repeatArtist);
 
   if (req.body.repeatArtist === false) {
+    console.log('hello arti');
     const temp = [...tracksAll];
     const artists = [];
     temp.forEach( tr => {
@@ -37,6 +39,7 @@ export const playlistGenerator = async (req) => {
       artists.push(tr.deez_artists_id);
       return tr;
     });
+    console.log(temp.length);
     tracksAll = [...temp];
   };
 
