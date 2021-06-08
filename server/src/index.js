@@ -10,7 +10,7 @@ import jwtStrategy from './auth/strategy.js';
 import playlistsData from './data/playlists.js';
 import playlistServices from './service/playlistServices.js';
 import usersData from './data/users.js';
-import dbSeeding from './service/dbSeeding.js';
+import dbSeeding from './service/db-seeding.js';
 import pool from './data/pool.js';
 
 const config = dotenv.config().parsed;
@@ -179,7 +179,7 @@ app.patch('/users/:id', async (req, res) => {
       error: error.message,
     });
   }
-})
+});
 
 app.delete('/users/:id', async (req, res) => {
   try {

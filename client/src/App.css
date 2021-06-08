@@ -527,6 +527,32 @@ body {
   transition: all 0.3s ease-in;
 }
 
+.duration-text {
+  padding-right: 1rem;
+  padding-top: 0.3rem;
+}
+
+.duration-slider {
+  width: 375px;
+  text-align: center;
+  padding-right: 1rem;
+  transition: all 0.3s ease-in;
+  padding-top: 0.2rem;
+}
+
+.duration-minutes {
+  display: table-cell;
+  width: 85px;
+  min-width: 85px;
+  padding-top: 0.3rem;
+}
+
+.centered-container {
+  width:100%;
+  display: flex;
+  justify-content: center;
+}
+
 .input-group h4 {
   margin-bottom: 0.75rem;
 }
