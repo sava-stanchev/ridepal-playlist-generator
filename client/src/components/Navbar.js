@@ -48,7 +48,7 @@ const NavBar = () => {
             <Link to="/home">
               <li><a href="#logout" onClick={() => logout()}>Logout</a></li>
             </Link>
-            <li><button className="brand-logo" data-tip data-for="userTip"><CgProfile size={27}/></button></li>
+            <li><button className="tooltip-icon" data-tip data-for="userTip"><CgProfile size={27}/></button></li>
             <ReactTooltip id="userTip" place="bottom" effect="solid">
               {auth.user.username}
             </ReactTooltip>
