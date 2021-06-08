@@ -65,7 +65,7 @@ const ViewPlaylist = props => {
       {showLoader()}
       <div className="songs-container">
         <div className="playlist-header">
-          <h5 className="playlist-title">Tracks in playlist "{playlistData[0].playlist_name}" duration {Math.round(playlistData[0].duration/60)} min.</h5>
+          <h5 className="playlist-title">Tracklist for "{playlistData[0].playlist_name}" ({Math.round(playlistData[0].duration/60)} min.)</h5>
         </div>
         <table className="playlist-list">
           {displayTracks}

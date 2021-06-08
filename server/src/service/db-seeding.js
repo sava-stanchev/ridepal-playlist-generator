@@ -1,9 +1,6 @@
-/* eslint-disable max-len */
 import fetch from 'node-fetch';
-import mariadb from 'mariadb';
 import pool from '../data/pool.js';
-import { MAINGENRES, TIME, NB_ALBUMS, NB_GENRES } from '../common/constants.js';
-
+import {MAINGENRES, TIME, NB_ALBUMS, NB_GENRES} from '../common/constants.js';
 
 /** Get all artists from DB
  * @return {Array}
@@ -16,7 +13,7 @@ const getAllArtists = async () => {
   ORDER BY ga.genre
   `;
   const result = await pool.query(sql);
-  const artists = result.filter(data => data.hasOwnProperty('artists_id'));
+  const artists = result.filter((data) => data.hasOwnProperty('artists_id'));
   return artists;
 };
 
@@ -30,7 +27,7 @@ const getMainGenres = async () => {
   WHERE is_main = 1
   `;
   const result = await pool.query(sql);
-  const genres = result.filter(data => data.hasOwnProperty('genres_id'));
+  const genres = result.filter((data) => data.hasOwnProperty('genres_id'));
   return genres;
 };
 
@@ -41,7 +38,7 @@ const getMainGenres = async () => {
  */
 const getNumberOfAlbums = async (n) => {
   const mainGenres = await getMainGenres();
-  const mainGenresIndex = mainGenres.map(genre => genre.deez_genres_id);
+  const mainGenresIndex = mainGenres.map((genre) => genre.deez_genres_id);
   const sql = `
       select albums_id, deez_albums_id, artist, genre
       from
@@ -55,7 +52,7 @@ const getNumberOfAlbums = async (n) => {
       where x.row_number <=${n};
   `;
   const result = await pool.query(sql);
-  const albums = result.filter(data => data.hasOwnProperty('albums_id'));
+  const albums = result.filter((data) => data.hasOwnProperty('albums_id'));
   return albums;
 };
 
@@ -67,14 +64,14 @@ const setTracks = async () => {
     const tracksId = [];
     const albums = await getNumberOfAlbums(NB_ALBUMS);
     await Promise.all(
-        albums.map(async album => {
+        albums.map(async (album) => {
           timer +=TIME;
           setTimeout(
               async () => {
                 const response = await fetch(`https://api.deezer.com/album/${album.deez_albums_id}/tracks`);
                 const tracks = await response.json();
                 await Promise.all(
-                    tracks.data.map(async track => {
+                    tracks.data.map(async (track) => {
                       if (!tracksId.includes(track.id)) {
                         tracksId.push(track.id);
                         const sql = `
@@ -103,10 +100,10 @@ const setAlbums = async () => {
     let timer = 0;
     const albumIds = [];
     const genres = await getMainGenres();
-    const genresId = genres.map(genre => genre.deez_genres_id);
+    const genresId = genres.map((genre) => genre.deez_genres_id);
     const artists = await getAllArtists();
     await Promise.all(
-        artists.map(async artist => {
+        artists.map(async (artist) => {
           timer += TIME;
           setTimeout(
               async () => {
@@ -180,7 +177,7 @@ const setGenres = async () => {
       const response = await fetch(`https://api.deezer.com/genre/${i}`);
       responseArr[i] = await response.json();
     }
-    const genres = responseArr.filter(genre => genre.hasOwnProperty('id'));
+    const genres = responseArr.filter((genre) => genre.hasOwnProperty('id'));
     const req = await Promise.all(
         genres.map(async (genre) => {
           if (genre.id !== 'undefined' && genre.name !== 'undefined') {
@@ -216,7 +213,7 @@ const setMainGenres = async () => {
     const resultToOne = await pool.query(sqlSetUpdateToOne);
 
     const result = await Promise.all(
-        MAINGENRES.map(async genre => {
+        MAINGENRES.map(async (genre) => {
           const sql = `
           UPDATE genres SET is_main = 1
           WHERE genres.deez_genres_id = ?
@@ -229,11 +226,10 @@ const setMainGenres = async () => {
   }
 };
 
-
 export default {
   setGenres,
   setMainGenres,
   setArtistsByGenre,
   setAlbums,
   setTracks,
-}
+};

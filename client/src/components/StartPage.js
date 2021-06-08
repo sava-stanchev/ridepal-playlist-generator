@@ -26,7 +26,12 @@ const StartPage = () => {
   const pagesVisited = pageNumber * playlistsPerPage;
 
   useEffect(() => {
-    setSlider(Math.ceil(durations[durations.length - 1]/60))
+    const maxTime = Math.ceil(durations[durations.length - 1]/60);
+    if (!isNaN(maxTime)) {
+      setSlider(maxTime);
+    } else {
+      setSlider(0);
+    }
   }, [durations]);
 
   useEffect(() => {
@@ -159,18 +164,16 @@ const StartPage = () => {
         <button className="genre" onClick={() => {genreFilter(152); setTimePl(null)}}>Rock</button>
         <button className="genre" onClick={() => {genreFilter(153); setTimePl(null)}}>Blues</button>
         <button className="genre" onClick={() => {genreFilter(168); setTimePl(null)}}>Disco</button>
-        {/* show only when user is logedin */}
         <button className="genre" onClick={() => showMyPlaylists(reducedPlaylists)}>My playlists</button>
-          {/* <select name="durations" defaultValue="Duration" onChange={e => filterByDuration(reducedPlaylists, e.target.value)}>
-            <option>Duration</option>
-            {durations.map(d => <option>{Math.round(d/60)} min.</option>)}
-          </select> */}
-          <div>
-          <td className="slider-col">
-          <input type="range" min={Math.round(durations[0]/60)} max={Math.ceil(durations[durations.length - 1]/60)} value={slider ? slider : Math.ceil(durations[durations.length - 1]/60)} id="slider" onChange={(e) => updateSlider(e.target.value)}/>
+        <div className="centered-container">
+          <td className="duration-text">Duration:</td>
+          <td className="duration-slider">
+            <input type="range" min={Math.round(durations[0]/60)} max={Math.ceil(durations[durations.length - 1]/60)}
+            value={slider ? slider : Math.ceil(durations[durations.length - 1]/60)} id="slider"
+            onChange={(e) => updateSlider(e.target.value)}/>
           </td>
-          <td className="percent-col">{slider} min.</td>
-          </div>
+          <td className="duration-minutes">{slider} min.</td>
+        </div>
         <div className="boxContainer">
           <table className = "elementsContainer">
             <tbody><tr>
