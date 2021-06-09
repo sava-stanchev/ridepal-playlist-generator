@@ -47,8 +47,6 @@ const StartPage = () => {
 
   let reducedPlaylists = [];
 
-  console.log(playlists.length);
-
   if (playlists.length !== 0) {
     reducedPlaylists = playlists.reduce((acc, pl) => acc
     .some(el => el.playlists_id === pl.playlists_id) ? acc : [...acc, pl], []);
@@ -58,11 +56,23 @@ const StartPage = () => {
     setFilteredPlaylists(reducedPlaylists.filter(playlist => {
       return playlist.playlist_name.toLowerCase().includes(search.toLowerCase())
     }));
+  }, [search]);
+
+  useEffect(() => {
+      setTimePl(reducedPlaylists.filter(pl => +pl.duration < slider*60));
+
+  }, [slider]);
+
+  useEffect(() => {
     setDurations(reducedPlaylists.map(track => track.duration)
     .reduce((acc, dur) => acc.includes(dur) ? acc : [...acc, dur], [])
     .map(Number).sort((a, b) => a - b));
+  }, [playlists]);
 
-  }, [search, playlists, filteredGenres]);
+  console.log(myPlaylists);
+  console.log(timePl);
+  console.log(filteredGenres);
+  console.log(filteredPlaylists);
 
   let foundPlaylists = myPlaylists || timePl || filteredGenres || filteredPlaylists;
 
@@ -94,12 +104,6 @@ const StartPage = () => {
       setMyPlaylists(reducedPlaylists.filter(pl => pl.user_id === auth.user.users_id));
     }
   };
-
-  useEffect(() => {
-    if (reducedPlaylists !== null && reducedPlaylists !== undefined) {
-      setTimePl(reducedPlaylists.filter(pl => +pl.duration < slider*60))
-    }
-  }, [slider]);
   
   const deletePlaylist = (id) => {
     fetch(`${HOST}/playlists/${id}`, {
@@ -110,9 +114,7 @@ const StartPage = () => {
       },
     })
     .then((res) => res.json())
-    .then(() => {
-      
-      setPlaylists(playlists.filter(p => p.playlists_id !== id))})
+    .then(() => setPlaylists(playlists.filter(p => p.playlists_id !== id)))
     .catch((error) => setError(error.message));
   };
 
@@ -169,7 +171,7 @@ const StartPage = () => {
     <div className="genres">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       <section className="genre-section">
-        <button className="genre" onClick={() => {setFilteredGenres(null); setTimePl(null); setMyPlaylists(null); setSlider(Math.ceil(durations[durations.length - 1]/60)) }}>All</button>
+        <button className="genre" onClick={() => {setFilteredGenres(null); setTimePl(null); setMyPlaylists(null); setSlider(Math.ceil(durations[durations.length - 1]/60)); setSearch('')}}>All</button>
         <button className="genre" onClick={() => {genreFilter(129); setTimePl(null)}}>Jazz</button>
         <button className="genre" onClick={() => {genreFilter(132); setTimePl(null)}}>Pop</button>
         <button className="genre" onClick={() => {genreFilter(152); setTimePl(null)}}>Rock</button>
