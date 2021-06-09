@@ -69,6 +69,7 @@ const GeneratePlaylist = ({points}) => {
 
   const history = useHistory();
   const routeChange = (id) =>{ 
+    console.log('ehoooooo');
     const path = `/playlists/${id}`; 
     history.push(path);
   };
