@@ -1,7 +1,7 @@
 import tracksData from '../data/tracks.js';
 import objectHash from 'object-hash';
 import playlistData from '../data/playlists.js';
-import genresData from '../data/genresData.js';
+import genresData from '../data/genres-data.js';
 
 
 /**

@@ -48,6 +48,7 @@ const getAllUsers = async () => {
     FROM users AS u
     JOIN roles AS r
     ON u.user_role = r.roles_id
+    WHERE u.is_deleted != 1
   `;
   const result = await pool.query(sql);
   return result;

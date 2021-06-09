@@ -7,11 +7,11 @@ import userService from './service/user-service.js';
 import {authMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
-import playlistsData from './data/playlists.js';
 import playlistServices from './service/playlistServices.js';
-import usersData from './data/users.js';
 import dbSeeding from './service/db-seeding.js';
 import pool from './data/pool.js';
+import playlistsController from './controllers/playlists-controller.js';
+import usersController from './controllers/users-controller.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
@@ -24,6 +24,9 @@ app.use(express.json());
 
 passport.use(jwtStrategy);
 app.use(passport.initialize());
+
+app.use('/playlists', playlistsController);
+app.use('/users', usersController);
 
 /** Register */
 app.post('/register', async (req, res) => {
@@ -85,112 +88,6 @@ app.post('/playlist', authMiddleware, async (req, res) => {
   try {
     const playlist = await playlistServices.playlistGenerator(req);
     res.status(200).send(playlist);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-app.get('/playlists', async (req, res) => {
-  try {
-    const thePlaylists = await playlistsData.getAllPlaylists();
-    res.json(thePlaylists);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-app.get('/playlists/:id', async (req, res) => {
-  try {
-    const playlistId = +req.params.id;
-    const playlist = await playlistsData.getTracksForPlaylistById(playlistId);
-    const filteredPlaylist = playlist.filter((t) => t.hasOwnProperty('playlist_name'));
-    // console.log(filteredPlaylist);
-    res.json(filteredPlaylist);
-  } catch (error) {
-    return res.status(404).json({
-      error: error.message,
-    });
-  }
-});
-
-app.delete('/playlists/:id', async (req, res) => {
-  try {
-    const playlist = await playlistsData.getPlaylistById(+req.params.id);
-    if (!playlist || playlist.is_deleted === 1) {
-      return res.status(400).json({
-        message: 'Playlist not found!',
-      });
-    }
-    await playlistsData.deletePlaylist(+req.params.id);
-    res.status(200).send(playlist);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-app.patch('/playlists/:id', async (req, res) => {
-  const playlistId = req.params.id;
-  const updateData = req.body;
-  try {
-    const playlist = await playlistsData.getPlaylistById(+playlistId);
-    if (!playlist) {
-      res.status(404).send({
-        message: 'Playlist not found!',
-      });
-    }
-
-    const playlistUpdated = await playlistServices.updatePlaylist(+playlistId, updateData);
-    const newPlaylist = await playlistsData.getPlaylistById(+playlistId);
-    if (playlistUpdated) {
-      res.status(200).send(newPlaylist[0]);
-    }
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-app.get('/users', async (req, res) => {
-  try {
-    const users = await userService.getAllUsers();
-    res.json(users);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-app.patch('/users/:id', async (req, res) => {
-  const userId = req.params.id;
-  const data = req.body;
-  try {
-    const user = await userService.updateUser(userId, data);
-    res.status(200).send(user);
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
-
-app.delete('/users/:id', async (req, res) => {
-  try {
-    const user = await usersData.getUserById(+req.params.id);
-    if (!user || user.is_deleted === 1) {
-      return res.status(400).json({
-        message: 'User not found!',
-      });
-    }
-    await usersData.deleteUser(+req.params.id);
-    res.status(200).send(user);
   } catch (error) {
     return res.status(400).json({
       error: error.message,

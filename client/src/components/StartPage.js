@@ -129,6 +129,7 @@ const StartPage = () => {
   .slice(pagesVisited, pagesVisited + playlistsPerPage)
   .map((playlist) => {
     return (
+      
       <article className="card">
         <div className="cover">
           <div className="cover-text">
@@ -137,8 +138,16 @@ const StartPage = () => {
           </div>
           <div className="view-btn-wrapper">
             <button className="view-btn" onClick = {() => history.push(`/playlists/${playlist.playlists_id}`)}>Tracklist</button>
-            <button className="edit-btn" onClick={() => editFunction(playlist)}><FaEdit/></button>
-            <button className="delete-btn" onClick={() => deletePlaylist(playlist.playlists_id)}><FaTrashAlt/></button>
+            {
+              (auth.isLoggedIn && auth.user.user_role === 1) || (auth.isLoggedIn && auth.user.users_id === playlist.user_id)
+              ?
+              <>
+              <button className="edit-btn" onClick={() => editFunction(playlist)}><FaEdit/></button>
+              <button className="delete-btn" onClick={() => deletePlaylist(playlist.playlists_id)}><FaTrashAlt/></button>
+              </>
+              :
+              <></>
+            }
           </div>
         </div>
         <div className="description">
