@@ -56,18 +56,15 @@ const StartPage = () => {
     setFilteredPlaylists(reducedPlaylists.filter(playlist => {
       return playlist.playlist_name.toLowerCase().includes(search.toLowerCase())
     }));
-  }, [search]);
+    setDurations(reducedPlaylists.map(track => track.duration)
+    .reduce((acc, dur) => acc.includes(dur) ? acc : [...acc, dur], [])
+    .map(Number).sort((a, b) => a - b));
+  }, [search, playlists]);
 
   useEffect(() => {
       setTimePl(reducedPlaylists.filter(pl => +pl.duration < slider*60));
 
   }, [slider]);
-
-  useEffect(() => {
-    setDurations(reducedPlaylists.map(track => track.duration)
-    .reduce((acc, dur) => acc.includes(dur) ? acc : [...acc, dur], [])
-    .map(Number).sort((a, b) => a - b));
-  }, [playlists]);
 
   console.log(myPlaylists);
   console.log(timePl);
