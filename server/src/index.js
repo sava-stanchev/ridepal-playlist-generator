@@ -257,7 +257,7 @@ app.get('/settracks', async (req, res) => {
     setTimeout(async () => {
       pool.end();
       res.status(200).send({message: 'Tracks are seeded!'});
-    }, 80000);
+    }, 200000);
   } catch (error) {
     return res.status(400).json({
       error: error.message,

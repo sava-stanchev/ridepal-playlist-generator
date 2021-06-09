@@ -32,25 +32,25 @@ const getTracks = async ({jazz, rock, blues, disco, pop}) => {
 };
 
 
-/**
- * @param {number} genre
- * @param {number} duration
- * @return {object} tracks
- */
-const getTracksByGenreNotRepeatArtist = async (genre, duration) => {
+const getTracksNotRepArtists = async ({jazz, rock, blues, disco, pop}) => {
   const sql = `
-    CALL rand_track_not_rep_artist(?, ?)
+  SELECT t.tracks_id, t.deez_tracks_id, t.track_title, t.duration, t.rank, a.deez_artists_id, a.artist_name as artist, g.genre 
+  FROM tracks AS t
+  JOIN genres AS g
+  ON g.deez_genres_id = t.genre
+  JOIN artists AS a
+  ON a.deez_artists_id = t.artist
+  WHERE g.genre = ? OR g.genre = ? OR g.genre = ? OR g.genre = ? OR g.genre = ?
+  GROUP BY a.deez_artists_id
+  ORDER BY rand()
   `;
-  const a = await pool.query(sql, [duration, genre]);
-  console.log(a);
-  const tracks = await pool.query(`SELECT * FROM temp_table_${genre}`);
-  const dropTable = await pool.query(`drop table temp_table_${genre}`);
-  return tracks;
+  const result = await pool.query(sql, [jazz, rock, blues, disco, pop]);
+  return result;
 };
 
 
 export default {
   getTracksByGenre,
-  getTracksByGenreNotRepeatArtist,
   getTracks,
+  getTracksNotRepArtists,
 };

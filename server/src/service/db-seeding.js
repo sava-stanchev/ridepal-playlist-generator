@@ -57,12 +57,24 @@ const getNumberOfAlbums = async (n) => {
 };
 
 
+const getAlbums = async () => {
+  const sql = `
+  SELECT * , group_concat(deez_albums_id) AS gen FROM playlist_generator.albums
+  group by artist
+  `;
+  const result = await pool.query(sql);
+  const albums = result.filter((data) => data.hasOwnProperty('albums_id'));
+  return albums;
+};
+
+
 /** Set tracks from Deezer */
 const setTracks = async () => {
   try {
     let timer = 0;
     const tracksId = [];
-    const albums = await getNumberOfAlbums(NB_ALBUMS);
+    const albums = await getAlbums();
+    console.log(albums.map(a => a.gen).map(el => el.split(',').slice(0, 4)).flat(Infinity));
     await Promise.all(
         albums.map(async (album) => {
           timer +=TIME;

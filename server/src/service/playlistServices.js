@@ -10,8 +10,6 @@ import genresData from '../data/genresData.js';
  * @return {Array} array of objects
  */
 export const playlistGenerator = async (req) => {
-
-  console.log('odsdsdfsdfsdfsdfdfgsdfsdfsd');
   const from = req.body.points.from;
   const to = req.body.points.to;
   const duration = req.body.points.duration;
@@ -22,33 +20,39 @@ export const playlistGenerator = async (req) => {
         const a = {[g.name]: g.duration}; return {...acc, ...a};
       }, {});
 
-  const result = await tracksData.getTracks(genresName);
-  let tracksAll = result.filter(t => t.hasOwnProperty('tracks_id'));
 
-  const keys = Object.keys(genresName);
-  console.log(req.body.repeatArtist);
+  let tracksAll = [];
 
   if (req.body.repeatArtist === false) {
-    console.log('hello arti');
-    const temp = [...tracksAll];
-    const artists = [];
-    temp.forEach( tr => {
-      if (artists.includes(tr.deez_artists_id)) {
-        return null;
-      }
-      artists.push(tr.deez_artists_id);
-      return tr;
-    });
-    console.log(temp.length);
-    tracksAll = [...temp];
-  };
+    const result = await tracksData.getTracksNotRepArtists(genresName);
+    tracksAll = result.filter(t => t.hasOwnProperty('tracks_id'));
+  } else {
+    const result = await tracksData.getTracks(genresName);
+    tracksAll = result.filter(t => t.hasOwnProperty('tracks_id'));
+  }
+
+  const keys = Object.keys(genresName);  
+
+  // if (req.body.repeatArtist === false) {
+  //   console.log('hello arti');
+  //   const temp = [...tracksAll];
+  //   const artists = [];
+  //   temp.forEach( tr => {
+  //     if (artists.includes(tr.deez_artists_id)) {
+  //       return null;
+  //     }
+  //     artists.push(tr.deez_artists_id);
+  //     return tr;
+  //   });
+  //   console.log(temp.length);
+  //   tracksAll = [...temp];
+  // };
 
   const generateTracksList = (tr, gen) => {
     const result = gen.map(g => {
       let totalDuration = 0;
       let a = [];
       const temp = new Set;
-      // console.log(g.name);
       let tracksFiltered = tr.filter(t => t.genre.toLowerCase() === g.name);
       while (totalDuration < g.duration) {
         temp.add(tracksFiltered.pop());
@@ -56,7 +60,6 @@ export const playlistGenerator = async (req) => {
         totalDuration = a.reduce((acc, t) => acc+=t.duration, 0);
         tracksFiltered = tracksFiltered.filter(t => t.duration < g.duration*1.05 - totalDuration);
       }
-      // console.log(temp);
       return temp;
     });
     return result;
