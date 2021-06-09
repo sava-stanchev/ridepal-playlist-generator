@@ -61,7 +61,8 @@ const getAllPlaylists = async () => {
     ON p.playlists_id = pgm.playlist
     JOIN genres AS g
     ON pgm.genre = g.deez_genres_id
-    WHERE p.is_deleted != 1;
+    WHERE p.is_deleted != 1
+    ORDER BY p.rank
   `);
 };
 
