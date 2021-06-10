@@ -14,7 +14,7 @@ React.js, Express.js, Node.js, MariaDB, MySQL
 Backend:
 - Inside the `server` folder, run `npm install` to restore all dependencies.
 - Import the database schema from the `full-database` file in the `database` folder.
-- Inside the `server` folder, create a `.env` file in the server root folder with the following configuration:
+- Inside the `server` folder, create a `.env` file with the following configuration:
 ```js
 PORT=5555
 HOST=localhost
