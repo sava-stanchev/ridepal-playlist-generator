@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "5fe8079e-ca55-4903-b909-632aafd8bf83",
+		"_postman_id": "fd81f286-c77b-4ad3-b121-2a1bbce26680",
 		"name": "DB Seeding",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "01. set genres",
+			"name": "01. SEED GENRES",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -24,16 +24,25 @@
 			"response": []
 		},
 		{
-			"name": "02. set mein genres",
+			"name": "02. SET MAIN GENRES",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": null
+				"url": {
+					"raw": "localhost:5555/setmaingenres",
+					"host": [
+						"localhost"
+					],
+					"port": "5555",
+					"path": [
+						"setmaingenres"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "03. set artists by genre",
+			"name": "03. SEED ARTISTS",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -54,7 +63,7 @@
 			"response": []
 		},
 		{
-			"name": "04. set albums",
+			"name": "04. SEED ALBUMS",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -75,7 +84,7 @@
 			"response": []
 		},
 		{
-			"name": "05. set tracks",
+			"name": "05. SEED TRACKS",
 			"request": {
 				"method": "GET",
 				"header": [],
