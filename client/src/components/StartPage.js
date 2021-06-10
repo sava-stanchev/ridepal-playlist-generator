@@ -178,8 +178,8 @@ const StartPage = () => {
         <div className="centered-container">
           <td className="duration-text">Duration:</td>
           <td className="duration-slider">
-            <input type="range" min={Math.round(durations[0]/60)} max={Math.ceil(durations[durations.length - 1]/60)}
-            value={slider ? slider : Math.ceil(durations[durations.length - 1]/60)} id="slider"
+            <input type="range" min={Math.round(durations[0]/60) || ''} max={Math.ceil(durations[durations.length - 1]/60) || ''}
+            value={(slider ? slider : Math.ceil(durations[durations.length - 1]/60)) || ''} id="slider"
             onChange={(e) => updateSlider(e.target.value)}/>
           </td>
           <td className="duration-minutes">{slider} min.</td>
