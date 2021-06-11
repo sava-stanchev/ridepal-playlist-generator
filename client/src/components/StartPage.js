@@ -16,23 +16,12 @@ const StartPage = () => {
   const [filteredPlaylists, setFilteredPlaylists] = useState([]);
   const [filteredGenres, setFilteredGenres] = useState(null);
   const [timePl, setTimePl] = useState(null);
-  const [durations, setDurations] = useState([]);
   const [myPlaylists, setMyPlaylists] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
-  const [slider, setSlider] = useState(null);
 
   const playlistsPerPage = 6;
   const pagesVisited = pageNumber * playlistsPerPage;
-
-  useEffect(() => {
-    const maxTime = Math.ceil(durations[durations.length - 1]/60);
-    if (!isNaN(maxTime)) {
-      setSlider(maxTime);
-    } else {
-      setSlider(0);
-    }
-  }, [durations]);
 
   useEffect(() => {
     setLoading(true);
@@ -56,15 +45,17 @@ const StartPage = () => {
     setFilteredPlaylists(reducedPlaylists.filter(playlist => {
       return playlist.playlist_name.toLowerCase().includes(search.toLowerCase())
     }));
-    setDurations(reducedPlaylists.map(track => track.duration)
-    .reduce((acc, dur) => acc.includes(dur) ? acc : [...acc, dur], [])
-    .map(Number).sort((a, b) => a - b));
   }, [search, playlists]);
 
-  useEffect(() => {
-      setTimePl(reducedPlaylists.filter(pl => +pl.duration < slider*60));
-
-  }, [slider]);
+  const filterByDuration = (reducedPlaylists, duration) => {
+    console.log(duration);
+    if (duration === 'Duration') {
+      return;
+    }
+    if (playlists !== null || playlists !== undefined) {
+      setTimePl(reducedPlaylists.filter(pl => +pl.duration <= Math.floor(duration.split(' ')[0]*60)))
+    }
+  };
 
   console.log(myPlaylists);
   console.log(timePl);
@@ -119,10 +110,6 @@ const StartPage = () => {
     setCurrentPlaylist(playlist);
     setIsOpen(true);
   }
-
-  const updateSlider = (value) => {
-      setSlider(value);
-  }
   
   const displayPlaylists = foundPlaylists
   .slice(pagesVisited, pagesVisited + playlistsPerPage)
@@ -168,22 +155,21 @@ const StartPage = () => {
     <div className="genres">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       <section className="genre-section">
-        <button className="genre" onClick={() => {setFilteredGenres(null); setTimePl(null); setMyPlaylists(null); setSlider(Math.ceil(durations[durations.length - 1]/60)); setSearch('')}}>All</button>
+        <button className="genre" onClick={() => {setFilteredGenres(null); setTimePl(null); setMyPlaylists(null); setSearch('')}}>All</button>
         <button className="genre" onClick={() => {genreFilter(129); setTimePl(null)}}>Jazz</button>
         <button className="genre" onClick={() => {genreFilter(132); setTimePl(null)}}>Pop</button>
         <button className="genre" onClick={() => {genreFilter(152); setTimePl(null)}}>Rock</button>
         <button className="genre" onClick={() => {genreFilter(153); setTimePl(null)}}>Blues</button>
         <button className="genre" onClick={() => {genreFilter(168); setTimePl(null)}}>Disco</button>
         <button className="genre" onClick={() => showMyPlaylists(reducedPlaylists)}>My playlists</button>
-        <div className="centered-container">
-          <td className="duration-text">Duration:</td>
-          <td className="duration-slider">
-            <input type="range" min={Math.round(durations[0]/60) || ''} max={Math.ceil(durations[durations.length - 1]/60) || ''}
-            value={(slider ? slider : Math.ceil(durations[durations.length - 1]/60)) || ''} id="slider"
-            onChange={(e) => updateSlider(e.target.value)}/>
-          </td>
-          <td className="duration-minutes">{slider} min.</td>
-        </div>
+        <select name="durations" defaultValue="Duration" onChange={e => filterByDuration(reducedPlaylists, e.target.value)}>
+            <option>Duration</option>
+            <option>100 min.</option>
+            <option>200 min.</option>
+            <option>300 min.</option>
+            <option>400 min.</option>
+            <option>500 min.</option>
+        </select>
         <div className="boxContainer">
           <table className = "elementsContainer">
             <tbody><tr>
