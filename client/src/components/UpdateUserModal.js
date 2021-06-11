@@ -1,10 +1,9 @@
 import ReactDom from 'react-dom';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import {HOST} from '../common/constants.js';
 
 export default function Modal({user, open, onClose, users, setUsers}) {
   const [theUser, setTheUser] = useState(null);
-
 
   useEffect(() => {
     setTheUser(user);

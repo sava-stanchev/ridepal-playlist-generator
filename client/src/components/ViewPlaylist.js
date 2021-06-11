@@ -42,7 +42,6 @@ const ViewPlaylist = props => {
 
   const ids = playlistData.map(tr => tr.deez_tracks_id);
   const filteredTracks = playlistData.filter(({deez_tracks_id}, index) => !ids.includes(deez_tracks_id, index+1));
-  console.log(filteredTracks.length);
 
   const displayTracks = filteredTracks.map((track) => {
     return (

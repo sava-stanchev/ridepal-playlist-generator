@@ -7,7 +7,7 @@ import userService from './service/user-service.js';
 import {authMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
-import playlistServices from './service/playlistServices.js';
+import playlistServices from './service/playlist-services.js';
 import dbSeeding from './service/db-seeding.js';
 import pool from './data/pool.js';
 import playlistsController from './controllers/playlists-controller.js';
@@ -122,7 +122,7 @@ app.get('/setmaingenres', async (req, res) => {
 
 app.get('/setartistsbygenre', async (req, res) => {
   try {
-    const result = await dbSeeding.setArtistsByGenre();
+    await dbSeeding.setArtistsByGenre();
     setTimeout(async () => {
       pool.end();
       res.status(200).send({message: 'Artists seeding is DONE!'});
@@ -136,7 +136,7 @@ app.get('/setartistsbygenre', async (req, res) => {
 
 app.get('/setalbums', async (req, res) => {
   try {
-    const result = await dbSeeding.setAlbums();
+    await dbSeeding.setAlbums();
     setTimeout(async () => {
       pool.end();
       res.status(200).send({message: 'Albums are seeded!'});
@@ -150,7 +150,7 @@ app.get('/setalbums', async (req, res) => {
 
 app.get('/settracks', async (req, res) => {
   try {
-    const result = await dbSeeding.setTracks();
+    await dbSeeding.setTracks();
     setTimeout(async () => {
       pool.end();
       res.status(200).send({message: 'Tracks are seeded!'});

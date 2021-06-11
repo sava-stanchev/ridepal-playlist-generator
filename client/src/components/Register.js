@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
-import { HOST } from '../common/constants';
+import {HOST} from '../common/constants';
 
 const initialState = {
   username: '',
@@ -55,7 +55,6 @@ const Register = () => {
       setUsernameError({...usernameError, properLength});
     }
   };
-  console.log(newUser);
 
   const register = (e) => {
     e.preventDefault();

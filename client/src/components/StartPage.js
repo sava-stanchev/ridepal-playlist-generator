@@ -57,11 +57,6 @@ const StartPage = () => {
     }
   };
 
-  console.log(myPlaylists);
-  console.log(timePl);
-  console.log(filteredGenres);
-  console.log(filteredPlaylists);
-
   let foundPlaylists = myPlaylists || timePl || filteredGenres || filteredPlaylists;
 
   const showError = () => {

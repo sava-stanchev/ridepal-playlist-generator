@@ -1,26 +1,14 @@
 import pool from './pool.js';
 
-
-/**
- *
- * @param {string} username
- * @return {Object | undefined}
- */
 const getUserByName = async (username) =>{
   const sql = `
-  SELECT * FROM users
-  WHERE username = ?
+    SELECT * FROM users
+    WHERE username = ?
   `;
   const result = await pool.query(sql, [username]);
   return result[0];
 };
 
-
-/**
- *
- * @param {Object} user
- * @return {Object} - created user
- */
 const createUser = async (user) => {
   const sqlNewUser = `
     INSERT INTO users (username, password, email, user_role, is_deleted) 
@@ -38,10 +26,6 @@ const createUser = async (user) => {
   return createdUser;
 };
 
-/**
- *
- * @return {Array} - list of users
- */
 const getAllUsers = async () => {
   const sql = `
     SELECT u.users_id, u.username, u.password, u.email, r.role, u.is_deleted
@@ -54,12 +38,6 @@ const getAllUsers = async () => {
   return result;
 };
 
-
-/**
- *
- * @param {number} id
- * @return {Object}
- */
 const getUserById = async (id) => {
   const sql = `
     SELECT u.users_id, u.username, u.password, u.email, r.role, u.is_deleted
@@ -72,12 +50,6 @@ const getUserById = async (id) => {
   return user;
 };
 
-
-/**
- *
- * @param {number} id
- * @return {Object}
- */
 const deleteUser = async (id) => {
   const sql = `
     UPDATE users SET users.is_deleted = 1
@@ -86,25 +58,17 @@ const deleteUser = async (id) => {
   return await pool.query(sql, [id]);
 };
 
-
-/**
- *
- * @param {number} userId
- * @param {string} data
- * @return {Object} user data
- */
 const updateUser = async (userId, data) => {
   const sql = `
-  UPDATE users AS u
-  SET username = ?, email = ? 
-  WHERE u.users_id = ?
+    UPDATE users AS u
+    SET username = ?, email = ? 
+    WHERE u.users_id = ?
   `;
 
-  const result = await pool.query(sql, [data.username, data.email, userId]);
+  await pool.query(sql, [data.username, data.email, userId]);
   const user = await getUserById(userId);
   return user[0];
 };
-
 
 const logout = async (token) => {
   return await pool.query('INSERT INTO tokens (token) VALUES (?)', [token]);

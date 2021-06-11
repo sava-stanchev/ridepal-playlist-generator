@@ -1,15 +1,9 @@
 import pool from './pool.js';
 
-
-/** set new playlist
- *
- * @param {Object} data
- * @return {Object}
- */
 const setPlaylist = async (data) => {
   const sql = `
-  INSERT INTO playlists (playlist_name, duration, created_by, rank, hash, created_on)
-  VALUES (?, ?, ?, ?, ?, NOW())
+    INSERT INTO playlists (playlist_name, duration, created_by, rank, hash, created_on)
+    VALUES (?, ?, ?, ?, ?, NOW())
   `;
 
   const result = await pool.query(sql, [data.name, data.duration, data.user, data.rank, data.hash]);
@@ -18,39 +12,24 @@ const setPlaylist = async (data) => {
   return newPlaylist[0];
 };
 
-/**
- * @param {number} playlist
- * @param {number} track
- * @return {object}
- */
 const setPlaylistTrackMap = async (playlist, track) => {
   const sql = `
-  INSERT INTO playlist_track_map (playlist, track)
-  VALUES (?, ?)
+    INSERT INTO playlist_track_map (playlist, track)
+    VALUES (?, ?)
   `;
   const result = await pool.query(sql, [playlist, track]);
   return result;
 };
 
-/**
- *
- * @param {number} playlist
- * @param {string} genre
- * @return {object}
- */
 const setPlaylistGenreMap = async (playlist, genre) => {
   const sql = `
-  INSERT INTO playlist_genre_map (playlist, genre)
-  VALUES (?, ?)
+    INSERT INTO playlist_genre_map (playlist, genre)
+    VALUES (?, ?)
   `;
   const result = await pool.query(sql, [playlist, genre]);
   return result;
 };
 
-/**
- *
- * @return {Array}
- */
 const getAllPlaylists = async () => {
   return await pool.query(`
     SELECT p.playlists_id, p.playlist_name, p.created_on, p.duration, p.created_by as user_id, u.username AS created_by, p.rank, g.deez_genres_id, g.genre, p.is_deleted
@@ -66,12 +45,6 @@ const getAllPlaylists = async () => {
   `);
 };
 
-
-/**
- *
- * @param {number} id
- * @return {Array}
- */
 const getPlaylistById = async (id) => {
   const sql = `
     SELECT p.playlists_id, p.playlist_name, p.created_on, p.duration, p.created_by as user_id, u.username AS created_by, p.rank, g.deez_genres_id, g.genre, p.is_deleted
@@ -91,32 +64,27 @@ const getPlaylistById = async (id) => {
 
 const getTracksForPlaylistById = async (id) => {
   const sql = `
-  SELECT p.playlist_name, t.deez_tracks_id, p.duration, p.created_on, u.username AS created_by,
-  p.playlists_id, p.rank, t.track_title, a.artist_name, t.duration AS track_duration, al.album_cover AS albumCover
-  FROM playlists p
-  JOIN users AS u 
-  ON p.created_by = u.users_id
-  JOIN playlist_track_map AS ptm
-  ON p.playlists_id = ptm.playlist
-  JOIN tracks AS t
-  ON t.deez_tracks_id = ptm.track
-  JOIN artists AS a
-  ON a.deez_artists_id = t.artist
-  JOIN album_track_map AS atm
-  ON atm.track = t.deez_tracks_id
-  JOIN albums AS al
-  ON atm.album = al.deez_albums_id
-  WHERE p.playlists_id = ?
+    SELECT p.playlist_name, t.deez_tracks_id, p.duration, p.created_on, u.username AS created_by,
+    p.playlists_id, p.rank, t.track_title, a.artist_name, t.duration AS track_duration, al.album_cover AS albumCover
+    FROM playlists p
+    JOIN users AS u 
+    ON p.created_by = u.users_id
+    JOIN playlist_track_map AS ptm
+    ON p.playlists_id = ptm.playlist
+    JOIN tracks AS t
+    ON t.deez_tracks_id = ptm.track
+    JOIN artists AS a
+    ON a.deez_artists_id = t.artist
+    JOIN album_track_map AS atm
+    ON atm.track = t.deez_tracks_id
+    JOIN albums AS al
+    ON atm.album = al.deez_albums_id
+    WHERE p.playlists_id = ?
   `;
   const result = await pool.query(sql, [id]);
   return result;
 };
 
-/** check is given hash exist in playlist table
- *
- * @param {string} hash
- * @return {object | undefined}
- */
 const getHash = async (hash) => {
   const sql = `
     SELECT * FROM playlists

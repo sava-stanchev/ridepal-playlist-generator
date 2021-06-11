@@ -52,7 +52,6 @@ const GeneratePlaylist = ({points}) => {
         break;
     }
   }
-
   
   const playlistData = {
     playlistName: playlistName.playlistName,
@@ -69,7 +68,6 @@ const GeneratePlaylist = ({points}) => {
 
   const history = useHistory();
   const routeChange = (id) =>{ 
-    console.log('ehoooooo');
     const path = `/playlists/${id}`; 
     history.push(path);
   };
@@ -88,7 +86,7 @@ const GeneratePlaylist = ({points}) => {
     .then(data => routeChange(data.playlists_id))
     .catch(console.error())
   };
-  console.log(playlistData.genres);
+
   return(
     <section className="join-login-main-section">
       <h1 className="join-login-text">
@@ -148,13 +146,13 @@ const GeneratePlaylist = ({points}) => {
               totalDuration < 100
               ?
               <>
-              <p className="reminderMsg" style={{color: 'red'}}>* total of percentages must equal 100</p>
-              <button type="submit" className="btn" disabled="true" onClick={() => generatePlaylist(playlistData)}>Generate Playlist</button>
+                <p className="reminderMsg" style={{color: 'red'}}>* total of percentages must equal 100</p>
+                <button type="submit" className="btn" disabled="true" onClick={() => generatePlaylist(playlistData)}>Generate Playlist</button>
               </>
               :
               <>
-              <p className ="reminderMsg">* total of percentages must equal 100</p>
-              <button type ='submit' className="btn" onClick={(e) => generatePlaylist(playlistData, e)}>Generate Playlist</button>
+                <p className ="reminderMsg">* total of percentages must equal 100</p>
+                <button type ='submit' className="btn" onClick={(e) => generatePlaylist(playlistData, e)}>Generate Playlist</button>
               </>
             }
           </>

@@ -24,7 +24,7 @@ const NavBar = () => {
         </a>
       </Link>
       <nav className="main-nav">
-      <ul>
+        <ul>
         {
           auth.isLoggedIn
           ?
@@ -63,7 +63,6 @@ const NavBar = () => {
             </Link>
           </>
         }
-
         </ul>
       </nav>
     </header>

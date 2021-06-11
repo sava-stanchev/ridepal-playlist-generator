@@ -1,13 +1,11 @@
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-
+import {useState} from 'react';
+import {useHistory} from 'react-router-dom';
 
 const GenerateRoute = ({ setPoints }) => {
     const [route, setRoute] = useState({
     from: '',
     to: '',
   });
-
 
   const history = useHistory();
   const routeChange = () =>{ 
@@ -21,7 +19,6 @@ const GenerateRoute = ({ setPoints }) => {
       [prop]: value,
     });
   };
-  
 
   const getDuration = (e) => {
     e.preventDefault();

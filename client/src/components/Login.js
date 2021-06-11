@@ -1,13 +1,10 @@
-import { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { HOST } from '../common/constants.js';
+import {useContext, useState} from 'react';
+import {useHistory} from 'react-router-dom';
+import {HOST} from '../common/constants.js';
 import decode from 'jwt-decode';
 import AuthContext from '../providers/auth-context.js';
 
-
-
 const Login = () => {
-  
   const history = useHistory();
   const auth = useContext(AuthContext);
   const [user, setUser] = useState({
@@ -50,10 +47,8 @@ const Login = () => {
     })
     .catch(console.warn);
   };
-
-    
+ 
   return(
-  
     <section className="join-login-main-section">
       <h1 className="join-login-text">
         Welcome
