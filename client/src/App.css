@@ -650,6 +650,12 @@ body {
   margin-bottom: 0.3rem;
 }
 
+.registerMsg {
+  font-size: 0.85rem;
+  margin-bottom: -1rem;
+  margin-top: 0.5rem;
+}
+
 button:disabled {
   cursor: not-allowed;
 }

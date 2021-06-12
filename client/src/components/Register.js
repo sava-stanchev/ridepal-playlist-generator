@@ -34,7 +34,7 @@ const Register = () => {
 
   useEffect(() => {}, [newUser]);
 
-  const updateUser = (name, value) => {
+  const createUser = (name, value) => {
     setNewUser({
       ...newUser,
       [name]: value,
@@ -46,7 +46,7 @@ const Register = () => {
     }
 
     if (name === "email") {
-      const properEmail = value.includes('@') && value.length > 7;
+      const properEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value);
       setEmailError({...emailError, properEmail});
     }
 
@@ -83,20 +83,43 @@ const Register = () => {
           <span className="accent-text"> generate!</span>
         </h1>
         <form className="join-login-form">
-          <div className="input-group" name="username" value={newUser.username} onChange={e => updateUser('username', e.target.value)}>
+          <div className="input-group" name="username" value={newUser.username} onChange={e => createUser('username', e.target.value)}>
             <label>Name:</label>
             <input type="text"/>
+            {
+              usernameError.properLength ?
+                <p className ="registerMsg">* Between 3 and 20 chars</p>
+              :
+                <p className ="registerMsg" style={{color: 'red'}}>* Between 3 and 20 chars</p>
+            }
           </div>
-          <div className="input-group" name="email" value={newUser.email} onChange={e => updateUser('email', e.target.value)}>
+          <div className="input-group" name="email" value={newUser.email} onChange={e => createUser('email', e.target.value)}>
             <label>Email:</label>
             <input type="email"/>
+            {
+              emailError.properEmail ?
+                <p className ="registerMsg">* Valid email address</p>
+              :
+                <p className ="registerMsg" style={{color: 'red'}}>* Valid email address</p>
+            }
           </div>
-          <div className="input-group" name="password" value={newUser.password} onChange={e => updateUser('password', e.target.value)}>
+          <div className="input-group" name="password" value={newUser.password} onChange={e => createUser('password', e.target.value)}>
             <label>Password:</label>
             <input type="password"/>
+            {
+              passwordError.properLength ?
+                <p className ="registerMsg">* Between 4 and 30 chars</p>
+              :
+                <p className ="registerMsg" style={{color: 'red'}}>* Between 4 and 30 chars</p>
+            }
           </div>
           <div className="input-group">
+          {
+            usernameError.properLength && emailError.properEmail && passwordError.properLength ?
             <button type="submit" className="btn" onClick={(e) => register(e)}>Join Now</button>
+            :
+            <button type="submit" className="btn" disabled={true} onClick={(e) => register(e)}>Join Now</button>
+          }
           </div>
         </form>
       </section>
