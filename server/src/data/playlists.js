@@ -64,7 +64,7 @@ const getPlaylistById = async (id) => {
 
 const getTracksForPlaylistById = async (id) => {
   const sql = `
-    SELECT p.playlist_name, t.deez_tracks_id, p.duration, p.created_on, u.username AS created_by,
+    SELECT p.playlist_name, t.deez_tracks_id, p.duration, t.tracks_id,
     p.playlists_id, p.rank, t.track_title, a.artist_name, t.duration AS track_duration, al.album_cover AS albumCover
     FROM playlists p
     JOIN users AS u 

@@ -45,10 +45,9 @@ const StartPage = () => {
     setFilteredPlaylists(reducedPlaylists.filter(playlist => {
       return playlist.playlist_name.toLowerCase().includes(search.toLowerCase())
     }));
-  }, [search, playlists]);
+  }, [search, playlists]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const filterByDuration = (reducedPlaylists, duration) => {
-    console.log(duration);
     if (duration === 'Duration') {
       return;
     }
@@ -111,7 +110,7 @@ const StartPage = () => {
   .map((playlist) => {
     return (
       
-      <article className="card">
+      <article className="card" key={playlist.playlists_id}>
         <div className="cover">
           <div className="cover-text">
             <h1 className="cover-title">{playlist.playlist_name}</h1>
@@ -146,7 +145,7 @@ const StartPage = () => {
   
   return(
     <>
-    <UpdatePlaylistModal open={isOpen} onClose={() => setIsOpen(false)} playlist={currentPlaylist} playlists={playlists} setPlaylists={setPlaylists}/>
+    <UpdatePlaylistModal open={isOpen} onClose={() => setIsOpen(false)} playlist={currentPlaylist} playlists={playlists} setPlaylists={setPlaylists} />
     <div className="genres">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       <section className="genre-section">

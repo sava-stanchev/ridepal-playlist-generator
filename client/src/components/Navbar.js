@@ -18,10 +18,10 @@ const NavBar = () => {
   return(
     <header className="main-header">
       <Link to="/home">
-        <a href="#home" className="brand-logo">
-          <img src={brandLogo} alt="logo"/>
+        <div className="brand-logo">
+          <img src={brandLogo} alt="logo" />
           <div href="#home" className="brand-logo-name">RidePal</div>
-        </a>
+        </div>
       </Link>
       <nav className="main-nav">
         <ul>
@@ -31,7 +31,7 @@ const NavBar = () => {
             auth.user.user_role === 1
               ?            
                 <Link to="/users">
-                  <li><a href="#users">Users</a></li>
+                  <li>Users</li>
                 </Link>
               :  
                <></> 
@@ -43,10 +43,10 @@ const NavBar = () => {
           ?
           <>
             <Link to="/generate-route">
-              <li><a href="#generate-route">Generate</a></li>
+              <li>Generate</li>
             </Link>
             <Link to="/home">
-              <li><a href="#logout" onClick={() => logout()}>Logout</a></li>
+              <li onClick={() => logout()}>Logout</li>
             </Link>
             <li><button className="tooltip-icon" data-tip data-for="userTip"><CgProfile size={27}/></button></li>
             <ReactTooltip id="userTip" place="bottom" effect="solid">
@@ -56,10 +56,10 @@ const NavBar = () => {
           :
           <>
             <Link to="/login">
-              <li><a href="#login">Login</a></li>
+              <li>Login</li>
             </Link>
             <Link to="/register">
-              <li><a href="#register">Register</a></li>
+              <li>Register</li>
             </Link>
           </>
         }

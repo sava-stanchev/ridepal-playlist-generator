@@ -94,47 +94,49 @@ const GeneratePlaylist = ({points}) => {
         <span className="accent-text"> playlist!</span>
       </h1>
       <form className="join-login-form">
-      <div className="input-group">
+        <div className="input-group">
           <p>Travel duration: {Math.round(points.duration/60)} min.</p>
           <label>Playlist name:</label>
           <input type="text" onChange={(e) => updatePlaylistName('playlistName', e.target.value)}/>
-      </div>
-      <table className="genres-list">
-        <tr className="genre-row">
-          <td className="genre-col">Jazz:</td>
-          <td className="slider-col">
-          <input type="range" min={0} max={100} value={sliderJazz} id="slider" onChange={(e) => updateGenres('Jazz', e.target.value)}/>
-          </td>
-          <td className="percent-col">{sliderJazz}%</td>
-        </tr>
-        <tr className="genre-row">
-          <td className="genre-col">Rock:</td>
-          <td className="slider-col">
-          <input type="range" min={0} max={100} value={sliderRock} id="slider" onChange={(e) => updateGenres('Rock', e.target.value)}/>
-          </td>
-          <td className="percent-col">{sliderRock}%</td>
-        </tr>
-        <tr className="genre-row">
-          <td className="genre-col">Blues:</td>
-          <td className="slider-col">
-          <input type="range" min={0} max={100} value={sliderBlues} id="slider" onChange={(e) => updateGenres('Blues', e.target.value)}/>
-          </td>
-          <td className="percent-col">{sliderBlues}%</td>
-        </tr>
-        <tr className="genre-row">
-          <td className="genre-col">Disco:</td>
-          <td className="slider-col">
-            <input type="range" min={0} max={100} value={sliderDisco} id="slider" onChange={(e) => updateGenres('Disco', e.target.value)}/>
-          </td>
-          <td className="percent-col">{sliderDisco}%</td>
-        </tr>
-        <tr className="genre-row">
-          <td className="genre-col">Pop:</td>
-          <td className="slider-col">
-            <input type="range" min={0} max={100} value={sliderPop} id="slider" onChange={(e) => updateGenres('Pop', e.target.value)}/>
-          </td>
-          <td className="percent-col">{sliderPop}%</td>
-        </tr>
+        </div>
+        <table className="genres-list">
+          <tbody>
+            <tr className="genre-row">
+              <td className="genre-col">Jazz:</td>
+              <td className="slider-col">
+                <input type="range" min={0} max={100} value={sliderJazz} id="slider" onChange={(e) => updateGenres('Jazz', e.target.value)}/>
+              </td>
+              <td className="percent-col">{sliderJazz}%</td>
+            </tr>
+            <tr className="genre-row">
+              <td className="genre-col">Rock:</td>
+              <td className="slider-col">
+                <input type="range" min={0} max={100} value={sliderRock} id="slider" onChange={(e) => updateGenres('Rock', e.target.value)}/>
+              </td>
+              <td className="percent-col">{sliderRock}%</td>
+            </tr>
+            <tr className="genre-row">
+              <td className="genre-col">Blues:</td>
+              <td className="slider-col">
+                <input type="range" min={0} max={100} value={sliderBlues} id="slider" onChange={(e) => updateGenres('Blues', e.target.value)}/>
+              </td>
+              <td className="percent-col">{sliderBlues}%</td>
+            </tr>
+            <tr className="genre-row">
+              <td className="genre-col">Disco:</td>
+              <td className="slider-col">
+                <input type="range" min={0} max={100} value={sliderDisco} id="slider" onChange={(e) => updateGenres('Disco', e.target.value)}/>
+              </td>
+              <td className="percent-col">{sliderDisco}%</td>
+            </tr>
+            <tr className="genre-row">
+              <td className="genre-col">Pop:</td>
+              <td className="slider-col">
+                <input type="range" min={0} max={100} value={sliderPop} id="slider" onChange={(e) => updateGenres('Pop', e.target.value)}/>
+              </td>
+              <td className="percent-col">{sliderPop}%</td>
+            </tr>
+          </tbody>
         </table>
         <div className="input-group">
           <div className="checkbox-container">
@@ -142,19 +144,19 @@ const GeneratePlaylist = ({points}) => {
             <label>Allow tracks from the same artist</label>
           </div>
           <>
-            {
-              totalDuration < 100
-              ?
-              <>
-                <p className="reminderMsg" style={{color: 'red'}}>* total of percentages must equal 100</p>
-                <button type="submit" className="btn" disabled="true" onClick={() => generatePlaylist(playlistData)}>Generate Playlist</button>
-              </>
-              :
-              <>
-                <p className ="reminderMsg">* total of percentages must equal 100</p>
-                <button type ='submit' className="btn" onClick={(e) => generatePlaylist(playlistData, e)}>Generate Playlist</button>
-              </>
-            }
+          {
+            totalDuration < 100
+            ?
+            <>
+              <p className="reminderMsg" style={{color: 'red'}}>* total of percentages must equal 100</p>
+              <button type="submit" className="btn" disabled={true} onClick={() => generatePlaylist(playlistData)}>Generate Playlist</button>
+            </>
+            :
+            <>
+              <p className ="reminderMsg">* total of percentages must equal 100</p>
+              <button type ='submit' className="btn" onClick={(e) => generatePlaylist(playlistData, e)}>Generate Playlist</button>
+            </>
+          }
           </>
         </div>
       </form>

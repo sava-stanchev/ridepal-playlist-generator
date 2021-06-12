@@ -45,15 +45,17 @@ const ViewPlaylist = props => {
 
   const displayTracks = filteredTracks.map((track) => {
     return (
-      <tr className="song" key={track.tracks_id}>
-        <td className="song-album-cover">
-          <div className="album-img">
-            <img src={track.albumCover} alt=""/>
-          </div>
-        </td>
-        <td className="song-title"><h5>{track.artist_name} - {track.track_title}</h5></td>
-        <td className="song-length"><h5>{trackTimeFormat(track.track_duration)}</h5></td>
-      </tr>
+      <tbody key={track.tracks_id}>
+        <tr className="song">
+          <td className="song-album-cover">
+            <div className="album-img">
+              <img src={track.albumCover} alt="cover"/>
+            </div>
+          </td>
+          <td className="song-title"><h5>{track.artist_name} - {track.track_title}</h5></td>
+          <td className="song-length"><h5>{trackTimeFormat(track.track_duration)}</h5></td>
+        </tr>
+      </tbody>
     )
   })
   
