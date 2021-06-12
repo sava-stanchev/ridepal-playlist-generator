@@ -76,54 +76,45 @@ const Register = () => {
     .then(() => routeChange());
   };
     
-    return(
-      <section className="join-login-main-section">
-        <h1 className="join-login-text">
-          Join and
-          <span className="accent-text"> generate!</span>
-        </h1>
-        <form className="join-login-form">
-          <div className="input-group" name="username" value={newUser.username} onChange={e => createUser('username', e.target.value)}>
-            <label>Name:</label>
-            <input type="text"/>
-            {
-              usernameError.properLength ?
-                <p className ="registerMsg">* Between 3 and 20 chars</p>
-              :
-                <p className ="registerMsg" style={{color: 'red'}}>* Between 3 and 20 chars</p>
-            }
-          </div>
-          <div className="input-group" name="email" value={newUser.email} onChange={e => createUser('email', e.target.value)}>
-            <label>Email:</label>
-            <input type="email"/>
-            {
-              emailError.properEmail ?
-                <p className ="registerMsg">* Valid email address</p>
-              :
-                <p className ="registerMsg" style={{color: 'red'}}>* Valid email address</p>
-            }
-          </div>
-          <div className="input-group" name="password" value={newUser.password} onChange={e => createUser('password', e.target.value)}>
-            <label>Password:</label>
-            <input type="password"/>
-            {
-              passwordError.properLength ?
-                <p className ="registerMsg">* Between 4 and 30 chars</p>
-              :
-                <p className ="registerMsg" style={{color: 'red'}}>* Between 4 and 30 chars</p>
-            }
-          </div>
-          <div className="input-group">
+  return(
+    <section className="join-login-main-section">
+      <h1 className="join-login-text">
+        Join and
+        <span className="accent-text"> generate!</span>
+      </h1>
+      <form className="join-login-form">
+        <div className="input-group" name="username" value={newUser.username} onChange={e => createUser('username', e.target.value)}>
+          <label>Name:</label>
+          <input type="text"/>
+          <p className ="registerMsg" style={usernameError.properLength ? {color: 'white'} : {color: 'red'}}>
+           * Between 3 and 20 chars
+          </p>
+        </div>
+        <div className="input-group" name="email" value={newUser.email} onChange={e => createUser('email', e.target.value)}>
+          <label>Email:</label>
+          <input type="email"/>
+          <p className ="registerMsg" style={emailError.properEmail ? {color: 'white'} : {color: 'red'}}>
+            * Valid email address
+          </p>
+        </div>
+        <div className="input-group" name="password" value={newUser.password} onChange={e => createUser('password', e.target.value)}>
+          <label>Password:</label>
+          <input type="password"/>
+          <p className ="registerMsg" style={passwordError.properLength ? {color: 'white'} : {color: 'red'}}>
+            * Between 4 and 30 chars
+          </p>
+        </div>
+        <div className="input-group">
           {
             usernameError.properLength && emailError.properEmail && passwordError.properLength ?
             <button type="submit" className="btn" onClick={(e) => register(e)}>Join Now</button>
             :
             <button type="submit" className="btn" disabled={true} onClick={(e) => register(e)}>Join Now</button>
           }
-          </div>
-        </form>
-      </section>
-    )    
-  };
+        </div>
+      </form>
+    </section>
+  )    
+};
     
-  export default Register;
+export default Register;
