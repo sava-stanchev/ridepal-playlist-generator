@@ -125,7 +125,7 @@ const users = [
     console.log('Creating admins...');
 
     await Promise.all(users.map(async ({username, password, email}) => pool.query(`
-        INSERT INTO users (username, password, email, user_role)
+        INSERT INTO users (username, password, email, role_id)
         VALUES (?, ?, ?, ?)
         `, [username, await bcrypt.hash(password, 10), email, roles.indexOf('admin') + 1])));
   }
