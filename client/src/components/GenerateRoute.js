@@ -1,8 +1,14 @@
 import {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 
+const cityNameVerificationError = {
+  properCityName: false,
+}
+
 const GenerateRoute = ({ setPoints }) => {
-    const [route, setRoute] = useState({
+  const [cityNameOneError, setCityNameOneError] = useState(cityNameVerificationError);
+  const [cityNameTwoError, setCityNameTwoError] = useState(cityNameVerificationError);
+  const [route, setRoute] = useState({
     from: '',
     to: '',
   });
@@ -13,11 +19,21 @@ const GenerateRoute = ({ setPoints }) => {
     history.push(path);
   };
 
-  const updateRoute = (prop, value) => {
+  const createRoute = (prop, value) => {
     setRoute({
       ...route,
       [prop]: value,
     });
+
+    if (prop === "from") {
+      const properCityName = /^([a-zA-Z\u0080-\u024F]+(?:(\. )|-| |'))*[a-zA-Z\u0080-\u024F]*$/.test(value);
+      setCityNameOneError({...cityNameOneError, properCityName});
+    }
+
+    if (prop === "to") {
+      const properCityName = /^([a-zA-Z\u0080-\u024F]+(?:(\. )|-| |'))*[a-zA-Z\u0080-\u024F]*$/.test(value);
+      setCityNameTwoError({...cityNameTwoError, properCityName});
+    }
   };
 
   const getDuration = (e) => {
@@ -44,14 +60,26 @@ const GenerateRoute = ({ setPoints }) => {
       <form className="join-login-form">
         <div className="input-group">
           <label>From:</label>
-          <input type="text" name="from" value={route.from} onChange={e => updateRoute('from', e.target.value)}/>
+          <input type="text" name="from" value={route.from} onChange={e => createRoute('from', e.target.value)}/>
         </div>
         <div className="input-group">
           <label>To:</label>
-          <input type="text" name="to" value={route.to} onChange={e => updateRoute('to', e.target.value)}/>
+          <input type="text" name="to" value={route.to} onChange={e => createRoute('to', e.target.value)}/>
         </div>
         <div className="input-group">
-          <button type="submit" className="btn"  onClick={(e) => getDuration(e)}>Next</button>
+          {
+            cityNameOneError.properCityName && cityNameTwoError.properCityName ?
+            <>
+              <p className ="cityReminderMsg">* Travel locations should be valid</p>
+              <button type="submit" className="btn" onClick={(e) => getDuration(e)}>Next</button>
+            </>
+            :
+            <>
+              <p className ="cityReminderMsg" style={{color: 'red'}}>* Travel locations should be valid</p>
+              <button type="submit" className="btn" disabled={true} onClick={(e) => getDuration(e)}>Next</button>
+            </>
+          }
+
         </div>
       </form>
     </section>

@@ -33,7 +33,7 @@ const Login = () => {
     .then(({ token }) => {
       try {
         const user = decode(token);
-        console.log(user);
+
         localStorage.setItem('token', token);
         auth.setAuthState({user, isLoggedIn: true});
         if (!user) {

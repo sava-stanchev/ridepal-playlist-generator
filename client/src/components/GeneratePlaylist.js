@@ -148,12 +148,12 @@ const GeneratePlaylist = ({points}) => {
             totalDuration < 100
             ?
             <>
-              <p className="reminderMsg" style={{color: 'red'}}>* total of percentages must equal 100</p>
+              <p className="reminderMsg" style={{color: 'red'}}>* Total of percentages must equal 100</p>
               <button type="submit" className="btn" disabled={true} onClick={() => generatePlaylist(playlistData)}>Generate Playlist</button>
             </>
             :
             <>
-              <p className ="reminderMsg">* total of percentages must equal 100</p>
+              <p className ="reminderMsg">* Total of percentages must equal 100</p>
               <button type ='submit' className="btn" onClick={(e) => generatePlaylist(playlistData, e)}>Generate Playlist</button>
             </>
           }
