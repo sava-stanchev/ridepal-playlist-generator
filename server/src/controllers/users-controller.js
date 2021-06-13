@@ -2,7 +2,6 @@ import express from 'express';
 import userService from '../service/user-service.js';
 import usersData from '../data/users.js';
 
-// eslint-disable-next-line new-cap
 const usersController = express.Router();
 
 usersController

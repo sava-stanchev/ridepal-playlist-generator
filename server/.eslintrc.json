@@ -13,6 +13,7 @@
     "rules": {
         "camelcase": 0,
         "max-len": "off",
-        "no-unused-vars": "off"
+        "no-unused-vars": "off",
+        "new-cap": 0
     }
 }

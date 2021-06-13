@@ -2,7 +2,6 @@ import express from 'express';
 import playlistsData from '../data/playlists.js';
 import playlistServices from '../service/playlist-services.js';
 
-// eslint-disable-next-line new-cap
 const playlistsController = express.Router();
 
 playlistsController
