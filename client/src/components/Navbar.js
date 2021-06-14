@@ -24,14 +24,18 @@ const NavBar = () => {
         </div>
       </Link>
       <nav className="main-nav">
-        {console.log(auth)}
+        {console.log(auth.user)}
         <ul>
         {
           auth.isLoggedIn
-          ?         
+          ?
+            auth.user.role === 1
+              ?            
                 <Link to="/users">
                   <li>Users</li>
                 </Link>
+              :  
+               <></> 
           :
             null
         }

@@ -1,11 +1,9 @@
 import tracksData from '../data/tracks.js';
-import objectHash from 'object-hash';
 import playlistData from '../data/playlists.js';
 import genresData from '../data/genres-data.js';
 
 export const playlistGenerator = async (req) => {
-  const from = req.body.points.from;
-  const to = req.body.points.to;
+  console.log(playlistName);
   const duration = req.body.points.duration;
   const playlistName = req.body.playlistName;
   const genresDuration = req.body.genres.map((g) => g.duration === 0? g: {...g, duration: Math.round(duration*g.duration/100)});
@@ -44,22 +42,14 @@ export const playlistGenerator = async (req) => {
 
 
   const tracksList = generateTracksList(tracksAll, genresDuration).reduce((acc, arr) => [...acc, ...arr], []);
-  const tracksId = tracksList.reduce((acc, t) => acc + t.tracks_id, ''); // result string
-  const hash = objectHash(tracksId + req.user.user_id + from.toLowerCase() + to.toLowerCase());
-  const is_hashExist = await playlistData.getHash(hash);
-
-  if (is_hashExist !== undefined) {
-    return console.log('playlist is repeated');
-  }
-
   const playlistDuration = tracksList.reduce((acc, t) => acc+t.duration, 0);
+
   const averagePlaylistRank = Math.round(tracksList.reduce((acc, t) => acc+t.rank, 0)/tracksList.length);
   const playlistDataObject = {
     name: playlistName,
     duration: playlistDuration,
-    user: req.user.user_id,
+    user: req.user.id,
     rank: averagePlaylistRank,
-    hash: hash,
   };
   const newPlaylist = await playlistData.setPlaylist(playlistDataObject);
   await Promise.all(

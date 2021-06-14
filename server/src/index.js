@@ -8,7 +8,6 @@ import {authMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
 import playlistServices from './service/playlist-services.js';
-import pool from './data/pool.js';
 import playlistsController from './controllers/playlists-controller.js';
 import usersController from './controllers/users-controller.js';
 
@@ -49,9 +48,9 @@ app.post('/login', async (req, res) => {
     const user = await userService.validateUser(req.body);
     if (user) {
       const token = createToken({
-        users_id: user.users_id,
+        id: user.id,
         username: user.username,
-        user_role: user.user_role,
+        role: user.role_id,
       });
       res.json({
         token,

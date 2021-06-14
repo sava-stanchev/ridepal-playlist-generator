@@ -36,13 +36,13 @@ const getAllUsers = async () => {
   return users;
 };
 
-const updateUser = async (userId, data) => {
-  const updatedUser = await usersData.updateUser(userId, data);
+const updateUser = async (id, data) => {
+  const updatedUser = await usersData.updateUser(id, data);
   return updatedUser;
 };
 
-const getUserById = async (userId) => {
-  const user = await usersData.getUserById(userId);
+const getUserById = async (id) => {
+  const user = await usersData.getUserById(id);
   return user;
 };
 
