@@ -46,7 +46,7 @@ const Users = () => {
       },
     })
     .then((res) => res.json())
-    .then(() => setUsers(users.filter(u => u.users_id !== id)))
+    .then(() => setUsers(users.filter(u => u.id !== id)))
     .catch((error) => setError(error.message));
   };
 
@@ -71,7 +71,7 @@ const Users = () => {
 
   const displayUsers = foundUsers.map((user) => {
     return (
-      <tbody key={user.users_id}>
+      <tbody key={user.id}>
         <tr className="song">
           <td className="song-album-cover"><h5>{user.username}</h5></td>
           <td className="user-email"><h5>{user.email}</h5></td>
@@ -80,7 +80,7 @@ const Users = () => {
             <button className="edit-btn-users" onClick={() => editFunction(user)}><FaEdit/></button>
           </td>
           <td className="song-length">
-            <button className="delete-btn-users" onClick={() => deleteUser(user.users_id)}><FaTrashAlt/></button>
+            <button className="delete-btn-users" onClick={() => deleteUser(user.id)}><FaTrashAlt/></button>
           </td>
         </tr>
       </tbody>
