@@ -11,8 +11,8 @@ const getUserByName = async (username) =>{
 
 const createUser = async (user) => {
   const sqlNewUser = `
-    INSERT INTO users (username, password, email, user_role, is_deleted) 
-    VALUES (?, ?, ?, 2, null)
+    INSERT INTO users (username, password, email)
+    VALUES (?, ?, ?)
   `;
   const result = await pool.query(sqlNewUser,
       [user.username, user.password, user.email]);
@@ -20,7 +20,7 @@ const createUser = async (user) => {
   const sql = `
     SELECT u.username, u.email
     FROM users AS u
-    WHERE u.users_id = ?
+    WHERE u.id = ?
   `;
   const createdUser = (await pool.query(sql, [result.insertId]))[0];
   return createdUser;
@@ -28,11 +28,11 @@ const createUser = async (user) => {
 
 const getAllUsers = async () => {
   const sql = `
-    SELECT u.users_id, u.username, u.password, u.email, r.role, u.is_deleted
+    SELECT u.id, u.username, u.password, u.email, r.role, u.is_deleted
     FROM users AS u
     JOIN roles AS r
-    ON u.user_role = r.roles_id
-    WHERE u.is_deleted = 0 OR u.is_deleted IS NULL
+    ON u.role_id = r.id
+    WHERE u.is_deleted = 0
   `;
   const result = await pool.query(sql);
   return result;
@@ -40,11 +40,11 @@ const getAllUsers = async () => {
 
 const getUserById = async (id) => {
   const sql = `
-    SELECT u.users_id, u.username, u.password, u.email, r.role, u.is_deleted
+    SELECT u.id, u.username, u.password, u.email, r.role, u.is_deleted
     FROM users AS u
     JOIN roles AS r
-    ON u.user_role = r.roles_id
-    WHERE u.users_id = ?
+    ON u.role_id = r.id
+    WHERE u.id = ?
   `;
   const user = await pool.query(sql, [id]);
   return user;
@@ -53,20 +53,20 @@ const getUserById = async (id) => {
 const deleteUser = async (id) => {
   const sql = `
     UPDATE users SET users.is_deleted = 1
-    WHERE users.users_id = ?
+    WHERE users.id = ?
   `;
   return await pool.query(sql, [id]);
 };
 
-const updateUser = async (userId, data) => {
+const updateUser = async (id, data) => {
   const sql = `
     UPDATE users AS u
     SET username = ?, email = ? 
-    WHERE u.users_id = ?
+    WHERE u.id = ?
   `;
 
-  await pool.query(sql, [data.username, data.email, userId]);
-  const user = await getUserById(userId);
+  await pool.query(sql, [data.username, data.email, id]);
+  const user = await getUserById(id);
   return user[0];
 };
 
