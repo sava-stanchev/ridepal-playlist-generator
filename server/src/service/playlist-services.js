@@ -7,19 +7,19 @@ export const playlistGenerator = async (req) => {
   const playlistName = req.body.playlistName;
 
   const genresDuration = req.body.genres.map((g) => g.duration === 0 ? g : {...g, duration: Math.round(duration * g.duration / 100)});
-  const genresName = req.body.genres.map((g) => g.duration === 0 ? {...g, duration: null} : {...g, duration: g.name})
+  const genresName = Object.values(req.body.genres
+      .map((g) => g.duration === 0 ? {...g, duration: null} : {...g, duration: g.name})
       .reduce((acc, g) => {
         const a = {[g.name]: g.duration}; return {...acc, ...a};
-      }, {});
-  const genresNameForSQL = Object.values(genresName);
+      }, {}));
 
   let tracksAll = [];
 
   if (req.body.repeatArtist === false) {
-    const result = await tracksData.getTracksNotRepArtists(genresNameForSQL);
+    const result = await tracksData.getTracksNotRepArtists(genresName);
     tracksAll = result.filter((t) => t.hasOwnProperty('id'));
   } else {
-    const result = await tracksData.getTracks(genresNameForSQL);
+    const result = await tracksData.getTracks(genresName);
     tracksAll = result.filter((t) => t.hasOwnProperty('id'));
   }
 
@@ -33,7 +33,7 @@ export const playlistGenerator = async (req) => {
         temp.add(tracksFiltered.pop());
         a = [...temp];
         totalDuration = a.reduce((acc, t) => acc+=t.duration, 0);
-        tracksFiltered = tracksFiltered.filter((t) => t.duration < g.duration*1.05 - totalDuration);
+        tracksFiltered = tracksFiltered.filter((t) => t.duration < g.duration * 1.05 - totalDuration);
       }
       return temp;
     });
@@ -42,7 +42,6 @@ export const playlistGenerator = async (req) => {
 
   const tracksList = generateTracksList(tracksAll, genresDuration).reduce((acc, arr) => [...acc, ...arr], []);
   const playlistDuration = tracksList.reduce((acc, t) => acc + t.duration, 0);
-
   const averagePlaylistRank = Math.round(tracksList.reduce((acc, t) => acc + t.rank, 0)/tracksList.length);
 
   const playlistDataObject = {
@@ -64,7 +63,7 @@ export const playlistGenerator = async (req) => {
               await playlistData.addPlaylistToGenre(genreId.id, genreId.deezer_id, newPlaylist.id);
             };
           }));
-  console.log(newPlaylist);
+
   return newPlaylist;
 };
 
@@ -76,7 +75,7 @@ const updatePlaylist = async (id, data) => {
   }
 
   const updated = {...playlist, ...data};
-  const _ = await playlistData.updatePlaylistName(updated);
+  await playlistData.updatePlaylistName(updated);
 
   return updated;
 };

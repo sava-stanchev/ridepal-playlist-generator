@@ -110,7 +110,7 @@ const StartPage = () => {
   .map((playlist) => {
     return (
       
-      <article className="card" key={playlist.playlists_id}>
+      <article className="card" key={playlist.id}>
         <div className="cover">
           <div className="cover-text">
             <h1 className="cover-title">{playlist.title}</h1>

@@ -63,7 +63,8 @@ const getPlaylistById = async (id) => {
 
 const getTracksForPlaylistById = async (id) => {
   const sql = `
-    SELECT t.id AS track_id, t.title as track_title, t.deezer_id, p.playtime, t.duration, a.name AS artist_name, al.cover, p.rank, p.title
+    SELECT t.id AS track_id, t.title as track_title, t.deezer_id, p.playtime,
+    t.duration, a.name AS artist_name, al.cover, p.rank, p.title
     FROM playlists_has_tracks pht
     JOIN playlists p ON pht.playlist_id = p.id
     JOIN tracks t ON pht.track_id = t.id
@@ -74,15 +75,6 @@ const getTracksForPlaylistById = async (id) => {
   `;
   const result = await pool.query(sql, [id]);
   return result;
-};
-
-const getHash = async (hash) => {
-  const sql = `
-    SELECT * FROM playlists
-    WHERE hash = ?
-  `;
-  const result = await pool.query(sql, [hash]);
-  return result[0];
 };
 
 const deletePlaylist = async (id) => {
@@ -111,7 +103,6 @@ export default {
   getTracksForPlaylistById,
   getAllPlaylists,
   setPlaylist,
-  getHash,
   deletePlaylist,
   updatePlaylistName,
   addTrackToPlaylist,
