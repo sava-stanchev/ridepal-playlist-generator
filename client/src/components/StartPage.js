@@ -32,27 +32,20 @@ const StartPage = () => {
       .then((data) => data.length?setPlaylists(data):setPlaylists([]))
       .catch((error) => setError(error.message))
       .finally(() => setLoading(false));
-  }, []);
-
-  let reducedPlaylists = [];
-
-  if (playlists.length !== 0) {
-    reducedPlaylists = playlists.reduce((acc, pl) => acc
-    .some(el => el.id === pl.id) ? acc : [...acc, pl], []);
-  }    
+  }, []);  
 
   useEffect(() => {
-    setFilteredPlaylists(reducedPlaylists.filter(playlist => {
+    setFilteredPlaylists(playlists.filter(playlist => {
       return playlist.title.toLowerCase().includes(search.toLowerCase())
     }));
   }, [search, playlists]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const filterByDuration = (reducedPlaylists, duration) => {
+  const filterByDuration = (playlists, duration) => {
     if (duration === 'Duration') {
       return;
     }
     if (playlists !== null || playlists !== undefined) {
-      setTimePl(reducedPlaylists.filter(pl => +pl.duration <= Math.floor(duration.split(' ')[0]*60)))
+      setTimePl(playlists.filter(pl => +pl.duration <= Math.floor(duration.split(' ')[0]*60)))
     }
   };
 
@@ -81,9 +74,9 @@ const StartPage = () => {
     setPageNumber(0);
   };
 
-  const showMyPlaylists = (reducedPlaylists) => {
+  const showMyPlaylists = (playlists) => {
     if (playlists !== null || playlists !== undefined) {
-      setMyPlaylists(reducedPlaylists.filter(pl => pl.user_id === auth.user.id));
+      setMyPlaylists(playlists.filter(pl => pl.user_id === auth.user.id));
     }
   };
   
@@ -150,13 +143,11 @@ const StartPage = () => {
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       <section className="genre-section">
         <button className="genre" onClick={() => {setFilteredGenres(null); setTimePl(null); setMyPlaylists(null); setSearch('')}}>All</button>
-        <button className="genre" onClick={() => {genreFilter(129); setTimePl(null)}}>Jazz</button>
+        <button className="genre" onClick={() => {genreFilter(116); setTimePl(null)}}>Rap</button>
         <button className="genre" onClick={() => {genreFilter(132); setTimePl(null)}}>Pop</button>
         <button className="genre" onClick={() => {genreFilter(152); setTimePl(null)}}>Rock</button>
-        <button className="genre" onClick={() => {genreFilter(153); setTimePl(null)}}>Blues</button>
-        <button className="genre" onClick={() => {genreFilter(168); setTimePl(null)}}>Disco</button>
-        <button className="genre" onClick={() => showMyPlaylists(reducedPlaylists)}>My playlists</button>
-        <select name="durations" defaultValue="Duration" onChange={e => filterByDuration(reducedPlaylists, e.target.value)}>
+        <button className="genre" onClick={() => showMyPlaylists(playlists)}>My playlists</button>
+        <select name="durations" defaultValue="Duration" onChange={e => filterByDuration(playlists, e.target.value)}>
             <option>Duration</option>
             <option>100 min.</option>
             <option>200 min.</option>

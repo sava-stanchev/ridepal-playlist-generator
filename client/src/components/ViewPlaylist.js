@@ -2,8 +2,8 @@ import {HOST} from '../common/constants.js';
 import {useEffect, useState} from 'react';
 
 const ViewPlaylist = props => {
-  const [playlistData, setPlaylistData] = useState(null);
   const {id} = props.match.params;
+  const [playlistData, setPlaylistData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
