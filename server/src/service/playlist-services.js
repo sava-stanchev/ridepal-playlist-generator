@@ -3,24 +3,24 @@ import playlistData from '../data/playlists.js';
 import genresData from '../data/genres-data.js';
 
 export const playlistGenerator = async (req) => {
-  console.log(playlistName);
   const duration = req.body.points.duration;
   const playlistName = req.body.playlistName;
-  const genresDuration = req.body.genres.map((g) => g.duration === 0? g: {...g, duration: Math.round(duration*g.duration/100)});
+
+  const genresDuration = req.body.genres.map((g) => g.duration === 0 ? g : {...g, duration: Math.round(duration * g.duration / 100)});
   const genresName = req.body.genres.map((g) => g.duration === 0 ? {...g, duration: null} : {...g, duration: g.name})
       .reduce((acc, g) => {
         const a = {[g.name]: g.duration}; return {...acc, ...a};
       }, {});
-
+  const genresNameForSQL = Object.values(genresName);
 
   let tracksAll = [];
 
   if (req.body.repeatArtist === false) {
-    const result = await tracksData.getTracksNotRepArtists(genresName);
-    tracksAll = result.filter((t) => t.hasOwnProperty('tracks_id'));
+    const result = await tracksData.getTracksNotRepArtists(genresNameForSQL);
+    tracksAll = result.filter((t) => t.hasOwnProperty('id'));
   } else {
-    const result = await tracksData.getTracks(genresName);
-    tracksAll = result.filter((t) => t.hasOwnProperty('tracks_id'));
+    const result = await tracksData.getTracks(genresNameForSQL);
+    tracksAll = result.filter((t) => t.hasOwnProperty('id'));
   }
 
   const generateTracksList = (tr, gen) => {
@@ -40,28 +40,31 @@ export const playlistGenerator = async (req) => {
     return result;
   };
 
-
   const tracksList = generateTracksList(tracksAll, genresDuration).reduce((acc, arr) => [...acc, ...arr], []);
-  const playlistDuration = tracksList.reduce((acc, t) => acc+t.duration, 0);
+  const playlistDuration = tracksList.reduce((acc, t) => acc + t.duration, 0);
 
-  const averagePlaylistRank = Math.round(tracksList.reduce((acc, t) => acc+t.rank, 0)/tracksList.length);
+  const averagePlaylistRank = Math.round(tracksList.reduce((acc, t) => acc + t.rank, 0)/tracksList.length);
+
   const playlistDataObject = {
     name: playlistName,
     duration: playlistDuration,
     user: req.user.id,
     rank: averagePlaylistRank,
   };
+
   const newPlaylist = await playlistData.setPlaylist(playlistDataObject);
+
   await Promise.all(
-      tracksList.map(async (track) => playlistData.setPlaylistTrackMap(newPlaylist.playlists_id, track.deez_tracks_id)));
+      tracksList.map(async (track) => playlistData.addTrackToPlaylist(newPlaylist.id, track.id, track.deezer_id)));
   await Promise.all(
       req.body.genres.map(
           async (g) => {
             if (g.duration !== 0) {
               const genreId = await genresData.getGenreByName(g.name);
-              await playlistData.setPlaylistGenreMap(newPlaylist.playlists_id, genreId.deez_genres_id);
+              await playlistData.addPlaylistToGenre(genreId.id, genreId.deezer_id, newPlaylist.id);
             };
           }));
+  console.log(newPlaylist);
   return newPlaylist;
 };
 

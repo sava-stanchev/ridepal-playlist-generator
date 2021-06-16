@@ -3,11 +3,9 @@ import {useHistory} from 'react-router-dom';
 import {HOST} from '../common/constants.js';
 
 const GeneratePlaylist = ({points}) => {
-  const [sliderJazz, setSliderJazz] = useState(0);
-  const [sliderRock, setSliderRock] = useState(0);
-  const [sliderBlues, setSliderBlues] = useState(0);
-  const [sliderDisco, setSliderDisco] = useState(0);
   const [sliderPop, setSliderPop] = useState(0);
+  const [sliderRock, setSliderRock] = useState(0);
+  const [sliderRap, setSliderRap] = useState(0);
   const [playlistName, setPlaylistName] = useState('');
   const [repeatArtists, setRepeatArtists] = useState(false);
   const [totalDuration, setTotalDuration] = useState(0);
@@ -20,11 +18,9 @@ const GeneratePlaylist = ({points}) => {
   };
 
   const updateGenres = (prop, value) => {
-    const sumOfSliders = Number(sliderJazz)
-      + Number(sliderRock)
-      + Number(sliderBlues)
-      + Number(sliderDisco)
-      + Number(sliderPop) 
+    const sumOfSliders = Number(sliderRock)
+      + Number(sliderPop)
+      + Number(sliderRap)
       + Number(value)
       - playlistData.genres.filter(g => g.name === prop.toLowerCase())[0].duration;
       if (sumOfSliders > 100) {
@@ -33,21 +29,15 @@ const GeneratePlaylist = ({points}) => {
       setTotalDuration(sumOfSliders);
       
     switch (prop) {
-      case 'Jazz':
-        setSliderJazz(value);
-        break;
       case 'Rock':
         setSliderRock(value);
         break;
-      case 'Blues':
-        setSliderBlues(value);
-        break;
-      case 'Disco':
-        setSliderDisco(value);
-        break;
       case 'Pop':
         setSliderPop(value);
-        break;    
+        break;
+      case 'Rap/Hip Hop':
+        setSliderRap(value);
+        break; 
       default:
         break;
     }
@@ -56,15 +46,15 @@ const GeneratePlaylist = ({points}) => {
   const playlistData = {
     playlistName: playlistName.playlistName,
     genres: [
-      {name: 'jazz', duration: sliderJazz},
       {name: 'rock', duration: sliderRock},
-      {name: 'blues', duration: sliderBlues},
-      {name: 'disco', duration: sliderDisco},
       {name: 'pop', duration: sliderPop},
+      {name: 'rap/hip hop', duration: sliderRap},
     ],
     points: points,
     repeatArtist: repeatArtists,
   };
+
+  console.log(playlistData);
 
   const history = useHistory();
   const routeChange = (id) =>{ 
@@ -83,7 +73,7 @@ const GeneratePlaylist = ({points}) => {
       body: JSON.stringify(data),
     })
     .then(res => res.json())
-    .then(data => routeChange(data.playlists_id))
+    .then(data => routeChange(data.id))
     .catch(console.error())
   };
 
@@ -102,13 +92,6 @@ const GeneratePlaylist = ({points}) => {
         <table className="genres-list">
           <tbody>
             <tr className="genre-row">
-              <td className="genre-col">Jazz:</td>
-              <td className="slider-col">
-                <input type="range" min={0} max={100} value={sliderJazz} id="slider" onChange={(e) => updateGenres('Jazz', e.target.value)}/>
-              </td>
-              <td className="percent-col">{sliderJazz}%</td>
-            </tr>
-            <tr className="genre-row">
               <td className="genre-col">Rock:</td>
               <td className="slider-col">
                 <input type="range" min={0} max={100} value={sliderRock} id="slider" onChange={(e) => updateGenres('Rock', e.target.value)}/>
@@ -116,25 +99,18 @@ const GeneratePlaylist = ({points}) => {
               <td className="percent-col">{sliderRock}%</td>
             </tr>
             <tr className="genre-row">
-              <td className="genre-col">Blues:</td>
-              <td className="slider-col">
-                <input type="range" min={0} max={100} value={sliderBlues} id="slider" onChange={(e) => updateGenres('Blues', e.target.value)}/>
-              </td>
-              <td className="percent-col">{sliderBlues}%</td>
-            </tr>
-            <tr className="genre-row">
-              <td className="genre-col">Disco:</td>
-              <td className="slider-col">
-                <input type="range" min={0} max={100} value={sliderDisco} id="slider" onChange={(e) => updateGenres('Disco', e.target.value)}/>
-              </td>
-              <td className="percent-col">{sliderDisco}%</td>
-            </tr>
-            <tr className="genre-row">
               <td className="genre-col">Pop:</td>
               <td className="slider-col">
                 <input type="range" min={0} max={100} value={sliderPop} id="slider" onChange={(e) => updateGenres('Pop', e.target.value)}/>
               </td>
               <td className="percent-col">{sliderPop}%</td>
+            </tr>
+            <tr className="genre-row">
+              <td className="genre-col">Rap:</td>
+              <td className="slider-col">
+                <input type="range" min={0} max={100} value={sliderRap} id="slider" onChange={(e) => updateGenres('Rap/Hip Hop', e.target.value)}/>
+              </td>
+              <td className="percent-col">{sliderRap}%</td>
             </tr>
           </tbody>
         </table>

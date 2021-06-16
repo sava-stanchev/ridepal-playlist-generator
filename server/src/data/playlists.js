@@ -2,44 +2,52 @@ import pool from './pool.js';
 
 const setPlaylist = async (data) => {
   const sql = `
-    INSERT INTO playlists (playlist_name, duration, created_by, rank, hash, created_on)
-    VALUES (?, ?, ?, ?, ?, NOW())
+    INSERT INTO playlists (title, playtime, rank, user_id, created_on)
+    VALUES (?, ?, ?, ?, NOW())
   `;
 
-  const result = await pool.query(sql, [data.name, data.duration, data.user, data.rank, data.hash]);
-  const newSql = `SELECT * FROM playlists WHERE playlists_id = ?`;
+  const result = await pool.query(sql, [data.name, data.duration, data.rank, data.user]);
+  const newSql = `SELECT * FROM playlists WHERE id = ?`;
   const newPlaylist = await pool.query(newSql, [result.insertId]);
   return newPlaylist[0];
 };
 
-const setPlaylistTrackMap = async (playlist, track) => {
+const addTrackToPlaylist = async (playlistId, trackId, trackDeezerId) => {
   const sql = `
-    INSERT INTO playlist_track_map (playlist, track)
-    VALUES (?, ?)
+    INSERT INTO playlists_has_tracks (playlist_id, track_id, track_deezer_id)
+    VALUES (?, ?, ?)
   `;
-  const result = await pool.query(sql, [playlist, track]);
-  return result;
+
+  return await pool.query(sql, [playlistId, trackId, trackDeezerId]);
 };
 
-const setPlaylistGenreMap = async (playlist, genre) => {
+// const setPlaylistGenreMap = async (playlist, genre) => {
+//   const sql = `
+//     INSERT INTO playlist_genre_map (playlist, genre)
+//     VALUES (?, ?)
+//   `;
+//   const result = await pool.query(sql, [playlist, genre]);
+//   return result;
+// };
+
+const addPlaylistToGenre = async (genreId, genreDeezerId, playlistId) => {
   const sql = `
-    INSERT INTO playlist_genre_map (playlist, genre)
-    VALUES (?, ?)
-  `;
-  const result = await pool.query(sql, [playlist, genre]);
-  return result;
+    INSERT INTO genres_has_playlists (genre_id, genre_deezer_id, playlist_id)
+    VALUES (?, ?, ?)`;
+
+  return await pool.query(sql, [genreId, genreDeezerId, playlistId]);
 };
 
 const getAllPlaylists = async () => {
   return await pool.query(`
-    SELECT p.playlists_id, p.playlist_name, p.created_on, p.duration, p.created_by as user_id, u.username AS created_by, p.rank, g.deez_genres_id, g.genre, p.is_deleted
+    SELECT p.id, p.title, p.created_on, p.playtime, p.user_id, u.username AS created_by, p.rank, g.deezer_id, g.name, p.is_deleted
     FROM playlists p
     JOIN users AS u 
-    ON p.created_by = u.users_id
+    ON p.user_id = u.id
     JOIN playlist_genre_map AS pgm
-    ON p.playlists_id = pgm.playlist
+    ON p.id = pgm.playlist
     JOIN genres AS g
-    ON pgm.genre = g.deez_genres_id
+    ON pgm.genre = g.deezer_id
     WHERE p.is_deleted != 1
     ORDER BY p.rank
   `);
@@ -60,7 +68,6 @@ const getPlaylistById = async (id) => {
   const result = await pool.query(sql, [id]);
   return result;
 };
-
 
 const getTracksForPlaylistById = async (id) => {
   const sql = `
@@ -120,9 +127,9 @@ export default {
   getTracksForPlaylistById,
   getAllPlaylists,
   setPlaylist,
-  setPlaylistTrackMap,
-  setPlaylistGenreMap,
   getHash,
   deletePlaylist,
   updatePlaylistName,
+  addTrackToPlaylist,
+  addPlaylistToGenre,
 };

@@ -13,7 +13,7 @@ const fetchFromDeezer = (url) => {
   return response;
 };
 
-const selectedGenres = ['Jazz', 'Rock', 'Soul & Funk'];
+const selectedGenres = ['Pop', 'Rock', 'Rap/Hip Hop'];
 const selectedGenresMap = new Map();
 const roles = ['admin', 'user'];
 const users = [
@@ -99,12 +99,12 @@ const users = [
       await limit();
       const albumTracks = await fetchFromDeezer(`https://api.deezer.com/album/${album.deezer_id}/tracks`);
 
-      await Promise.all(albumTracks.map(({id, title, link, duration, rank, preview}) => pool.query(`
-        INSERT INTO tracks (deezer_id, title, link, duration, rank, preview, album_id, album_deezer_id, artist_id, artist_deezer_id, genre_id, genre_deezer_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      await Promise.all(albumTracks.map(({id, title, duration, rank, preview}) => pool.query(`
+        INSERT INTO tracks (deezer_id, title, duration, rank, preview, album_id, album_deezer_id, artist_id, artist_deezer_id, genre_id, genre_deezer_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE
           title = ?
-        `, [id, title, link, duration, rank, preview, album.id, album.deezer_id, album.artist_id, album.artist_deezer_id, album.genre_id, album.genre_deezer_id, title])));
+        `, [id, title, duration, rank, preview, album.id, album.deezer_id, album.artist_id, album.artist_deezer_id, album.genre_id, album.genre_deezer_id, title])));
     }));
   }
 

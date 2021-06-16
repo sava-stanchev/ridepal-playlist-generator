@@ -1,49 +1,47 @@
 import pool from './pool.js';
 
-const getTracksByGenre = async (genre, duration) => {
-  const sql = `
-    CALL rand_track(?, ?)
-  `;
-  await pool.query(sql, [duration, genre]);
-  const tracks = await pool.query(`SELECT * FROM temp_table_${genre}`);
-  await pool.query(`drop table temp_table_${genre}`);
-  return tracks;
-};
+const getTracks = async (genresNameArr) => {
+  const rock = genresNameArr[0];
+  const pop = genresNameArr[1];
+  const rap = genresNameArr[2];
 
-
-const getTracks = async ({jazz, rock, blues, disco, pop}) => {
   const sql = `
-    select t.tracks_id, t.deez_tracks_id, t.track_title, t.duration, t.rank, a.deez_artists_id, a.artist_name as artist, g.genre from tracks as t
-    join genres as g
-    on g.deez_genres_id = t.genre
-    join artists as a
-    on a.deez_artists_id = t.artist
-    where g.genre = ? or g.genre = ? or g.genre = ? or g.genre = ? or g.genre = ?
+    SELECT t.id, t.deezer_id, t.title, t.duration, t.rank, t.preview, a.deezer_id AS artist_id, a.name AS artist, g.name AS genre
+    FROM tracks AS t
+    JOIN genres AS g
+    ON g.deezer_id = t.genre_deezer_id
+    JOIN artists AS a
+    ON a.deezer_id = t.artist_deezer_id
+    WHERE g.name = ? OR g.name = ? OR g.name = ?
     ORDER BY rand()
   `;
-  const result = await pool.query(sql, [jazz, rock, blues, disco, pop]);
+
+  const result = await pool.query(sql, [rock, pop, rap]);
   return result;
 };
 
+const getTracksNotRepArtists = async (genresNameArr) => {
+  const rock = genresNameArr[0];
+  const pop = genresNameArr[1];
+  const rap = genresNameArr[2];
 
-const getTracksNotRepArtists = async ({jazz, rock, blues, disco, pop}) => {
   const sql = `
-    SELECT t.tracks_id, t.deez_tracks_id, t.track_title, t.duration, t.rank, a.deez_artists_id, a.artist_name as artist, g.genre 
+    SELECT t.id, t.deezer_id, t.title, t.duration, t.rank, t.preview, a.deezer_id AS artist_id, a.name AS artist, g.name AS genre
     FROM tracks AS t
     JOIN genres AS g
-    ON g.deez_genres_id = t.genre
+    ON g.deezer_id = t.genre_deezer_id
     JOIN artists AS a
-    ON a.deez_artists_id = t.artist
-    WHERE g.genre = ? OR g.genre = ? OR g.genre = ? OR g.genre = ? OR g.genre = ?
-    GROUP BY a.deez_artists_id
+    ON a.deezer_id = t.artist_deezer_id
+    WHERE g.name = ? OR g.name = ? OR g.name = ?
+    GROUP BY a.deezer_id
     ORDER BY rand()
   `;
-  const result = await pool.query(sql, [jazz, rock, blues, disco, pop]);
+
+  const result = await pool.query(sql, [rock, pop, rap]);
   return result;
 };
 
 export default {
-  getTracksByGenre,
   getTracks,
   getTracksNotRepArtists,
 };

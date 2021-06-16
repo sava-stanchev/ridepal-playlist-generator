@@ -250,7 +250,6 @@ CREATE TABLE `tracks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `deezer_id` int(11) NOT NULL,
   `title` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `link` varchar(255) NOT NULL,
   `duration` int(11) NOT NULL,
   `rank` int(11) NOT NULL,
   `preview` varchar(255) NOT NULL,

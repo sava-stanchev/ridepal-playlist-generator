@@ -12,7 +12,7 @@ const getMainGenres = async () => {
 const getGenreByName = async (name) => {
   const sql = `
     SELECT * FROM genres
-    WHERE genre = ?
+    WHERE name = ?
   `;
   const result = await pool.query(sql, [name]);
   return result[0];
