@@ -21,8 +21,7 @@ playlistsController
       try {
         const playlistId = +req.params.id;
         const playlist = await playlistsData.getTracksForPlaylistById(playlistId);
-        const filteredPlaylist = playlist.filter((t) => t.hasOwnProperty('playlist_name'));
-        // console.log(filteredPlaylist);
+        const filteredPlaylist = playlist.filter((t) => t.hasOwnProperty('track_id'));
         res.json(filteredPlaylist);
       } catch (error) {
         return res.status(404).json({

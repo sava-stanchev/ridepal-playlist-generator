@@ -21,19 +21,11 @@ const addTrackToPlaylist = async (playlistId, trackId, trackDeezerId) => {
   return await pool.query(sql, [playlistId, trackId, trackDeezerId]);
 };
 
-// const setPlaylistGenreMap = async (playlist, genre) => {
-//   const sql = `
-//     INSERT INTO playlist_genre_map (playlist, genre)
-//     VALUES (?, ?)
-//   `;
-//   const result = await pool.query(sql, [playlist, genre]);
-//   return result;
-// };
-
 const addPlaylistToGenre = async (genreId, genreDeezerId, playlistId) => {
   const sql = `
     INSERT INTO genres_has_playlists (genre_id, genre_deezer_id, playlist_id)
-    VALUES (?, ?, ?)`;
+    VALUES (?, ?, ?)
+  `;
 
   return await pool.query(sql, [genreId, genreDeezerId, playlistId]);
 };
@@ -44,10 +36,10 @@ const getAllPlaylists = async () => {
     FROM playlists p
     JOIN users AS u 
     ON p.user_id = u.id
-    JOIN playlist_genre_map AS pgm
-    ON p.id = pgm.playlist
+    JOIN genres_has_playlists AS ghp
+    ON p.id = ghp.playlist_id
     JOIN genres AS g
-    ON pgm.genre = g.deezer_id
+    ON ghp.genre_deezer_id = g.deezer_id
     WHERE p.is_deleted != 1
     ORDER BY p.rank
   `);
@@ -55,15 +47,15 @@ const getAllPlaylists = async () => {
 
 const getPlaylistById = async (id) => {
   const sql = `
-    SELECT p.playlists_id, p.playlist_name, p.created_on, p.duration, p.created_by as user_id, u.username AS created_by, p.rank, g.deez_genres_id, g.genre, p.is_deleted
+    SELECT p.id, p.title, p.created_on, p.playtime, p.user_id, u.username AS created_by, p.rank, g.deezer_id, g.name, p.is_deleted
     FROM playlists p
     JOIN users AS u 
-    ON p.created_by = u.users_id
-    JOIN playlist_genre_map AS pgm
-    ON p.playlists_id = pgm.playlist
+    ON p.user_id = u.id
+    JOIN genres_has_playlists AS ghp
+    ON p.id = ghp.playlist_id
     JOIN genres AS g
-    ON pgm.genre = g.deez_genres_id
-    WHERE p.playlists_id = ?
+    ON ghp.genre_deezer_id = g.deezer_id
+    WHERE p.id = ?
   `;
   const result = await pool.query(sql, [id]);
   return result;
@@ -71,22 +63,14 @@ const getPlaylistById = async (id) => {
 
 const getTracksForPlaylistById = async (id) => {
   const sql = `
-    SELECT p.playlist_name, t.deez_tracks_id, p.duration, t.tracks_id,
-    p.playlists_id, p.rank, t.track_title, a.artist_name, t.duration AS track_duration, al.album_cover AS albumCover
-    FROM playlists p
-    JOIN users AS u 
-    ON p.created_by = u.users_id
-    JOIN playlist_track_map AS ptm
-    ON p.playlists_id = ptm.playlist
-    JOIN tracks AS t
-    ON t.deez_tracks_id = ptm.track
-    JOIN artists AS a
-    ON a.deez_artists_id = t.artist
-    JOIN album_track_map AS atm
-    ON atm.track = t.deez_tracks_id
-    JOIN albums AS al
-    ON atm.album = al.deez_albums_id
-    WHERE p.playlists_id = ?
+    SELECT t.id AS track_id, t.title as track_title, t.deezer_id, p.playtime, t.duration, a.name AS artist_name, al.cover, p.rank, p.title
+    FROM playlists_has_tracks pht
+    JOIN playlists p ON pht.playlist_id = p.id
+    JOIN tracks t ON pht.track_id = t.id
+    JOIN artists a ON t.artist_id = a.id
+    JOIN genres g ON t.genre_id = g.id
+    JOIN albums al ON t.album_id = al.id
+    WHERE p.id = ?
   `;
   const result = await pool.query(sql, [id]);
   return result;

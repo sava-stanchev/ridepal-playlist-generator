@@ -38,12 +38,12 @@ const StartPage = () => {
 
   if (playlists.length !== 0) {
     reducedPlaylists = playlists.reduce((acc, pl) => acc
-    .some(el => el.playlists_id === pl.playlists_id) ? acc : [...acc, pl], []);
+    .some(el => el.id === pl.id) ? acc : [...acc, pl], []);
   }    
 
   useEffect(() => {
     setFilteredPlaylists(reducedPlaylists.filter(playlist => {
-      return playlist.playlist_name.toLowerCase().includes(search.toLowerCase())
+      return playlist.title.toLowerCase().includes(search.toLowerCase())
     }));
   }, [search, playlists]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -76,14 +76,14 @@ const StartPage = () => {
 
   const genreFilter = (genre) => {
     if (playlists !== null || playlists !== undefined) {
-      setFilteredGenres(playlists.filter(track => track.deez_genres_id === genre));
+      setFilteredGenres(playlists.filter(track => track.genre_deezer_id === genre));
     }    
     setPageNumber(0);
   };
 
   const showMyPlaylists = (reducedPlaylists) => {
     if (playlists !== null || playlists !== undefined) {
-      setMyPlaylists(reducedPlaylists.filter(pl => pl.user_id === auth.user.users_id));
+      setMyPlaylists(reducedPlaylists.filter(pl => pl.user_id === auth.user.id));
     }
   };
   
@@ -96,7 +96,7 @@ const StartPage = () => {
       },
     })
     .then((res) => res.json())
-    .then(() => setPlaylists(playlists.filter(p => p.playlists_id !== id)))
+    .then(() => setPlaylists(playlists.filter(p => p.id !== id)))
     .catch((error) => setError(error.message));
   };
 
@@ -113,17 +113,17 @@ const StartPage = () => {
       <article className="card" key={playlist.playlists_id}>
         <div className="cover">
           <div className="cover-text">
-            <h1 className="cover-title">{playlist.playlist_name}</h1>
-            <h4 className="cover-subtitle">{Math.round(playlist.duration/60)} min.</h4>
+            <h1 className="cover-title">{playlist.title}</h1>
+            <h4 className="cover-subtitle">{Math.round(playlist.playtime/60)} min.</h4>
           </div>
           <div className="view-btn-wrapper">
-            <button className="view-btn" onClick = {() => history.push(`/playlists/${playlist.playlists_id}`)}>Tracklist</button>
+            <button className="view-btn" onClick = {() => history.push(`/playlists/${playlist.id}`)}>Tracklist</button>
             {
-              (auth.isLoggedIn && auth.user.user_role === 1) || (auth.isLoggedIn && auth.user.users_id === playlist.user_id)
+              (auth.isLoggedIn && auth.user.role_id === 1) || (auth.isLoggedIn && auth.user.id === playlist.user_id)
               ?
               <>
               <button className="edit-btn" onClick={() => editFunction(playlist)}><FaEdit/></button>
-              <button className="delete-btn" onClick={() => deletePlaylist(playlist.playlists_id)}><FaTrashAlt/></button>
+              <button className="delete-btn" onClick={() => deletePlaylist(playlist.id)}><FaTrashAlt/></button>
               </>
               :
               <></>

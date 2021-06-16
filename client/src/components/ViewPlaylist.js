@@ -40,20 +40,17 @@ const ViewPlaylist = props => {
     return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0' ) + s;
   };
 
-  const ids = playlistData.map(tr => tr.deez_tracks_id);
-  const filteredTracks = playlistData.filter(({deez_tracks_id}, index) => !ids.includes(deez_tracks_id, index+1));
-
-  const displayTracks = filteredTracks.map((track) => {
+  const displayTracks = playlistData.map((track) => {
     return (
-      <tbody key={track.tracks_id}>
+      <tbody key={track.track_id}>
         <tr className="song">
           <td className="song-album-cover">
             <div className="album-img">
-              <img src={track.albumCover} alt="cover"/>
+              <img src={track.cover} alt="cover"/>
             </div>
           </td>
           <td className="song-title"><h5>{track.artist_name} - {track.track_title}</h5></td>
-          <td className="song-length"><h5>{trackTimeFormat(track.track_duration)}</h5></td>
+          <td className="song-length"><h5>{trackTimeFormat(track.duration)}</h5></td>
         </tr>
       </tbody>
     )
@@ -65,7 +62,7 @@ const ViewPlaylist = props => {
       {showLoader()}
       <div className="songs-container">
         <div className="playlist-header">
-          <h5 className="playlist-title">Tracklist for "{playlistData[0].playlist_name}" ({Math.round(playlistData[0].duration/60)} min.)</h5>
+          <h5 className="playlist-title">Tracklist for "{playlistData[0].title}" ({Math.round(playlistData[0].playtime/60)} min.)</h5>
         </div>
         <table className="playlist-list">
           {displayTracks}
