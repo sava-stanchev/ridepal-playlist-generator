@@ -90,23 +90,23 @@ const getTracksForPlaylistById = async (id) => {
 const deletePlaylist = async (id) => {
   const sql = `
     UPDATE playlists SET playlists.is_deleted = 1
-    WHERE playlists.playlists_id = ?
+    WHERE playlists.id = ?
   `;
 
   return await pool.query(sql, [id]);
 };
 
 const updatePlaylistName = async (playlist) => {
-  const {playlist_name} = playlist;
-  const playlistId = playlist[0].playlists_id;
+  const {title} = playlist;
+  const playlistId = playlist[0].id;
 
   const sql = `
     UPDATE playlists AS p SET
-    p.playlist_name = ?
-    WHERE p.playlists_id = ?
+    p.title = ?
+    WHERE p.id = ?
   `;
 
-  return await pool.query(sql, [playlist_name, playlistId]);
+  return await pool.query(sql, [title, playlistId]);
 };
 
 export default {

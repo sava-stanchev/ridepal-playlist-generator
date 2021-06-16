@@ -16,7 +16,7 @@ export default function Modal({playlist, open, onClose, playlists, setPlaylists}
   };
 
   const updatePlaylist = () => {
-    fetch(`${HOST}/playlists/${playlist.playlists_id}`, {
+    fetch(`${HOST}/playlists/${playlist.id}`, {
       method: 'PATCH',
       headers: {
         'content-type': 'application/json'
@@ -26,7 +26,7 @@ export default function Modal({playlist, open, onClose, playlists, setPlaylists}
     .then((res) => res.json())
     .then((data) => {
       const editedPlaylist = data;
-      const newPlaylists = playlists.map(p => p.playlists_id === editedPlaylist.playlists_id ? editedPlaylist : p);
+      const newPlaylists = playlists.map(p => p.id === editedPlaylist.id ? editedPlaylist : p);
       setPlaylists(newPlaylists);
     })
   };
@@ -43,8 +43,8 @@ export default function Modal({playlist, open, onClose, playlists, setPlaylists}
       <button className="close-button" onClick={onClose}>&times;</button>
         <div className="input-group">
           <label>New playlist name:</label>
-          <input type="text" name="playlist_name" value={thePlaylist ? thePlaylist.playlist_name : playlist.playlist_name}
-          onChange={e => updatePlaylistProperties('playlist_name', e.target.value)} />
+          <input type="text" name="title" value={thePlaylist ? thePlaylist.title : playlist.title}
+          onChange={e => updatePlaylistProperties('title', e.target.value)} />
         </div>
         <div className="input-group">
           <button className="btn" onClick={closeFunction}>Update</button>
