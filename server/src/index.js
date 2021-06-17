@@ -10,6 +10,7 @@ import jwtStrategy from './auth/strategy.js';
 import playlistServices from './service/playlist-services.js';
 import playlistsController from './controllers/playlists-controller.js';
 import usersController from './controllers/users-controller.js';
+import tokensData from './data/tokens.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
@@ -70,7 +71,7 @@ app.post('/login', async (req, res) => {
 /** Logout */
 app.delete('/logout', authMiddleware, async (req, res) => {
   try {
-    await userService.logout(req.headers.authorization.replace('Bearer ', ''));
+    await tokensData.blacklistToken(req.headers.authorization.replace('Bearer ', ''));
 
     res.json({
       message: 'Successfully logged out!',
@@ -91,6 +92,10 @@ app.post('/playlist', authMiddleware, async (req, res) => {
       error: error.message,
     });
   }
+});
+
+app.all('*', (req, res) => {
+  res.status(404).json({message: 'Resource not found.'});
 });
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}...`));

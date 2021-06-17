@@ -70,10 +70,6 @@ const updateUser = async (id, data) => {
   return user[0];
 };
 
-const logout = async (token) => {
-  return await pool.query('INSERT INTO tokens (token) VALUES (?)', [token]);
-};
-
 export default {
   getUserByName,
   createUser,
@@ -81,5 +77,4 @@ export default {
   getUserById,
   deleteUser,
   updateUser,
-  logout,
 };

@@ -27,10 +27,6 @@ const validateUser = async ({username, password}) => {
   return null;
 };
 
-const logout = async (token) => {
-  await usersData.logout(token);
-};
-
 const getAllUsers = async () => {
   const users = await usersData.getAllUsers();
   return users;
@@ -49,7 +45,6 @@ const getUserById = async (id) => {
 export default {
   createUser,
   validateUser,
-  logout,
   getAllUsers,
   getUserById,
   updateUser,
