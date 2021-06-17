@@ -74,7 +74,7 @@ const getPlaylistById = async (id) => {
 const getTracksForPlaylistById = async (id) => {
   const sql = `
     SELECT t.id AS track_id, t.title as track_title, t.deezer_id, p.playtime,
-    t.duration, a.name AS artist_name, al.cover, p.rank, p.title
+    t.duration, a.name AS artist_name, al.cover, p.rank, p.title, t.preview
     FROM playlists_has_tracks pht
     JOIN playlists p ON pht.playlist_id = p.id
     JOIN tracks t ON pht.track_id = t.id

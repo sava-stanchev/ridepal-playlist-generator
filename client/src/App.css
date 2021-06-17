@@ -272,6 +272,18 @@ body {
     opacity 320ms;
 }
 
+.play-btn {
+  color: white;
+  background-color: transparent;
+  padding: 0 0;
+  text-decoration: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.7rem;
+  margin-top: 0.5rem;
+}
+
 .delete-btn-users, .edit-btn-users {
   color: white;
   background-color: transparent;

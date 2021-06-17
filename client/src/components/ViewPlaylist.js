@@ -1,5 +1,7 @@
 import {HOST} from '../common/constants.js';
 import {useEffect, useState} from 'react';
+import {FaPlayCircle} from "react-icons/fa";
+import {Howl} from 'howler';
 
 const ViewPlaylist = props => {
   const {id} = props.match.params;
@@ -17,6 +19,22 @@ const ViewPlaylist = props => {
     .catch((error) => setError(error.message))
     .finally(() => setLoading(false));
   }, [id]);
+
+  let sound = null;
+
+  const soundPlay = (src) => {
+    if (sound != null) {
+      sound.stop();
+      sound.unload();
+      sound = null;
+    } else {
+      sound = new Howl ({
+        src,
+        html5: true
+      })
+      sound.play();
+    }
+  }
 
   const showError = () => {
     if (error) {
@@ -48,6 +66,11 @@ const ViewPlaylist = props => {
             <div className="album-img">
               <img src={track.cover} alt="cover"/>
             </div>
+          </td>
+          <td className="play-preview">
+            <button className="play-btn" onClick={() => soundPlay(track.preview)}>
+              <FaPlayCircle/>
+            </button>
           </td>
           <td className="song-title"><h5>{track.artist_name} - {track.track_title}</h5></td>
           <td className="song-length"><h5>{trackTimeFormat(track.duration)}</h5></td>
