@@ -47,7 +47,7 @@ const GenerateRoute = ({ setPoints }) => {
       from: route.from,
       to: route.to,
     }))
-    .catch(error => console.log(error))
+    .catch(() => window.alert('Invalid waypoints!'))
     .then(() => routeChange())
   }
   

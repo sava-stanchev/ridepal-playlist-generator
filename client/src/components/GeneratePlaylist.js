@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom';
 import {HOST} from '../common/constants.js';
 
 const GeneratePlaylist = ({points}) => {
+  const history = useHistory();
   const [sliderPop, setSliderPop] = useState(0);
   const [sliderRock, setSliderRock] = useState(0);
   const [sliderRap, setSliderRap] = useState(0);
@@ -54,9 +55,6 @@ const GeneratePlaylist = ({points}) => {
     repeatArtist: repeatArtists,
   };
 
-  console.log(playlistData);
-
-  const history = useHistory();
   const routeChange = (id) =>{ 
     const path = `/playlists/${id}`; 
     history.push(path);
