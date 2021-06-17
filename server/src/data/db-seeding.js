@@ -108,17 +108,6 @@ const users = [
     }));
   }
 
-  const rolesDB = await pool.query('SELECT * FROM roles');
-
-  if (!rolesDB || rolesDB.length === 0) {
-    console.log('Creating roles...');
-
-    await Promise.all(roles.map((role) => pool.query(`
-        INSERT INTO roles (role)
-        VALUES (?)
-        `, [role])));
-  }
-
   const usersDB = await pool.query('SELECT * FROM users');
 
   if (!usersDB || usersDB.length === 0) {
