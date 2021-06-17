@@ -42,13 +42,21 @@ const GenerateRoute = ({ setPoints }) => {
     method: 'GET',
   })
     .then(res => res.json())
-    .then(data => setPoints({
-      duration: data.resourceSets[0].resources[0].travelDuration,
-      from: route.from,
-      to: route.to,
-    }))
-    .catch(() => window.alert('Invalid waypoints!'))
-    .then(() => routeChange())
+    .then((data) => {
+      try {
+        setPoints({
+          duration: data.resourceSets[0].resources[0].travelDuration,
+          from: route.from,
+          to: route.to,
+        })
+        if (data.resourceSets[0].resources[0].travelDuration) {
+          routeChange();
+        }
+      } catch (error) {
+        window.alert('Invalid waypoints!');
+      }
+    })
+    .catch(console.warn)
   }
   
   return(
