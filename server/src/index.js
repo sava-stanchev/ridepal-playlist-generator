@@ -11,6 +11,8 @@ import playlistServices from './service/playlist-services.js';
 import playlistsController from './controllers/playlists-controller.js';
 import usersController from './controllers/users-controller.js';
 import tokensData from './data/tokens.js';
+import createUserValidator from './validators/create-user-validator.js';
+import validateBody from './middlewares/validate-body.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
@@ -28,7 +30,7 @@ app.use('/playlists', playlistsController);
 app.use('/users', usersController);
 
 /** Register */
-app.post('/register', async (req, res) => {
+app.post('/register', validateBody('user', createUserValidator), async (req, res) => {
   const userData = req.body;
   try {
     const newUser = await userService.createUser(userData);
