@@ -1,6 +1,6 @@
 import tracksData from '../data/tracks.js';
 import playlistData from '../data/playlists.js';
-import genresData from '../data/genres-data.js';
+import genresData from '../data/genres.js';
 
 export const playlistGenerator = async (req) => {
   const duration = req.body.points.duration;
