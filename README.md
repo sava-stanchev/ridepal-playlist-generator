@@ -12,20 +12,22 @@ React.js, Express.js, Node.js, MariaDB, MySQL
 
 ### Setup
 Backend:
-- Inside the `server` folder, run `npm install` to restore all dependencies.
-- Import the database schema from the `full-database` file in the `database` folder.
-- Inside the `server` folder, create a `.env` file with the following configuration:
+1. Inside the `server` folder, run `npm install` to restore all dependencies.
+2. You can setup a local database in two ways:
+ - Import the database schema from the `empty-database` file in the `database` folder. After that use `npm run seed` in the `server` folder to fetch data from Deezer and add initial admin user.
+ - Or directly import the database schema from the `full-database` file in the `database` folder which contains prefetched Deezer data as well as some mock data for users and playlists.
+3. Inside the `server` folder, create a `.env` file with the following configuration:
 ```js
 PORT=5555
 HOST=localhost
 DB_PORT=3306
 USER= // insert MariaDB database username
 PASSWORD= // insert MariaDB database password 
-DATABASE=playlist_generator
+DATABASE=ridepal
 PRIVATE_KEY=secretkey
 ```
-- Run `npm start`.
+4. Run `npm start`.
   
 Frontend:
-- Inside the `client` folder, run `npm install` to restore all dependencies.
-- Run `npm start`.
+1. Inside the `client` folder, run `npm install` to restore all dependencies.
+2. Run `npm start`.
