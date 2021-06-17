@@ -13,7 +13,7 @@ const StartPage = () => {
   const [error, setError] = useState(null);
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState('');
-  const [filteredPlaylists, setFilteredPlaylists] = useState([]);
+  const [foundPlaylists, setFoundPlaylists] = useState([]);
   const [filteredGenres, setFilteredGenres] = useState(null);
   const [timePl, setTimePl] = useState(null);
   const [myPlaylists, setMyPlaylists] = useState(null);
@@ -35,10 +35,10 @@ const StartPage = () => {
   }, []);  
 
   useEffect(() => {
-    setFilteredPlaylists(playlists.filter(playlist => {
+    setFoundPlaylists(playlists.filter(playlist => {
       return playlist.title.toLowerCase().includes(search.toLowerCase())
     }));
-  }, [search, playlists]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [search, playlists]);
 
   const filterByDuration = (playlists, duration) => {
     if (duration === 'Duration') {
@@ -49,7 +49,7 @@ const StartPage = () => {
     }
   };
 
-  let foundPlaylists = myPlaylists || timePl || filteredGenres || filteredPlaylists;
+  const returnedPlaylists = myPlaylists || timePl || filteredGenres || foundPlaylists;
 
   const showError = () => {
     if (error) {
@@ -98,7 +98,7 @@ const StartPage = () => {
     setIsOpen(true);
   }
   
-  const displayPlaylists = foundPlaylists
+  const displayPlaylists = returnedPlaylists
   .slice(pagesVisited, pagesVisited + playlistsPerPage)
   .map((playlist) => {
     return (
