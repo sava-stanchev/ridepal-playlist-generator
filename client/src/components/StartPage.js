@@ -13,12 +13,14 @@ const StartPage = () => {
   const [error, setError] = useState(null);
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState('');
-  const [foundPlaylists, setFoundPlaylists] = useState([]);
-  const [filteredGenres, setFilteredGenres] = useState(null);
-  const [timePl, setTimePl] = useState(null);
-  const [myPlaylists, setMyPlaylists] = useState(null);
+  const [returnedPlaylists, setReturnedPlaylists] = useState([]);
+  const [duration, setDuration] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
+  const [showMyPlaylists, setShowMyPlaylists] = useState(false);
+  const [filterRap, setFilterRap] = useState(false);
+  const [filterRock, setFilterRock] = useState(false);
+  const [filterPop, setFilterPop] = useState(false);
 
   const playlistsPerPage = 6;
   const pagesVisited = pageNumber * playlistsPerPage;
@@ -35,21 +37,37 @@ const StartPage = () => {
   }, []);  
 
   useEffect(() => {
-    setFoundPlaylists(playlists.filter(playlist => {
-      return playlist.title.toLowerCase().includes(search.toLowerCase())
-    }));
-  }, [search, playlists]);
+    let result = [...playlists];
 
-  const filterByDuration = (playlists, duration) => {
-    if (duration === 'Duration') {
-      return;
+    if (search.length > 0) {
+      result = result.filter(playlist => {
+        return playlist.title.toLowerCase().includes(search.toLowerCase())
+      });
     }
-    if (playlists !== null || playlists !== undefined) {
-      setTimePl(playlists.filter(pl => +pl.duration <= Math.floor(duration.split(' ')[0]*60)))
-    }
-  };
 
-  const returnedPlaylists = myPlaylists || timePl || filteredGenres || foundPlaylists;
+    if (duration !== null) {
+      result = result.filter(pl => +pl.playtime <= Math.floor(duration.split(' ')[0]*60))
+    }
+
+    if (showMyPlaylists === true && auth.user.id) {
+      result = result.filter(pl => pl.user_id === auth.user.id);
+    }
+
+    if (filterRap === true) {
+      result = result.filter(pl => pl.genres.includes('Rap/Hip Hop'));
+    }
+
+    if (filterPop === true) {
+      result = result.filter(pl => pl.genres.includes('Pop'));
+    }
+
+    if (filterRock === true) {
+      result = result.filter(pl => pl.genres.includes('Rock'));
+    }
+
+    setPageNumber(0);
+    setReturnedPlaylists(result);
+  }, [search, playlists, showMyPlaylists, filterRock, filterPop, filterRap, duration]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const showError = () => {
     if (error) {
@@ -66,19 +84,6 @@ const StartPage = () => {
   }
 
   const history = useHistory();
-
-  const genreFilter = (genre) => {
-    if (playlists !== null) {
-      setFilteredGenres(playlists.filter(pl => pl.genres.includes(genre)));
-    }    
-    setPageNumber(0);
-  };
-
-  const showMyPlaylists = (playlists) => {
-    if (playlists !== null) {
-      setMyPlaylists(playlists.filter(pl => pl.user_id === auth.user.id));
-    }
-  };
   
   const deletePlaylist = (id) => {
     fetch(`${HOST}/playlists/${id}`, {
@@ -131,7 +136,7 @@ const StartPage = () => {
     );
   });
 
-  const pageCount = Math.ceil(foundPlaylists.length / playlistsPerPage);
+  const pageCount = Math.ceil(returnedPlaylists.length / playlistsPerPage);
   const changePage = ({selected}) => {
     setPageNumber(selected);
   };
@@ -142,12 +147,12 @@ const StartPage = () => {
     <div className="genres">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       <section className="genre-section">
-        <button className="genre" onClick={() => {setFilteredGenres(null); setTimePl(null); setMyPlaylists(null); setSearch('')}}>All</button>
-        <button className="genre" onClick={() => {genreFilter('Rap/Hip Hop'); setTimePl(null)}}>Rap</button>
-        <button className="genre" onClick={() => {genreFilter('Pop'); setTimePl(null)}}>Pop</button>
-        <button className="genre" onClick={() => {genreFilter('Rock'); setTimePl(null)}}>Rock</button>
-        <button className="genre" onClick={() => showMyPlaylists(playlists)}>My playlists</button>
-        <select name="durations" defaultValue="Duration" onChange={e => filterByDuration(playlists, e.target.value)}>
+        <button className="genre" onClick={() => {document.getElementById('dropdown').selectedIndex = 0; setDuration(null); setShowMyPlaylists(false); setSearch(''); setFilterRap(false); setFilterPop(false); setFilterRock(false)}}>All</button>
+        <button className="genre" onClick={() => {setFilterRap(true); setFilterPop(false); setFilterRock(false)}}>Rap</button>
+        <button className="genre" onClick={() => {setFilterPop(true); setFilterRap(false); setFilterRock(false)}}>Pop</button>
+        <button className="genre" onClick={() => {setFilterRock(true); setFilterRap(false); setFilterPop(false)}}>Rock</button>
+        <button className="genre" onClick={() => setShowMyPlaylists(true)}>My playlists</button>
+        <select name="durations" defaultValue="Duration" id="dropdown" onChange={e => setDuration(e.target.value)}>
             <option>Duration</option>
             <option>100 min.</option>
             <option>200 min.</option>

@@ -24,7 +24,6 @@ const NavBar = () => {
         </div>
       </Link>
       <nav className="main-nav">
-        {console.log(auth.user)}
         <ul>
         {
           auth.isLoggedIn
