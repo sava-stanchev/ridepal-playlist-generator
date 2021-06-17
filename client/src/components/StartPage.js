@@ -29,7 +29,7 @@ const StartPage = () => {
       method: "GET",
     })
       .then((response) => response.json())
-      .then((data) => data.length?setPlaylists(data):setPlaylists([]))
+      .then((data) => data.length ? setPlaylists(data) : setPlaylists([]))
       .catch((error) => setError(error.message))
       .finally(() => setLoading(false));
   }, []);  
@@ -68,14 +68,14 @@ const StartPage = () => {
   const history = useHistory();
 
   const genreFilter = (genre) => {
-    if (playlists !== null || playlists !== undefined) {
-      setFilteredGenres(playlists.filter(track => track.genre_deezer_id === genre));
+    if (playlists !== null) {
+      setFilteredGenres(playlists.filter(pl => pl.genres.includes(genre)));
     }    
     setPageNumber(0);
   };
 
   const showMyPlaylists = (playlists) => {
-    if (playlists !== null || playlists !== undefined) {
+    if (playlists !== null) {
       setMyPlaylists(playlists.filter(pl => pl.user_id === auth.user.id));
     }
   };
@@ -143,9 +143,9 @@ const StartPage = () => {
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
       <section className="genre-section">
         <button className="genre" onClick={() => {setFilteredGenres(null); setTimePl(null); setMyPlaylists(null); setSearch('')}}>All</button>
-        <button className="genre" onClick={() => {genreFilter(116); setTimePl(null)}}>Rap</button>
-        <button className="genre" onClick={() => {genreFilter(132); setTimePl(null)}}>Pop</button>
-        <button className="genre" onClick={() => {genreFilter(152); setTimePl(null)}}>Rock</button>
+        <button className="genre" onClick={() => {genreFilter('Rap/Hip Hop'); setTimePl(null)}}>Rap</button>
+        <button className="genre" onClick={() => {genreFilter('Pop'); setTimePl(null)}}>Pop</button>
+        <button className="genre" onClick={() => {genreFilter('Rock'); setTimePl(null)}}>Rock</button>
         <button className="genre" onClick={() => showMyPlaylists(playlists)}>My playlists</button>
         <select name="durations" defaultValue="Duration" onChange={e => filterByDuration(playlists, e.target.value)}>
             <option>Duration</option>
