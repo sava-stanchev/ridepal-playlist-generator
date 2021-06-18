@@ -45,6 +45,24 @@ usersController
           error: error.message,
         });
       }
+    })
+
+    .post('/:id', async (req, res) => {
+      try {
+        const user = await usersData.getUserById(+req.params.id);
+        if (!user || user.is_deleted === 1) {
+          return res.status(400).json({
+            message: 'User not found!',
+          });
+        }
+        await usersData.changeRole(+req.params.id);
+        const users = await userService.getAllUsers();
+        res.status(200).send(users);
+      } catch (error) {
+        return res.status(400).json({
+          error: error.message,
+        });
+      }
     });
 
 export default usersController;

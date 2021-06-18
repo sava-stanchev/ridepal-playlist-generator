@@ -40,7 +40,7 @@ const getAllUsers = async () => {
 
 const getUserById = async (id) => {
   const sql = `
-    SELECT u.id, u.username, u.password, u.email, r.role, u.is_deleted
+    SELECT u.id, u.username, u.password, u.email, r.role, u.is_deleted, u.role_id
     FROM users AS u
     JOIN roles AS r
     ON u.role_id = r.id
@@ -70,6 +70,24 @@ const updateUser = async (id, data) => {
   return user[0];
 };
 
+const changeRole = async (id) => {
+  const user = await getUserById(id);
+  let sql;
+  if (user[0].role_id === 2) {
+    sql = `
+    UPDATE users SET users.role_id = 1
+    WHERE users.id = ?
+  `;
+  } else {
+    sql = `
+    UPDATE users SET users.role_id = 2
+    WHERE users.id = ?
+  `;
+  }
+
+  return await pool.query(sql, [id]);
+};
+
 export default {
   getUserByName,
   createUser,
@@ -77,4 +95,5 @@ export default {
   getUserById,
   deleteUser,
   updateUser,
+  changeRole,
 };

@@ -295,6 +295,21 @@ body {
   font-size: 1rem;
 }
 
+.role-btn-users {
+  color: white;
+  background-color: transparent;
+  outline: none;
+  padding: 0 0;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.delete-btn-users:hover {
+  color: crimson;
+}
+
 .card:hover .view-btn {
   transform: translateY(0);
   opacity: 1;

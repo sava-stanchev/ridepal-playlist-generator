@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useState } from 'react/cjs/react.development'
 import { HOST } from '../common/constants';
-import {FaTrashAlt, FaEdit} from "react-icons/fa";
+import {FaTrashAlt, FaEdit, FaCrown} from "react-icons/fa";
 import UpdateUserModal from './UpdateUserModal.js';
 
 const Users = () => {
@@ -50,6 +50,19 @@ const Users = () => {
     .catch((error) => setError(error.message));
   };
 
+  const switchRole = (id) => {
+    fetch(`${HOST}/users/${id}`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${localStorage.getItem('token')}`
+      },
+    })
+    .then((res) => res.json())
+    .then(data => setUsers(data))
+    .catch(error => setError(error.massage));
+  };
+
   const editFunction = (user) => {
     setCurrentUser(user);
     setIsOpen(true);
@@ -76,6 +89,11 @@ const Users = () => {
           <td className="song-album-cover"><h5>{user.username}</h5></td>
           <td className="user-email"><h5>{user.email}</h5></td>
           <td className="user-role"><h5>{user.role}</h5></td>
+          <td className="song-length">
+            <button className="role-btn-users" onClick={() => switchRole(user.id)}>
+              <FaCrown style={user.role === 'admin' ? {color: '#FFD700'} : {color: 'white'}}/>
+            </button>
+          </td>
           <td className="song-length">
             <button className="edit-btn-users" onClick={() => editFunction(user)}><FaEdit/></button>
           </td>
