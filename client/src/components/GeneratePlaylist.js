@@ -2,6 +2,10 @@ import {useState} from "react";
 import {useHistory} from 'react-router-dom';
 import {HOST} from '../common/constants.js';
 
+const playlistNameVerificationError = {
+  properLength: false,
+}
+
 const GeneratePlaylist = ({points}) => {
   const history = useHistory();
   const [sliderPop, setSliderPop] = useState(0);
@@ -10,12 +14,18 @@ const GeneratePlaylist = ({points}) => {
   const [playlistName, setPlaylistName] = useState('');
   const [repeatArtists, setRepeatArtists] = useState(false);
   const [totalDuration, setTotalDuration] = useState(0);
+  const [playlistNameError, setPlaylistNameError] = useState(playlistNameVerificationError);
 
   const updatePlaylistName = (prop, value) => {
     setPlaylistName({
       ...playlistName,
       [prop]: value,
     })
+
+    if (prop === "playlistName") {
+      const properLength = value.length >= 3 && value.length <= 20;
+      setPlaylistNameError({...playlistNameError, properLength});
+    }
   };
 
   const updateGenres = (prop, value) => {
@@ -86,6 +96,9 @@ const GeneratePlaylist = ({points}) => {
           <p>Travel duration: {Math.round(points.duration/60)} min.</p>
           <label>Playlist name:</label>
           <input type="text" onChange={(e) => updatePlaylistName('playlistName', e.target.value)}/>
+          <p className ="registerMsg" style={playlistNameError.properLength ? {color: 'white'} : {color: 'red'}}>
+           * Between 3 and 20 chars
+          </p>
         </div>
         <table className="genres-list">
           <tbody>
