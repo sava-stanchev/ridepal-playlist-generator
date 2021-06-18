@@ -2,8 +2,13 @@ import { useState } from 'react';
 import ReactDom from 'react-dom';
 import {HOST} from '../common/constants.js';
 
+const playlistNameVerificationError = {
+  properLength: false,
+}
+
 export default function Modal({playlist, open, onClose, playlists, setPlaylists}) {
   const [thePlaylist, setThePlaylist] = useState(null);
+  const [playlistNameError, setPlaylistNameError] = useState(playlistNameVerificationError);
 
   if (!playlist) return null;
   if (!open) return null;
@@ -13,6 +18,11 @@ export default function Modal({playlist, open, onClose, playlists, setPlaylists}
       ...thePlaylist,
       [prop]: value,
     });
+
+    if (prop === "title") {
+      const properLength = value.length >= 3 && value.length <= 20;
+      setPlaylistNameError({...playlistNameError, properLength});
+    }
   };
 
   const updatePlaylist = () => {
@@ -45,6 +55,9 @@ export default function Modal({playlist, open, onClose, playlists, setPlaylists}
           <label>New playlist name:</label>
           <input type="text" name="title" value={thePlaylist ? thePlaylist.title : playlist.title}
           onChange={e => updatePlaylistProperties('title', e.target.value)} />
+          <p className ="registerMsg" style={playlistNameError.properLength ? {color: 'white'} : {color: 'red'}}>
+            * Between 3 and 20 chars
+          </p>
         </div>
         <div className="input-group">
           <button className="btn" onClick={closeFunction}>Update</button>
