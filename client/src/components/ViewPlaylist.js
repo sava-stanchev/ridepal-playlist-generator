@@ -84,10 +84,12 @@ const ViewPlaylist = props => {
       {showError()}
       {showLoader()}
       <div className="songs-container">
-        <div className="playlist-header">
-          <h5 className="playlist-title">Tracklist for "{playlistData[0].title}" ({Math.round(playlistData[0].playtime/60)} min.)</h5>
-        </div>
         <table className="playlist-list">
+          <th className="playlist-header" colspan="4">
+            <h5 className="playlist-title">
+              Tracklist for "{playlistData[0].title}" ({Math.round(playlistData[0].playtime/60)} min.)
+            </h5>
+          </th>
           {displayTracks}
         </table>
       </div>

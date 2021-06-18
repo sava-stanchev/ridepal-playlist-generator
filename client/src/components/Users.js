@@ -130,10 +130,10 @@ const Users = () => {
         {showError()}
         {showLoader()}
         <div className="songs-container">
-          <div className="playlist-header">
-            <h5 className="playlist-title">List of Users</h5>
-          </div>
           <table className="playlist-list">
+            <th className="playlist-header" colspan="6">
+              <h5 className="playlist-title">List of Users</h5>
+            </th>
             {displayUsers}
           </table>
         </div>

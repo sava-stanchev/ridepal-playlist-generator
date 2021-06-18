@@ -275,13 +275,17 @@ body {
 .play-btn {
   color: white;
   background-color: transparent;
-  padding: 0 0;
-  text-decoration: none;
   outline: none;
+  padding: 0 0;
   border: none;
   cursor: pointer;
+  text-decoration: none;
   font-size: 1.7rem;
   margin-top: 0.5rem;
+}
+
+.play-btn:hover {
+  color: #88a73e;
 }
 
 .delete-btn-users, .edit-btn-users {
@@ -438,7 +442,8 @@ body {
 }
 
 .genres {
-  padding: 1rem 2rem;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
 }
 
 .genre-section {
@@ -653,7 +658,7 @@ body {
 }
 
 .paginationBttns a {
-  padding: 7px 12px;
+  padding: 6px 12px;
   margin: 8px;
   border-radius: 5px;
   border: 1.5px solid #E7E7E7;
