@@ -51,7 +51,7 @@ const Register = () => {
     }
 
     if (name === "username") {
-      const properLength = value.length >= 3 && value.length <= 20;
+      const properLength = value.length >= 3 && value.length <= 15;
       setUsernameError({...usernameError, properLength});
     }
   };
@@ -84,10 +84,10 @@ const Register = () => {
       </h1>
       <form className="join-login-form">
         <div className="input-group" name="username" value={newUser.username} onChange={e => createUser('username', e.target.value)}>
-          <label>Name:</label>
+          <label>Username:</label>
           <input type="text"/>
           <p className ="registerMsg" style={usernameError.properLength ? {color: 'white'} : {color: 'red'}}>
-           * Between 3 and 20 chars
+           * Between 3 and 15 chars
           </p>
         </div>
         <div className="input-group" name="email" value={newUser.email} onChange={e => createUser('email', e.target.value)}>

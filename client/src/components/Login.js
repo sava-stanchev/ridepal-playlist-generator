@@ -56,7 +56,7 @@ const Login = () => {
       </h1>
       <form className="join-login-form">
         <div className="input-group">
-          <label>Name:</label>
+          <label>Username:</label>
           <input type="text" onChange={e => updateUser('username', e.target.value)}/>
         </div>
         <div className="input-group">
