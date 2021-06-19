@@ -5,6 +5,7 @@ import {useHistory} from "react-router-dom";
 import {FaTrashAlt, FaEdit} from "react-icons/fa";
 import AuthContext from '../providers/auth-context';
 import UpdatePlaylistModal from './UpdatePlaylistModal.js';
+import {convertHMS} from '../common/utils.js';
 
 const StartPage = () => {
   const auth = useContext(AuthContext);
@@ -46,7 +47,7 @@ const StartPage = () => {
     }
 
     if (duration !== null) {
-      result = result.filter(pl => +pl.playtime <= Math.floor(duration.split(' ')[0]*60))
+      result = result.filter(pl => +pl.playtime <= Math.floor(duration.split(' ')[1]*60*60))
     }
 
     if (showMyPlaylists === true && auth.user.id) {
@@ -111,7 +112,7 @@ const StartPage = () => {
         <div className="cover">
           <div className="cover-text">
             <h1 className="cover-title">{playlist.title}</h1>
-            <h4 className="cover-subtitle">{Math.round(playlist.playtime/60)} min.</h4>
+            <h4 className="cover-subtitle">{convertHMS(playlist.playtime)}</h4>
           </div>
           <div className="view-btn-wrapper">
             <button className="view-btn" onClick = {() => history.push(`/playlists/${playlist.id}`)}>Tracklist</button>
@@ -153,11 +154,14 @@ const StartPage = () => {
         <button className="genre" onClick={() => setShowMyPlaylists(true)}>My playlists</button>
         <select name="durations" defaultValue="Duration" id="dropdown" onChange={e => setDuration(e.target.value)}>
             <option>Duration</option>
-            <option>100 min.</option>
-            <option>200 min.</option>
-            <option>300 min.</option>
-            <option>400 min.</option>
-            <option>500 min.</option>
+            <option>&#60; 1 hour</option>
+            <option>&#60; 2 hours</option>
+            <option>&#60; 3 hours</option>
+            <option>&#60; 4 hours</option>
+            <option>&#60; 5 hours</option>
+            <option>&#60; 6 hours</option>
+            <option>&#60; 7 hours</option>
+            <option>&#60; 8 hours</option>
         </select>
         <div className="boxContainer">
           <table className = "elementsContainer">

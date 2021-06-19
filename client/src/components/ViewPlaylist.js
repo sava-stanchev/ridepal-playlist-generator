@@ -2,6 +2,7 @@ import {HOST} from '../common/constants.js';
 import {useEffect, useState} from 'react';
 import {FaPlayCircle} from "react-icons/fa";
 import {Howl} from 'howler';
+import { convertHMS } from '../common/utils.js';
 
 const ViewPlaylist = props => {
   const {id} = props.match.params;
@@ -87,7 +88,7 @@ const ViewPlaylist = props => {
         <table className="playlist-list">
           <th className="playlist-header" colspan="4">
             <h5 className="playlist-title">
-              Tracklist for "{playlistData[0].title}" ({Math.round(playlistData[0].playtime/60)} min.)
+              Tracklist for "{playlistData[0].title}" ({convertHMS(playlistData[0].playtime)})
             </h5>
           </th>
           {displayTracks}

@@ -240,8 +240,7 @@ body {
 }
 
 .cover-subtitle {
-  text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 1px;
   order: 1;
   font-size: 1rem;
 }

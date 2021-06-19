@@ -56,7 +56,7 @@ const GenerateRoute = ({ setPoints }) => {
         window.alert('Invalid waypoints!');
       }
     })
-    .catch(console.warn)
+    .catch(history.push('/generate-route'));
   }
   
   return(
@@ -87,7 +87,6 @@ const GenerateRoute = ({ setPoints }) => {
               <button type="submit" className="btn" disabled={true} onClick={(e) => getDuration(e)}>Next</button>
             </>
           }
-
         </div>
       </form>
     </section>
