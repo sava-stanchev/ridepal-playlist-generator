@@ -717,6 +717,11 @@ body {
   margin-bottom: 0.3rem;
 }
 
+.reminderMsg-repeat {
+  font-size: 0.85rem;
+  margin-bottom: -0.6rem;
+}
+
 .cityReminderMsg {
   font-size: 0.85rem;
   margin-bottom: 0.3rem;

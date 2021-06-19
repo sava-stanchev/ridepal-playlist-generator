@@ -131,6 +131,12 @@ const GeneratePlaylist = ({points}) => {
             <label>Allow tracks from the same artist</label>
           </div>
           <>
+          <p
+            className="reminderMsg-repeat"
+            style={points.duration > 150*60 && repeatArtists === false ? {color: 'red'} : {color: 'white'}}
+          >
+            * Allow same artist's tracks if travel duration over 150 min.
+          </p>
           {
             totalDuration < 100
             ?
