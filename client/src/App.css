@@ -25,7 +25,7 @@ body {
   font-size: 1.25em;
 }
 
-.tooltip-icon {
+.tooltip-icon-two {
   display: flex;
   align-items: center;
   font-size: 1.25em;
@@ -33,10 +33,26 @@ body {
   background-color: transparent;
   padding: 0 0;
   padding-top: 0.8rem;
-  margin-left: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
   text-decoration: none;
   outline: none;
   border: none;
+}
+
+.tooltip-icon-one {
+  display: flex;
+  align-items: center;
+  font-size: 1.25em;
+  color: white;
+  background-color: transparent;
+  padding: 0 0;
+  padding-top: 0.1rem;
+  margin-right: 0;
+  text-decoration: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
 }
 
 .brand-logo-name {

@@ -4,6 +4,7 @@ import {useContext} from 'react';
 import brandLogo from '../images/logo.png';
 import {CgProfile} from "react-icons/cg";
 import ReactTooltip from 'react-tooltip';
+import {FiLogOut} from 'react-icons/fi';
 
 const NavBar = () => {
   const auth = useContext(AuthContext);
@@ -45,13 +46,20 @@ const NavBar = () => {
             <Link to="/generate-route">
               <li>Generate</li>
             </Link>
-            <Link to="/home">
-              <li onClick={() => logout()}>Logout</li>
-            </Link>
-            <li><button className="tooltip-icon" data-tip data-for="userTip"><CgProfile size={27}/></button></li>
+            <li><button className="tooltip-icon-two" data-tip data-for="userTip"><CgProfile size={27}/></button></li>
             <ReactTooltip id="userTip" place="bottom" effect="solid">
               {auth.user.username}
             </ReactTooltip>
+            <Link to="/home">
+              <li onClick={() => logout()}>
+                <button className="tooltip-icon-one" data-tip data-for="log-out">
+                  <FiLogOut size={27}/>
+                </button>
+              </li>
+              <ReactTooltip id="log-out" place="bottom" effect="solid">
+                Log out
+              </ReactTooltip>
+            </Link>
           </>
           :
           <>
