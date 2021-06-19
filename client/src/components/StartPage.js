@@ -107,7 +107,6 @@ const StartPage = () => {
   .slice(pagesVisited, pagesVisited + playlistsPerPage)
   .map((playlist) => {
     return (
-      
       <article className="card" key={playlist.id}>
         <div className="cover">
           <div className="cover-text">
@@ -117,7 +116,7 @@ const StartPage = () => {
           <div className="view-btn-wrapper">
             <button className="view-btn" onClick = {() => history.push(`/playlists/${playlist.id}`)}>Tracklist</button>
             {
-              (auth.isLoggedIn && auth.user.role_id === 1) || (auth.isLoggedIn && auth.user.id === playlist.user_id)
+              (auth.isLoggedIn && auth.user.role === 1) || (auth.isLoggedIn && auth.user.id === playlist.user_id)
               ?
               <>
               <button className="edit-btn" onClick={() => editFunction(playlist)}><FaEdit/></button>
