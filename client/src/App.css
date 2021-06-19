@@ -288,11 +288,23 @@ body {
   color: #88a73e;
 }
 
-.delete-btn-users, .edit-btn-users {
+.delete-btn-users {
   color: white;
   background-color: transparent;
   outline: none;
   padding: 0 0;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.edit-btn-users {
+  color: white;
+  background-color: transparent;
+  outline: none;
+  padding: 0 0;
+  margin-right: 1.2rem;
   border: none;
   cursor: pointer;
   text-decoration: none;
@@ -304,6 +316,8 @@ body {
   background-color: transparent;
   outline: none;
   padding: 0 0;
+  margin-top: 0.2rem;
+  margin-left: 0.8rem;
   border: none;
   cursor: pointer;
   text-decoration: none;
@@ -312,6 +326,10 @@ body {
 
 .delete-btn-users:hover {
   color: crimson;
+}
+
+.edit-btn-users:hover {
+  color: mediumturquoise;
 }
 
 .card:hover .view-btn {
@@ -741,4 +759,76 @@ select {
   padding: .4rem .8rem;
   font-size: inherit;
   cursor: pointer;
+}
+
+.table-container {
+  padding: 0 10%;
+  margin: 5px auto 25px;
+}
+
+.heading {
+  font-size: 40px;
+  text-align: center;
+  color: #f1f1f1;
+  margin-bottom: 40px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  background: #202027;
+}
+
+.table thead tr th {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.35px;
+  color: #FFFFFF;
+  opacity: 1;
+  padding: 12px;
+  vertical-align: top;
+  border-collapse: collapse;
+}
+
+.table tbody tr td {
+  font-size: 18px;
+  letter-spacing: 0.35px;
+  font-weight: normal;
+  color: #f1f1f1;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 32px;
+  padding-right: 32px;
+  text-align: center;
+  background: #393959;
+}
+
+@media (max-width: 768px) {
+  .table thead {
+    display: block;
+    width: inherit;
+  }
+  .table thead tr th {
+    display: block;
+  }
+  .table, .table tbody, .table tr, .table td {
+    display: block;
+    width: 100%;
+  }
+  .table tr {
+    margin-bottom: 15px;
+  }
+  .table tbody tr td {
+    text-align: center;
+    position: relative;
+    outline: #202027 thin solid;
+  }
+}
+
+.inline-td {
+  display: flex;
+  justify-content: center;
 }

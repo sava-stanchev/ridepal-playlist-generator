@@ -85,20 +85,22 @@ const Users = () => {
   const displayUsers = foundUsers.map((user) => {
     return (
       <tbody key={user.id}>
-        <tr className="song">
-          <td className="song-album-cover"><h5>{user.username}</h5></td>
-          <td className="user-email"><h5>{user.email}</h5></td>
-          <td className="user-role"><h5>{user.role}</h5></td>
-          <td className="song-length">
-            <button className="role-btn-users" onClick={() => switchRole(user.id)}>
-              <FaCrown style={user.role === 'admin' ? {color: '#FFD700'} : {color: 'white'}}/>
-            </button>
+        <tr style={{outline: '#202027 thin solid'}}>
+          <td>{user.username}</td>
+          <td>{user.email}</td>
+          <td>
+            <div className="inline-td">
+              {user.role}
+              <button className="role-btn-users" onClick={() => switchRole(user.id)}>
+                <FaCrown style={user.role === 'admin' ? {color: '#FFD700'} : {color: 'white'}}/>
+              </button>
+            </div>
           </td>
-          <td className="song-length">
-            <button className="edit-btn-users" onClick={() => editFunction(user)}><FaEdit/></button>
-          </td>
-          <td className="song-length">
-            <button className="delete-btn-users" onClick={() => deleteUser(user.id)}><FaTrashAlt/></button>
+          <td>
+            <div className="inline-td">
+              <button className="edit-btn-users" onClick={() => editFunction(user)}><FaEdit/></button>
+              <button className="delete-btn-users" onClick={() => deleteUser(user.id)}><FaTrashAlt/></button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -129,11 +131,13 @@ const Users = () => {
       <div className="songs-container-main-section">
         {showError()}
         {showLoader()}
-        <div className="songs-container">
-          <table className="playlist-list">
-            <th className="playlist-header" colspan="6">
-              <h5 className="playlist-title">List of Users</h5>
-            </th>
+        <div className="table-container">
+          <table className="table">
+            <thead>
+              <tr>
+                <th colSpan="4">List of Users</th>
+              </tr>
+            </thead>
             {displayUsers}
           </table>
         </div>
