@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {HOST} from '../common/constants';
+import {FaEyeSlash} from "react-icons/fa";
 
 const initialState = {
   username: '',
@@ -98,7 +99,10 @@ const Register = () => {
           </p>
         </div>
         <div className="input-group" name="password" value={newUser.password} onChange={e => createUser('password', e.target.value)}>
-          <label>Password:</label>
+          <div className="password-eye">
+            <label>Password:</label>
+            <button className="show-password"><FaEyeSlash/></button>
+          </div>
           <input type="password"/>
           <p className ="registerMsg" style={passwordError.properLength ? {color: 'white'} : {color: 'red'}}>
             * Between 4 and 30 chars

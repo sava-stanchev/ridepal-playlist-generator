@@ -853,3 +853,19 @@ select {
   display: flex;
   justify-content: center;
 }
+
+.password-eye {
+  display: flex;
+  justify-content: space-between;
+}
+
+.show-password {
+  margin-bottom: 0;
+  color: white;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1.4rem;
+}
