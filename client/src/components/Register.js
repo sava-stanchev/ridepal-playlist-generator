@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {HOST} from '../common/constants';
-import {FaEyeSlash} from "react-icons/fa";
+import {FaEyeSlash, FaEye} from "react-icons/fa";
 
 const initialState = {
   username: '',
@@ -26,6 +26,7 @@ const Register = () => {
   const [passwordError, setPasswordError] = useState(passVerificationError);
   const [emailError, setEmailError] = useState(emailVerificationError);
   const [usernameError, setUsernameError] = useState(usernameVerificationError);
+  const [showPassword, setShowPassword] = useState(false);
 
   const history = useHistory();
   const routeChange = () =>{ 
@@ -57,8 +58,7 @@ const Register = () => {
     }
   };
 
-  const register = (e) => {
-    e.preventDefault();
+  const register = () => {
     fetch(`${HOST}/register`, {
       method: 'POST',
       headers: {
@@ -67,14 +67,15 @@ const Register = () => {
       body: JSON.stringify(newUser),
     })
     .then((res) => res.json())
-    .then((res) => {
-      try {
-        console.log({res});
-      } catch (error) {
-        console.warn(error);
-      }
-    })
     .then(() => routeChange());
+  };
+
+  const showThePassword = () => {
+    if (showPassword === false) {
+      setShowPassword(true);
+    } else {
+      setShowPassword(false);
+    }
   };
     
   return(
@@ -101,9 +102,11 @@ const Register = () => {
         <div className="input-group" name="password" value={newUser.password} onChange={e => createUser('password', e.target.value)}>
           <div className="password-eye">
             <label>Password:</label>
-            <button className="show-password"><FaEyeSlash/></button>
+            <button type="button" className="show-password" onClick={() => showThePassword()} tabindex="-1">
+              {showPassword === false ? <FaEyeSlash/> : <FaEye/>}
+            </button>
           </div>
-          <input type="password"/>
+          <input type={showPassword === false ? 'password' : 'text'}/>
           <p className ="registerMsg" style={passwordError.properLength ? {color: 'white'} : {color: 'red'}}>
             * Between 4 and 30 chars
           </p>
@@ -111,9 +114,9 @@ const Register = () => {
         <div className="input-group">
           {
             usernameError.properLength && emailError.properEmail && passwordError.properLength ?
-            <button type="submit" className="btn" onClick={(e) => register(e)}>Join Now</button>
+            <button type="button" className="btn" onClick={() => register()}>Join Now</button>
             :
-            <button type="submit" className="btn" disabled={true} onClick={(e) => register(e)}>Join Now</button>
+            <button type="button" className="btn" disabled={true} onClick={() => register()}>Join Now</button>
           }
         </div>
       </form>
