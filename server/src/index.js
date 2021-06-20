@@ -76,19 +76,11 @@ app.post('/login', asyncHandler(async (req, res) => {
 }));
 
 /** Logout */
-app.delete('/logout', authMiddleware, async (req, res) => {
-  try {
-    await tokensData.blacklistToken(req.headers.authorization.replace('Bearer ', ''));
+app.delete('/logout', asyncHandler(async (req, res) => {
+  await tokensData.blacklistToken(req.headers.authorization.replace('bearer ', ''));
 
-    res.json({
-      message: 'Successfully logged out!',
-    });
-  } catch (error) {
-    return res.status(400).json({
-      error: error.message,
-    });
-  }
-});
+  res.json({message: 'Successfully logged out!'});
+}));
 
 app.post('/playlist', authMiddleware, async (req, res) => {
   try {

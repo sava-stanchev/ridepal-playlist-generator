@@ -1,19 +1,31 @@
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import AuthContext from '../providers/auth-context';
 import {useContext} from 'react';
 import brandLogo from '../images/logo.png';
 import {CgProfile} from "react-icons/cg";
 import ReactTooltip from 'react-tooltip';
 import {FiLogOut} from 'react-icons/fi';
+import {HOST} from '../common/constants.js';
 
 const NavBar = () => {
+  const history = useHistory();
   const auth = useContext(AuthContext);
   const logout = () => {
-    localStorage.removeItem('token');
-    auth.setAuthState({
-      user: null,
-      isLoggedIn: false,
-    });
+    fetch(`${HOST}/logout`, {
+      method: 'DELETE',
+      headers: {
+        'authorization': `bearer ${localStorage.getItem('token')}`,
+      },
+    })
+    .then(() => {
+      auth.setAuthState({
+        user: null,
+        isLoggedIn: false,
+      });
+      localStorage.removeItem('token');
+      history.push('/home');
+    })
+    .catch(() => history.push('/500'));
   };
 
   return(
