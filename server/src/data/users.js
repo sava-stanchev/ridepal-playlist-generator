@@ -2,8 +2,9 @@ import pool from './pool.js';
 
 const getUserBy = async (column, value) => {
   const sql = `
-    SELECT u.id, u.username, u.email, u.role_id FROM users AS u
+    SELECT u.id, u.username, u.password, u.email, u.role_id FROM users AS u
     WHERE u.${column} = ?
+    AND u.is_deleted = 0
   `;
   const result = await pool.query(sql, [value]);
   return result[0];

@@ -16,6 +16,7 @@ import validateBody from './middlewares/validate-body.js';
 import usersData from './data/users.js';
 import serviceErrors from './common/service-errors.js';
 import createToken from './auth/create-token.js';
+import transformBody from './middlewares/transform-body.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
@@ -33,7 +34,7 @@ app.use('/playlists', playlistsController);
 app.use('/users', usersController);
 
 /** Register */
-app.post('/register', validateBody('user', createUserValidator), asyncHandler(async (req, res) => {
+app.post('/register', transformBody(createUserValidator), validateBody('user', createUserValidator), asyncHandler(async (req, res) => {
   const result = await usersService.createUser(usersData)(req.body);
   console.log(result);
   if (result.error === serviceErrors.DUPLICATE_RECORD) {
