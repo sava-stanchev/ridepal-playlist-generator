@@ -1,5 +1,5 @@
 import express from 'express';
-import userService from '../service/user-service.js';
+import userService from '../service/users-service.js';
 import usersData from '../data/users.js';
 
 const usersController = express.Router();

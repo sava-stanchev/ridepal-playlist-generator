@@ -23,6 +23,8 @@ const createUser = async (user) => {
     WHERE u.id = ?
   `;
   const createdUser = (await pool.query(sql, [result.insertId]))[0];
+  console.log('tuk');
+  console.log(createdUser);
   return createdUser;
 };
 

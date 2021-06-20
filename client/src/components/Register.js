@@ -67,7 +67,16 @@ const Register = () => {
       body: JSON.stringify(newUser),
     })
     .then((res) => res.json())
-    .then(() => routeChange());
+    .then((data) => {
+      try {
+        if (data.username) {
+          routeChange();
+        }
+      } catch (error) {
+        window.alert('Username already exists!');
+      }
+    })
+    .catch(error => window.alert(error.message));
   };
 
   const showThePassword = () => {
@@ -102,7 +111,7 @@ const Register = () => {
         <div className="input-group" name="password" value={newUser.password} onChange={e => createUser('password', e.target.value)}>
           <div className="password-eye">
             <label>Password:</label>
-            <button type="button" className="show-password" onClick={() => showThePassword()} tabindex="-1">
+            <button type="button" className="show-password" onClick={() => showThePassword()} tabIndex="-1">
               {showPassword === false ? <FaEyeSlash/> : <FaEye/>}
             </button>
           </div>

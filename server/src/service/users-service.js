@@ -1,11 +1,12 @@
 import usersData from '../data/users.js';
 import bcrypt from 'bcrypt';
+import serviceErrors from '../common/service-errors.js';
 
 const createUser = async (userData) => {
   const usernameExists = await usersData.getUserByName(userData.username);
   if (usernameExists !== undefined) {
-    const massage = {massage: `Username ${usernameExists.username} exist`};
-    return massage;
+    const message = {message: `Username ${usernameExists.username} already exists!`};
+    return message;
   }
 
   userData.password = await bcrypt.hash(userData.password, 10);
@@ -13,18 +14,27 @@ const createUser = async (userData) => {
   return newUser;
 };
 
-const validateUser = async ({username, password}) => {
-  const userData = await usersData.getUserByName(username);
+const validateUser = (usersData) => async (username, password) => {
+  const user = await usersData.getUserByName(username);
 
-  if (userData === undefined) {
-    throw new Error('Username does not exist!');
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return {
+      error: serviceErrors.OPERATION_NOT_PERMITTED,
+      data: null,
+    };
   }
 
-  if (await bcrypt.compare(password, userData.password)) {
-    return userData;
+  if (user.is_deleted) {
+    return {
+      error: serviceErrors.RECORD_NOT_FOUND,
+      data: null,
+    };
   }
 
-  return null;
+  return {
+    error: null,
+    data: user,
+  };
 };
 
 const getAllUsers = async () => {

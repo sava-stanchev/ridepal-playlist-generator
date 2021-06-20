@@ -1,9 +1,9 @@
 import express from 'express';
+import asyncHandler from 'express-async-handler';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
-import createToken from './auth/create-token.js';
-import userService from './service/user-service.js';
+import usersService from './service/users-service.js';
 import {authMiddleware} from './auth/auth-middleware.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
@@ -13,6 +13,9 @@ import usersController from './controllers/users-controller.js';
 import tokensData from './data/tokens.js';
 import createUserValidator from './validators/create-user-validator.js';
 import validateBody from './middlewares/validate-body.js';
+import usersData from './data/users.js';
+import serviceErrors from './common/service-errors.js';
+import createToken from './auth/create-token.js';
 
 const config = dotenv.config().parsed;
 const PORT = config.PORT;
@@ -31,13 +34,15 @@ app.use('/users', usersController);
 
 /** Register */
 app.post('/register', validateBody('user', createUserValidator), async (req, res) => {
-  const userData = req.body;
   try {
-    const newUser = await userService.createUser(userData);
-    if (!newUser) {
-      return res.status(400).json({message: 'Username exist!'});
+    const userData = req.body;
+    const newUser = await usersService.createUser(userData);
+    console.log(newUser);
+    if (!newUser.username) {
+      return res.status(400).json({error: 'Username already exists!'});
+    } else {
+      return res.status(200).send(newUser);
     }
-    return res.status(200).send(newUser);
   } catch (error) {
     res.status(400).json({
       error: error.message,
@@ -46,29 +51,29 @@ app.post('/register', validateBody('user', createUserValidator), async (req, res
 });
 
 /** Login */
-app.post('/login', async (req, res) => {
-  try {
-    const user = await userService.validateUser(req.body);
-    if (user) {
-      const token = createToken({
-        id: user.id,
-        username: user.username,
-        role: user.role_id,
-      });
-      res.json({
-        token,
-      });
-    } else {
-      res.status(401).json({
-        error: 'Invalid credentials!',
-      });
-    }
-  } catch (error) {
-    res.status(400).json({
-      error: error.message,
-    });
+app.post('/login', asyncHandler(async (req, res) => {
+  const {username, password} = req.body;
+  const result = await usersService.validateUser(usersData)(username, password);
+
+  if (result.error === serviceErrors.OPERATION_NOT_PERMITTED) {
+    return res.status(401).json({message: 'Invalid credentials!'});
   }
-});
+
+  if (result.error === serviceErrors.RECORD_NOT_FOUND) {
+    return res.status(400).json({message: 'User has been deleted!'});
+  }
+
+  const user = result.data;
+
+  const payload = {
+    id: user.id,
+    username: user.username,
+    role: user.role_id,
+  };
+
+  const token = createToken(payload);
+  res.status(200).json({token});
+}));
 
 /** Logout */
 app.delete('/logout', authMiddleware, async (req, res) => {

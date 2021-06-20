@@ -21,7 +21,6 @@ const Login = () => {
   
   const login = (e) => {
     e.preventDefault();
-    
     fetch(`${HOST}/login`, {
       method: 'POST',
       headers: {
@@ -30,22 +29,18 @@ const Login = () => {
       body: JSON.stringify(user),
     })
     .then(res => res.json())
-    .then(({ token }) => {
-      try {
-        const user = decode(token);
-
-        localStorage.setItem('token', token);
+    .then((res) => {
+      if (res.message) {
+        window.alert(res.message);
+      } else {
+        localStorage.clear();
+        localStorage.setItem('token', res.token);
+        const user = decode(res.token);
         auth.setAuthState({user, isLoggedIn: true});
-        if (!user) {
-          history.push('/login');
-        } else {
-          history.push('/home');
-        }
-      } catch (error) {
-        window.alert('Invalid username or password!');
+        history.push('/home');
       }
     })
-    .catch(console.warn);
+    .catch(() => history.push('/500'));
   };
  
   return(
