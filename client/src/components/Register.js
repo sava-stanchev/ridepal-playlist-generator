@@ -56,7 +56,7 @@ const Register = () => {
 
   const register = (e) => {
     e.preventDefault();
-    fetch(`${HOST}/register`, {
+    fetch(`${HOST}/users`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

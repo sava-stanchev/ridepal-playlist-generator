@@ -52,7 +52,7 @@ const Users = () => {
 
   const switchRole = (id) => {
     fetch(`${HOST}/users/${id}`, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'content-type': 'application/json',
         'authorization': `bearer ${localStorage.getItem('token')}`
