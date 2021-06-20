@@ -33,22 +33,15 @@ app.use('/playlists', playlistsController);
 app.use('/users', usersController);
 
 /** Register */
-app.post('/register', validateBody('user', createUserValidator), async (req, res) => {
-  try {
-    const userData = req.body;
-    const newUser = await usersService.createUser(userData);
-    console.log(newUser);
-    if (!newUser.username) {
-      return res.status(400).json({error: 'Username already exists!'});
-    } else {
-      return res.status(200).send(newUser);
-    }
-  } catch (error) {
-    res.status(400).json({
-      error: error.message,
-    });
+app.post('/register', validateBody('user', createUserValidator), asyncHandler(async (req, res) => {
+  const result = await usersService.createUser(usersData)(req.body);
+  console.log(result);
+  if (result.error === serviceErrors.DUPLICATE_RECORD) {
+    res.status(409).json({message: 'Username or email already exists!'});
+  } else {
+    res.status(201).json(result.data);
   }
-});
+}));
 
 /** Login */
 app.post('/login', asyncHandler(async (req, res) => {

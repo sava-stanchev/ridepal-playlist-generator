@@ -1,11 +1,11 @@
 import pool from './pool.js';
 
-const getUserByName = async (username) =>{
+const getUserBy = async (column, value) => {
   const sql = `
-    SELECT * FROM users
-    WHERE username = ?
+    SELECT u.id, u.username, u.email, u.role_id FROM users AS u
+    WHERE u.${column} = ?
   `;
-  const result = await pool.query(sql, [username]);
+  const result = await pool.query(sql, [value]);
   return result[0];
 };
 
@@ -23,8 +23,6 @@ const createUser = async (user) => {
     WHERE u.id = ?
   `;
   const createdUser = (await pool.query(sql, [result.insertId]))[0];
-  console.log('tuk');
-  console.log(createdUser);
   return createdUser;
 };
 
@@ -91,7 +89,7 @@ const changeRole = async (id) => {
 };
 
 export default {
-  getUserByName,
+  getUserBy,
   createUser,
   getAllUsers,
   getUserById,

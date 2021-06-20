@@ -29,10 +29,6 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const history = useHistory();
-  const routeChange = () =>{ 
-    const path = `/login`; 
-    history.push(path);
-  };
 
   useEffect(() => {}, [newUser]);
 
@@ -58,7 +54,8 @@ const Register = () => {
     }
   };
 
-  const register = () => {
+  const register = (e) => {
+    e.preventDefault();
     fetch(`${HOST}/register`, {
       method: 'POST',
       headers: {
@@ -66,17 +63,15 @@ const Register = () => {
       },
       body: JSON.stringify(newUser),
     })
-    .then((res) => res.json())
-    .then((data) => {
-      try {
-        if (data.username) {
-          routeChange();
-        }
-      } catch (error) {
-        window.alert('Username already exists!');
+    .then(res => res.json())
+    .then((res) => {
+      if (res.message) {
+        window.alert(res.message);
+      } else {
+        history.push('/login');
       }
     })
-    .catch(error => window.alert(error.message));
+    .catch(() => history.push('/500'));
   };
 
   const showThePassword = () => {
@@ -123,9 +118,9 @@ const Register = () => {
         <div className="input-group">
           {
             usernameError.properLength && emailError.properEmail && passwordError.properLength ?
-            <button type="button" className="btn" onClick={() => register()}>Join Now</button>
+            <button type="button" className="btn" onClick={(e) => register(e)}>Join Now</button>
             :
-            <button type="button" className="btn" disabled={true} onClick={() => register()}>Join Now</button>
+            <button type="button" className="btn" disabled={true} onClick={(e) => register(e)}>Join Now</button>
           }
         </div>
       </form>
