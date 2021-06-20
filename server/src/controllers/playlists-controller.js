@@ -1,6 +1,7 @@
 import express from 'express';
 import playlistsData from '../data/playlists.js';
 import playlistServices from '../service/playlist-services.js';
+import {authMiddleware} from '../auth/auth-middleware.js';
 
 const playlistsController = express.Router();
 
@@ -10,6 +11,17 @@ playlistsController
       try {
         const thePlaylists = await playlistsData.getAllPlaylists();
         res.json(thePlaylists);
+      } catch (error) {
+        return res.status(400).json({
+          error: error.message,
+        });
+      }
+    })
+
+    .post('/', authMiddleware, async (req, res) => {
+      try {
+        const playlist = await playlistServices.playlistGenerator(req);
+        res.status(200).send(playlist);
       } catch (error) {
         return res.status(400).json({
           error: error.message,

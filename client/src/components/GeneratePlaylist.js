@@ -72,7 +72,7 @@ const GeneratePlaylist = ({points}) => {
 
   const generatePlaylist = (data, e) => {
     e.preventDefault();
-    fetch(`${HOST}/playlist`, {
+    fetch(`${HOST}/playlists`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
