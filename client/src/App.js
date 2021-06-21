@@ -10,6 +10,8 @@ import StartPage from './components/StartPage';
 import ViewPlaylist from './components/ViewPlaylist';
 import GenerateRoute from './components/GenerateRoute';
 import GeneratePlaylist from './components/GeneratePlaylist';
+import PageNotFound from './components/PageNotFound';
+import ServerError from './components/ServerError';
 
 const App = () => {
   const [authValue, setAuthValue] = useState({
@@ -37,6 +39,8 @@ const App = () => {
             <Route path="/generate-route" exact component={(props) => <GenerateRoute {...props} setPoints={setPoints}/>} />
             <Route path="/generate-playlist" exact component={(props) => <GeneratePlaylist {...props} points={points}/>} />
             <Route path="/playlists/:id" exact component={ViewPlaylist} />
+            <Route path="/500" component={ServerError} />
+            <Route path="*" exact component={PageNotFound} />
           </Switch>
         </AuthContext.Provider>
       </BrowserRouter>
