@@ -1,17 +1,17 @@
-import {HOST} from '../common/constants.js';
+import {HOST} from '../common/constants';
 import {useEffect, useState, useContext} from 'react';
 import ReactPaginate from "react-paginate";
 import {useHistory} from "react-router-dom";
 import {FaTrashAlt, FaEdit} from "react-icons/fa";
 import AuthContext from '../providers/auth-context';
-import UpdatePlaylistModal from './UpdatePlaylistModal.js';
-import {convertHMS} from '../common/utils.js';
+import UpdatePlaylistModal from './UpdatePlaylistModal';
+import {convertHMS} from '../common/utils';
 
 const StartPage = () => {
   const auth = useContext(AuthContext);
+  const history = useHistory();
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState('');
   const [returnedPlaylists, setReturnedPlaylists] = useState([]);
@@ -33,9 +33,9 @@ const StartPage = () => {
     })
       .then((response) => response.json())
       .then((data) => data.length ? setPlaylists(data) : setPlaylists([]))
-      .catch((error) => setError(error.message))
+      .catch(() => history.push('/500'))
       .finally(() => setLoading(false));
-  }, []);  
+  }, [history]);  
 
   useEffect(() => {
     let result = [...playlists];
@@ -70,12 +70,6 @@ const StartPage = () => {
     setReturnedPlaylists(result);
   }, [search, playlists, showMyPlaylists, filterRock, filterPop, filterRap, duration]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const showError = () => {
-    if (error) {
-      return <h4><i>An error has occured: </i>{error}</h4>
-    }
-  }
-
   const Loader = () => <div className="Loader"></div>;
 
   const showLoader = () => {
@@ -83,8 +77,6 @@ const StartPage = () => {
       return <Loader />
     }
   }
-
-  const history = useHistory();
   
   const deletePlaylist = (id) => {
     fetch(`${HOST}/playlists/${id}`, {
@@ -96,7 +88,7 @@ const StartPage = () => {
     })
     .then((res) => res.json())
     .then(() => setPlaylists(playlists.filter(p => p.id !== id)))
-    .catch((error) => setError(error.message));
+    .catch(() => history.push('/500'));
   };
 
   const editFunction = (playlist) => {
@@ -181,7 +173,6 @@ const StartPage = () => {
     </div>
     <div className="cards-container">
       {showLoader()}
-      {showError()}
       {displayPlaylists}
     </div>
     <ReactPaginate

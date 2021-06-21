@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useHistory} from 'react-router-dom';
-import {HOST} from '../common/constants.js';
+import {HOST} from '../common/constants';
 
 const playlistNameVerificationError = {
   properLength: false,
@@ -82,7 +82,7 @@ const GeneratePlaylist = ({points}) => {
     })
     .then(res => res.json())
     .then(data => routeChange(data.id))
-    .catch(console.error())
+    .catch(() => history.push('/500'));
   };
 
   return(

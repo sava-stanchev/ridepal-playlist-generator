@@ -5,7 +5,7 @@ import brandLogo from '../images/logo.png';
 import {CgProfile} from "react-icons/cg";
 import ReactTooltip from 'react-tooltip';
 import {FiLogOut} from 'react-icons/fi';
-import {HOST} from '../common/constants.js';
+import {HOST} from '../common/constants';
 
 const NavBar = () => {
   const history = useHistory();

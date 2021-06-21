@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import ReactDom from 'react-dom';
-import {HOST} from '../common/constants.js';
+import {useHistory} from 'react-router-dom';
+import {HOST} from '../common/constants';
 
 const playlistNameVerificationError = {
   properLength: false,
 }
 
 export default function Modal({playlist, open, onClose, playlists, setPlaylists}) {
+  const history = useHistory();
   const [thePlaylist, setThePlaylist] = useState(null);
   const [playlistNameError, setPlaylistNameError] = useState(playlistNameVerificationError);
 
@@ -39,6 +41,7 @@ export default function Modal({playlist, open, onClose, playlists, setPlaylists}
       const newPlaylists = playlists.map(p => p.id === editedPlaylist.id ? editedPlaylist : p);
       setPlaylists(newPlaylists);
     })
+    .catch(() => history.push('/500'));
   };
 
   const closeFunction = () => {

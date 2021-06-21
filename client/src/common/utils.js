@@ -7,3 +7,7 @@ export const convertHMS = (value) => {
   if (minutes < 10) minutes = '0' + minutes;
   return hours + 'h ' + minutes + 'm';
 }
+
+export const trackTimeFormat = (s) => {
+  return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0' ) + s;
+};

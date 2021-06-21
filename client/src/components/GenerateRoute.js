@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {useHistory} from 'react-router-dom';
+import {BING_KEY} from '../common/constants';
 
 const cityNameVerificationError = {
   properCityName: false,
@@ -38,7 +39,7 @@ const GenerateRoute = ({ setPoints }) => {
 
   const getDuration = (e) => {
     e.preventDefault();
-    fetch(`http://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0=${route.from}&wp.1=${route.to}&routeAttributes=excludeItinerary&key=AlyPtpHnx-TC4cf6hqJyd2oQKsQwnovawxxxnua_ml-uIxALhwZ__iJg9izB3iHr`, {
+    fetch(`http://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0=${route.from}&wp.1=${route.to}&routeAttributes=excludeItinerary&key=${BING_KEY}`, {
     method: 'GET',
   })
     .then(res => res.json())

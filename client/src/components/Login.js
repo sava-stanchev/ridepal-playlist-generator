@@ -1,8 +1,8 @@
 import {useContext, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {HOST} from '../common/constants.js';
+import {HOST} from '../common/constants';
 import decode from 'jwt-decode';
-import AuthContext from '../providers/auth-context.js';
+import AuthContext from '../providers/auth-context';
 
 const Login = () => {
   const history = useHistory();

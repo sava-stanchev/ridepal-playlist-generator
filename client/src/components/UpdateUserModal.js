@@ -1,8 +1,10 @@
 import ReactDom from 'react-dom';
 import {useEffect, useState} from 'react';
-import {HOST} from '../common/constants.js';
+import {HOST} from '../common/constants';
+import {useHistory} from 'react-router-dom';
 
 export default function Modal({user, open, onClose, users, setUsers}) {
+  const history = useHistory();
   const [theUser, setTheUser] = useState(null);
 
   useEffect(() => {
@@ -34,6 +36,7 @@ export default function Modal({user, open, onClose, users, setUsers}) {
       const newUsers = users.map(u => u.id === editedUser.id ? editedUser : u);
       setUsers(newUsers);
     })
+    .catch(() => history.push('/500'));
   };
   
   const closeFunction = () => {

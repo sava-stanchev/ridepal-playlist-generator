@@ -1,13 +1,14 @@
-import {HOST} from '../common/constants.js';
+import {HOST} from '../common/constants';
 import {useEffect, useState} from 'react';
 import {FaPlayCircle} from "react-icons/fa";
 import {Howl} from 'howler';
-import { convertHMS } from '../common/utils.js';
+import {convertHMS, trackTimeFormat} from '../common/utils';
+import {useHistory} from 'react-router-dom';
 
 const ViewPlaylist = props => {
   const {id} = props.match.params;
+  const history = useHistory();
   const [playlistData, setPlaylistData] = useState(null);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -17,9 +18,9 @@ const ViewPlaylist = props => {
     })
     .then((response) => response.json())
     .then((data) => setPlaylistData(data))
-    .catch((error) => setError(error.message))
+    .catch(() => history.push('/500'))
     .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, history]);
 
   let sound = null;
 
@@ -37,12 +38,6 @@ const ViewPlaylist = props => {
     }
   }
 
-  const showError = () => {
-    if (error) {
-      return <h4><i>An error has occured: </i>{error}</h4>
-    }
-  }
-
   const Loader = () => <div className="Loader"></div>;
 
   const showLoader = () => {
@@ -54,10 +49,6 @@ const ViewPlaylist = props => {
   if  (playlistData === null) {
     return <div className="Loader"></div>;
   }
-
-  const trackTimeFormat = (s) => {
-    return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0' ) + s;
-  };
 
   const displayTracks = playlistData.map((track) => {
     return (
@@ -82,7 +73,6 @@ const ViewPlaylist = props => {
   
   return(
     <div className="songs-container-main-section">
-      {showError()}
       {showLoader()}
       <div className="songs-container">
         <table className="playlist-list">

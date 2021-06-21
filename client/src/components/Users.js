@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
-import { useState } from 'react/cjs/react.development'
-import { HOST } from '../common/constants';
+import {useEffect, useState} from 'react';
+import {HOST} from '../common/constants';
 import {FaTrashAlt, FaEdit, FaCrown} from "react-icons/fa";
-import UpdateUserModal from './UpdateUserModal.js';
+import UpdateUserModal from './UpdateUserModal';
+import {useHistory} from 'react-router-dom';
 
 const Users = () => {
+  const history = useHistory();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -25,14 +25,13 @@ const Users = () => {
     .then(res => res.json())
     .then(data => setUsers(data))
     .then(() => setLoading(false))
-    .catch(error => setError(error.massage))
-  }, []);
+    .catch(() => history.push('/500'));
+  }, [history]);
 
   useEffect(() => {
     setFilteredUsers(users.filter(user => {
       return user.username.toLowerCase().includes(search.toLowerCase())
     }));
-
   }, [search, users]);
 
   let foundUsers = filteredUsers;
@@ -47,7 +46,7 @@ const Users = () => {
     })
     .then((res) => res.json())
     .then(() => setUsers(users.filter(u => u.id !== id)))
-    .catch((error) => setError(error.message));
+    .catch(() => history.push('/500'));
   };
 
   const switchRole = (id) => {
@@ -60,18 +59,12 @@ const Users = () => {
     })
     .then((res) => res.json())
     .then(data => setUsers(data))
-    .catch(error => setError(error.massage));
+    .catch(() => history.push('/500'));
   };
 
   const editFunction = (user) => {
     setCurrentUser(user);
     setIsOpen(true);
-  }
-
-  const showError = () => {
-    if (error) {
-      return <h4><i>An error has occured: </i>{error}</h4>
-    }
   }
 
   const Loader = () => <div className="Loader"></div>;
@@ -129,7 +122,6 @@ const Users = () => {
       </section>
       <br/>
       <div className="songs-container-main-section">
-        {showError()}
         {showLoader()}
         <div className="table-container">
           <table className="table">
