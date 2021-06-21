@@ -1,7 +1,5 @@
 import {HOST} from '../common/constants';
 import {useEffect, useState} from 'react';
-import {FaPlayCircle} from "react-icons/fa";
-import {Howl} from 'howler';
 import {convertHMS, trackTimeFormat} from '../common/utils';
 import {useHistory} from 'react-router-dom';
 
@@ -21,22 +19,6 @@ const ViewPlaylist = props => {
     .catch(() => history.push('/500'))
     .finally(() => setLoading(false));
   }, [id, history]);
-
-  let sound = null;
-
-  const soundPlay = (src) => {
-    if (sound != null) {
-      sound.stop();
-      sound.unload();
-      sound = null;
-    } else {
-      sound = new Howl ({
-        src,
-        html5: true
-      })
-      sound.play();
-    }
-  }
 
   const Loader = () => <div className="Loader"></div>;
 
@@ -59,13 +41,13 @@ const ViewPlaylist = props => {
               <img src={track.cover} alt="cover"/>
             </div>
           </td>
-          <td className="play-preview">
-            <button className="play-btn" onClick={() => soundPlay(track.preview)}>
-              <FaPlayCircle/>
-            </button>
-          </td>
           <td className="song-title"><h5>{track.artist_name} - {track.track_title}</h5></td>
           <td className="song-length"><h5>{trackTimeFormat(track.duration)}</h5></td>
+          <td className="play-preview">
+            <audio controls className='audio' controlsList="nodownload">
+              <source src={track.preview} type='audio/mp3' />
+            </audio>
+          </td>
         </tr>
       </tbody>
     )
