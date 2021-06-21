@@ -32,15 +32,15 @@ const App = () => {
           <NavBar />
           <Switch>
             <Redirect path="/" exact to="/home" />
-            <Route path="/home" exact component={StartPage} />
-            <Route path="/login" exact component={Login} />       
-            <Route path="/register" exact component={Register} />
-            <Route path="/users" exact component={Users} />
-            <Route path="/generate-route" exact component={(props) => <GenerateRoute {...props} setPoints={setPoints}/>} />
-            <Route path="/generate-playlist" exact component={(props) => <GeneratePlaylist {...props} points={points}/>} />
-            <Route path="/playlists/:id" exact component={ViewPlaylist} />
+            <Route exact path="/home" component={StartPage} />
+            <Route exact path="/login" component={Login} />       
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/users" component={Users} />
+            <Route exact path="/generate-route" component={(props) => <GenerateRoute {...props} setPoints={setPoints}/>} />
+            <Route exact path="/generate-playlist" component={(props) => <GeneratePlaylist {...props} points={points}/>} />
+            <Route exact path="/playlists/:id" component={ViewPlaylist} />
             <Route path="/500" component={ServerError} />
-            <Route path="*" exact component={PageNotFound} />
+            <Route path="*" component={PageNotFound} />
           </Switch>
         </AuthContext.Provider>
       </BrowserRouter>
