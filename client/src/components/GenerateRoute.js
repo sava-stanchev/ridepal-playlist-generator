@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {BING_KEY} from '../common/constants';
+import AlertModal from './AlertModal';
 
 const cityNameVerificationError = {
   properCityName: false,
@@ -9,6 +10,8 @@ const cityNameVerificationError = {
 const GenerateRoute = ({ setPoints }) => {
   const [cityNameOneError, setCityNameOneError] = useState(cityNameVerificationError);
   const [cityNameTwoError, setCityNameTwoError] = useState(cityNameVerificationError);
+  const [isOpen, setIsOpen] = useState(false);
+  const [alertMsg, setAlertMsg] = useState(null);
   const [route, setRoute] = useState({
     from: '',
     to: '',
@@ -54,7 +57,8 @@ const GenerateRoute = ({ setPoints }) => {
           routeChange();
         }
       } catch (error) {
-        window.alert('Invalid waypoints!');
+        setAlertMsg('Invalid waypoints!');
+        setIsOpen(true);
       }
     })
     .catch(history.push('/generate-route'));
@@ -62,6 +66,7 @@ const GenerateRoute = ({ setPoints }) => {
   
   return(
     <section className="join-login-main-section">
+      <AlertModal open={isOpen} onClose={() => setIsOpen(false)} alertMsg={alertMsg} />
       <h1 className="join-login-text">
         Choose your
         <span className="accent-text"> route!</span>
@@ -79,12 +84,12 @@ const GenerateRoute = ({ setPoints }) => {
           {
             cityNameOneError.properCityName && cityNameTwoError.properCityName ?
             <>
-              <p className ="cityReminderMsg">* Travel locations should be valid</p>
+              <p className ="cityReminderMsg">* Travel locations should be valid city names</p>
               <button type="submit" className="btn" onClick={(e) => getDuration(e)}>Next</button>
             </>
             :
             <>
-              <p className ="cityReminderMsg" style={{color: 'red'}}>* Travel locations should be valid</p>
+              <p className ="cityReminderMsg" style={{color: 'red'}}>* Travel locations should be valid city names</p>
               <button type="submit" className="btn" disabled={true} onClick={(e) => getDuration(e)}>Next</button>
             </>
           }

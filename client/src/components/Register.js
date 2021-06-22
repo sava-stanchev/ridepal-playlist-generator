@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {HOST} from '../common/constants';
 import {FaEyeSlash, FaEye} from "react-icons/fa";
+import AlertModal from './AlertModal';
 
 const initialState = {
   username: '',
@@ -27,6 +28,8 @@ const Register = () => {
   const [emailError, setEmailError] = useState(emailVerificationError);
   const [usernameError, setUsernameError] = useState(usernameVerificationError);
   const [showPassword, setShowPassword] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [alertMsg, setAlertMsg] = useState(null);
 
   const history = useHistory();
 
@@ -66,7 +69,8 @@ const Register = () => {
     .then(res => res.json())
     .then((res) => {
       if (res.message) {
-        window.alert(res.message);
+        setAlertMsg(res.message);
+        setIsOpen(true);
       } else {
         history.push('/login');
       }
@@ -84,6 +88,7 @@ const Register = () => {
     
   return(
     <section className="join-login-main-section">
+      <AlertModal open={isOpen} onClose={() => setIsOpen(false)} alertMsg={alertMsg} />
       <h1 className="join-login-text">
         Join and
         <span className="accent-text"> generate!</span>

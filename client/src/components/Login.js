@@ -3,10 +3,13 @@ import {useHistory} from 'react-router-dom';
 import {HOST} from '../common/constants';
 import decode from 'jwt-decode';
 import AuthContext from '../providers/auth-context';
+import AlertModal from './AlertModal';
 
 const Login = () => {
   const history = useHistory();
   const auth = useContext(AuthContext);
+  const [isOpen, setIsOpen] = useState(false);
+  const [alertMsg, setAlertMsg] = useState(null);
   const [user, setUser] = useState({
     username: '',
     password: '',
@@ -31,7 +34,8 @@ const Login = () => {
     .then(res => res.json())
     .then((res) => {
       if (res.message) {
-        window.alert(res.message);
+        setAlertMsg(res.message);
+        setIsOpen(true);
       } else {
         localStorage.clear();
         localStorage.setItem('token', res.token);
@@ -42,9 +46,10 @@ const Login = () => {
     })
     .catch(() => history.push('/500'));
   };
- 
+
   return(
     <section className="join-login-main-section">
+      <AlertModal open={isOpen} onClose={() => setIsOpen(false)} alertMsg={alertMsg} />
       <h1 className="join-login-text">
         Welcome
         <span className="accent-text">!</span>
