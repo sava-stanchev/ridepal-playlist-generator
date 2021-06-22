@@ -4,7 +4,7 @@ import {useHistory} from 'react-router-dom';
 import {HOST} from '../common/constants';
 
 const playlistNameVerificationError = {
-  properLength: false,
+  properLength: true,
 }
 
 export default function Modal({playlist, open, onClose, playlists, setPlaylists}) {
@@ -63,7 +63,12 @@ export default function Modal({playlist, open, onClose, playlists, setPlaylists}
           </p>
         </div>
         <div className="input-group">
+        {
+          playlistNameError.properLength ?
           <button className="btn" onClick={closeFunction}>Update</button>
+          :
+          <button className="btn" disabled={true} onClick={closeFunction}>Update</button>
+        }
         </div>
       </div>
     </>,
