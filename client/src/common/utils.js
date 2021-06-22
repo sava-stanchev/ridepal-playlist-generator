@@ -5,7 +5,10 @@ export const convertHMS = (value) => {
   let seconds = sec - (hours * 3600) - (minutes * 60);
   if (seconds >= 30) minutes++;
   if (minutes < 10) minutes = '0' + minutes;
-  return hours + 'h ' + minutes + 'm';
+  if (hours < 1) {
+    return minutes + 'min.';
+  }
+  return hours + 'h ' + minutes + 'min.';
 }
 
 export const trackTimeFormat = (s) => {

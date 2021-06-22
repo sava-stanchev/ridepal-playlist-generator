@@ -143,7 +143,7 @@ const StartPage = () => {
         <button className="genre" onClick={() => {setFilterRap(true); setFilterPop(false); setFilterRock(false)}}>Rap</button>
         <button className="genre" onClick={() => {setFilterPop(true); setFilterRap(false); setFilterRock(false)}}>Pop</button>
         <button className="genre" onClick={() => {setFilterRock(true); setFilterRap(false); setFilterPop(false)}}>Rock</button>
-        <button className="genre" onClick={() => setShowMyPlaylists(true)}>My playlists</button>
+        <button className="btn-grad" onClick={() => setShowMyPlaylists(true)}>My playlists</button>
         <select name="durations" defaultValue="Duration" id="dropdown" onChange={e => setDuration(e.target.value)}>
             <option>Duration</option>
             <option>&#60; 1 hour</option>

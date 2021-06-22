@@ -502,9 +502,23 @@ body {
   border-color: #606060;
 }
 
-.genre.active {
-  background-color: #606060;
+.btn-grad {
+  background-image: linear-gradient(to right, #BA3A81 0%, #3A56B0  51%, #BA3A81  100%);
+  margin-right: 1rem;
+  padding: .4rem .8rem;
+  text-align: center;
+  transition: 0.5s;
+  background-size: 200% auto;
   color: white;
+  border-radius: 900px;
+  border: 1px solid #606060;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.btn-grad:hover {
+  background-position: right center;
+  color: #fff;
   border-color: #606060;
 }
 
