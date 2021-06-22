@@ -288,6 +288,14 @@ body {
     opacity 320ms;
 }
 
+.delete-btn:hover {
+  color: orange;
+}
+
+.edit-btn:hover {
+  color: mediumturquoise;
+}
+
 .play-btn {
   color: white;
   background-color: transparent;
@@ -370,11 +378,13 @@ body {
 .pl-name {
   font-size: 1rem;
   margin-top: -1rem;
+  font-weight: 300;
 }
 
 .pl-about {
   font-size: 0.9375rem;
   color: #AAAAAA;
+  margin-top: -0.4rem;
   margin-bottom: 0.3rem;
 }
 
@@ -496,6 +506,10 @@ body {
   transition: background-color 150ms;
 }
 
+.genre:focus {
+  outline: none;
+}
+
 .genre:hover {
   background-color: #606060;
   color: white;
@@ -520,6 +534,10 @@ body {
   background-position: right center;
   color: #fff;
   border-color: #606060;
+}
+
+.btn-grad:focus {
+  outline: none;
 }
 
 .genre:last-child {
@@ -795,6 +813,10 @@ select {
   padding: .4rem .8rem;
   font-size: inherit;
   cursor: pointer;
+}
+
+select:focus {
+  outline: none;
 }
 
 .table-container {

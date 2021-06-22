@@ -46,7 +46,7 @@ const StartPage = () => {
       });
     }
 
-    if (duration !== null) {
+    if (duration !== null && duration !== 'Duration') {
       result = result.filter(pl => +pl.playtime <= Math.floor(duration.split(' ')[1]*60*60))
     }
 
@@ -121,8 +121,10 @@ const StartPage = () => {
           </div>
         </div>
         <div className="description">
-          <h1 className="pl-name">Rank: {playlist.rank}</h1>
-          <p className="pl-about">Created: {new Date(playlist.created_on).toLocaleDateString("en-US")} by {playlist.created_by}</p>
+          <h1 className="pl-name">Ranking: {playlist.rank}</h1>
+          <p className="pl-about">
+            Created: {new Date(playlist.created_on).toLocaleDateString("en-US")} by <b>{playlist.created_by}</b>
+          </p>
         </div>
       </article>
     );
