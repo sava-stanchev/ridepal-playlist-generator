@@ -12,6 +12,7 @@ import GenerateRoute from './components/GenerateRoute';
 import GeneratePlaylist from './components/GeneratePlaylist';
 import PageNotFound from './components/PageNotFound';
 import ServerError from './components/ServerError';
+import GuardedRoute from './providers/GuardedRoute';
 
 const App = () => {
   const [authValue, setAuthValue] = useState({
@@ -35,9 +36,9 @@ const App = () => {
             <Route exact path="/home" component={StartPage} />
             <Route exact path="/login" component={Login} />       
             <Route exact path="/register" component={Register} />
-            <Route exact path="/users" component={Users} />
-            <Route exact path="/generate-route" component={(props) => <GenerateRoute {...props} setPoints={setPoints}/>} />
-            <Route exact path="/generate-playlist" component={(props) => <GeneratePlaylist {...props} points={points}/>} />
+            <GuardedRoute exact admin path="/users" component={Users} />
+            <GuardedRoute exact path="/generate-route" component={(props) => <GenerateRoute {...props} setPoints={setPoints}/>} />
+            <GuardedRoute exact path="/generate-playlist" component={(props) => <GeneratePlaylist {...props} points={points}/>} />
             <Route exact path="/playlists/:id" component={ViewPlaylist} />
             <Route path="/500" component={ServerError} />
             <Route path="*" component={PageNotFound} />
