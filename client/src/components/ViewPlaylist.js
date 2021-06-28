@@ -58,11 +58,15 @@ const ViewPlaylist = props => {
       {showLoader()}
       <div className="songs-container">
         <table className="playlist-list">
-          <th className="playlist-header" colspan="4">
-            <h5 className="playlist-title">
-              Tracklist for "{playlistData[0].title}" ({convertHMS(playlistData[0].playtime)})
-            </h5>
-          </th>
+          <thead>
+            <tr>
+              <th className="playlist-header" colSpan="4">
+                <h5 className="playlist-title">
+                  Tracklist for "{playlistData[0].title}" ({convertHMS(playlistData[0].playtime)})
+                </h5>
+              </th>
+            </tr>
+          </thead>
           {displayTracks}
         </table>
       </div>
