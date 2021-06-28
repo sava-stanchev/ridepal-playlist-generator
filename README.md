@@ -31,3 +31,19 @@ PRIVATE_KEY=secretkey
 Frontend:
 1. Inside the `client` folder, run `npm install` to restore all dependencies.
 2. Run `npm start`.
+
+### Pages
+- Home page
+![Home 1](/screenshots/home-page.png)
+- Tracklist
+![Tracklist](/screenshots/tracks-page.png)
+- Users
+![Users](screenshots/users-page.png)
+- Route choice
+![Routes](screenshots/route-page.png)
+- Generate playlist
+![Generate](screenshots/generate-page.png)
+- Register
+![Register](screenshots/register-page.png)
+- Login
+![Login](screenshots/login-page.png)
