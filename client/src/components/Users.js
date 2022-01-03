@@ -1,126 +1,135 @@
-import {useEffect, useState} from 'react';
-import {HOST} from '../common/constants';
-import {FaTrashAlt, FaEdit, FaCrown} from "react-icons/fa";
-import UpdateUserModal from './UpdateUserModal';
-import {useHistory} from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { FaTrashAlt, FaEdit, FaCrown } from "react-icons/fa";
+import UpdateUserModal from "./UpdateUserModal";
+import * as userActions from "../store/actions/users";
+import { useDispatch, useSelector } from "react-redux";
 
 const Users = () => {
-  const history = useHistory();
-  const [users, setUsers] = useState([]);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
+  const users = useSelector((state) => state.users.allUsers);
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${HOST}/users`, {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `bearer ${localStorage.getItem('token')}`
-      },
-    })
-    .then(res => res.json())
-    .then(data => setUsers(data))
-    .then(() => setLoading(false))
-    .catch(() => history.push('/500'));
-  }, [history]);
+    dispatch(userActions.getUsers());
+    setLoading(false);
+  }, [dispatch]);
 
   useEffect(() => {
-    setFilteredUsers(users.filter(user => {
-      return user.username.toLowerCase().includes(search.toLowerCase())
-    }));
+    setFilteredUsers(
+      users.filter((user) => {
+        return user.username.toLowerCase().includes(search.toLowerCase());
+      })
+    );
   }, [search, users]);
 
   let foundUsers = filteredUsers;
 
   const deleteUser = (id) => {
-    fetch(`${HOST}/users/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `bearer ${localStorage.getItem('token')}`
-      },
-    })
-    .then((res) => res.json())
-    .then(() => setUsers(users.filter(u => u.id !== id)))
-    .catch(() => history.push('/500'));
+    dispatch(userActions.deleteUser(id));
   };
 
   const switchRole = (id) => {
-    fetch(`${HOST}/users/${id}`, {
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `bearer ${localStorage.getItem('token')}`
-      },
-    })
-    .then((res) => res.json())
-    .then(data => setUsers(data))
-    .catch(() => history.push('/500'));
+    dispatch(userActions.switchRole(id));
   };
 
   const editFunction = (user) => {
     setCurrentUser(user);
     setIsOpen(true);
-  }
+  };
 
   const Loader = () => <div className="Loader"></div>;
 
   const showLoader = () => {
     if (loading) {
-      return <Loader />
+      return <Loader />;
     }
   };
 
   const displayUsers = foundUsers.map((user) => {
     return (
       <tbody key={user.id}>
-        <tr style={{outline: '#202027 thin solid'}}>
+        <tr style={{ outline: "#202027 thin solid" }}>
           <td>{user.username}</td>
           <td>{user.email}</td>
           <td>
             <div className="inline-td">
               {user.role}
-              <button className="role-btn-users" onClick={() => switchRole(user.id)}>
-                <FaCrown style={user.role === 'admin' ? {color: '#FFD700'} : {color: 'white'}}/>
+              <button
+                className="role-btn-users"
+                onClick={() => switchRole(user.id)}
+              >
+                <FaCrown
+                  style={
+                    user.role === "admin"
+                      ? { color: "#FFD700" }
+                      : { color: "white" }
+                  }
+                />
               </button>
             </div>
           </td>
           <td>
             <div className="inline-td">
-              <button className="edit-btn-users" onClick={() => editFunction(user)}><FaEdit/></button>
-              <button className="delete-btn-users" onClick={() => deleteUser(user.id)}><FaTrashAlt/></button>
+              <button
+                className="edit-btn-users"
+                onClick={() => editFunction(user)}
+              >
+                <FaEdit />
+              </button>
+              <button
+                className="delete-btn-users"
+                onClick={() => deleteUser(user.id)}
+              >
+                <FaTrashAlt />
+              </button>
             </div>
           </td>
         </tr>
       </tbody>
-    )
+    );
   });
 
-  return(
+  return (
     <>
-      <UpdateUserModal open={isOpen} onClose={() => setIsOpen(false)} user={currentUser} users={users} setUsers={setUsers}/>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+      <UpdateUserModal
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        user={currentUser}
+        users={users}
+      />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      />
       <section className="genre-section">
         <div className="boxContainer">
-          <table className = "elementsContainer">
-            <tbody><tr>
-              <td>
-                <input type="text" placeholder="search by username" className="search" onChange={e => setSearch(e.target.value)}/>
-              </td>
-              <td>
-                <>
-                  <i className="material-icons">search</i>
-                </>
-              </td>
-            </tr></tbody>
+          <table className="elementsContainer">
+            <tbody>
+              <tr>
+                <td>
+                  <input
+                    type="text"
+                    placeholder="search by username"
+                    className="search"
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </td>
+                <td>
+                  <>
+                    <i className="material-icons">search</i>
+                  </>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </section>
-      <br/>
+      <br />
       <div className="songs-container-main-section">
         {showLoader()}
         <div className="table-container">
@@ -135,7 +144,7 @@ const Users = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Users;
