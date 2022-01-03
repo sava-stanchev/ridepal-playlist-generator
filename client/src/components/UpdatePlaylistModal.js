@@ -1,16 +1,18 @@
-import {useState} from 'react';
-import ReactDom from 'react-dom';
-import {useHistory} from 'react-router-dom';
-import {HOST} from '../common/constants';
+import { useState } from "react";
+import ReactDom from "react-dom";
+import * as playlistActions from "../store/actions/playlists";
+import { useDispatch } from "react-redux";
 
 const playlistNameVerificationError = {
   properLength: true,
-}
+};
 
-export default function Modal({playlist, open, onClose, playlists, setPlaylists}) {
-  const history = useHistory();
+export default function Modal({ playlist, open, onClose, playlists }) {
   const [thePlaylist, setThePlaylist] = useState(null);
-  const [playlistNameError, setPlaylistNameError] = useState(playlistNameVerificationError);
+  const [playlistNameError, setPlaylistNameError] = useState(
+    playlistNameVerificationError
+  );
+  const dispatch = useDispatch();
 
   if (!playlist) return null;
   if (!open) return null;
@@ -23,55 +25,58 @@ export default function Modal({playlist, open, onClose, playlists, setPlaylists}
 
     if (prop === "title") {
       const properLength = value.length >= 3 && value.length <= 20;
-      setPlaylistNameError({...playlistNameError, properLength});
+      setPlaylistNameError({ ...playlistNameError, properLength });
     }
   };
 
   const updatePlaylist = () => {
-    fetch(`${HOST}/playlists/${playlist.id}`, {
-      method: 'PATCH',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify(thePlaylist),
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      const editedPlaylist = data;
-      const newPlaylists = playlists.map(p => p.id === editedPlaylist.id ? editedPlaylist : p);
-      setPlaylists(newPlaylists);
-    })
-    .catch(() => history.push('/500'));
+    dispatch(playlistActions.updatePlaylist(playlist.id, thePlaylist));
   };
 
   const closeFunction = () => {
     updatePlaylist();
     onClose();
-  }
+  };
 
   return ReactDom.createPortal(
     <>
       <div className="overlay-styles" />
       <div className="modal-styles">
-      <button className="close-button" onClick={onClose}>&times;</button>
+        <button className="close-button" onClick={onClose}>
+          &times;
+        </button>
         <div className="input-group">
           <label>New playlist name:</label>
-          <input type="text" name="title" value={thePlaylist ? thePlaylist.title : playlist.title}
-          onChange={e => updatePlaylistProperties('title', e.target.value)} />
-          <p className ="registerMsg" style={playlistNameError.properLength ? {color: 'white'} : {color: 'red'}}>
+          <input
+            type="text"
+            name="title"
+            value={thePlaylist ? thePlaylist.title : playlist.title}
+            onChange={(e) => updatePlaylistProperties("title", e.target.value)}
+          />
+          <p
+            className="registerMsg"
+            style={
+              playlistNameError.properLength
+                ? { color: "white" }
+                : { color: "red" }
+            }
+          >
             * Between 3 and 20 chars
           </p>
         </div>
         <div className="input-group">
-        {
-          playlistNameError.properLength ?
-          <button className="btn" onClick={closeFunction}>Update</button>
-          :
-          <button className="btn" disabled={true} onClick={closeFunction}>Update</button>
-        }
+          {playlistNameError.properLength ? (
+            <button className="btn" onClick={closeFunction}>
+              Update
+            </button>
+          ) : (
+            <button className="btn" disabled={true} onClick={closeFunction}>
+              Update
+            </button>
+          )}
         </div>
       </div>
     </>,
-    document.getElementById('portal')
+    document.getElementById("portal")
   );
 }
