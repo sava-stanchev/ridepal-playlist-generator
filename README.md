@@ -4,7 +4,7 @@
 RidePal Playlist Generator is a single-page application that enables users to generate playlists for specific travel duration periods, based on their preferred genres.
 
 ### Tech Stack
-React.js, Express.js, Node.js, MariaDB, MySQL
+React.js, Redux.js, Express.js, MySQL, HTML5, SASS
 
 ### External Services
 - Microsoft Bing Maps
