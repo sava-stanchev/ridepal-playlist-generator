@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-import mariadb from 'mariadb';
+import dotenv from "dotenv";
+import mariadb from "mariadb";
 
 const config = dotenv.config().parsed;
 

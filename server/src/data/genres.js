@@ -1,4 +1,4 @@
-import pool from './pool.js';
+import pool from "./pool.js";
 
 const getGenreByName = async (name) => {
   const sql = `

@@ -1,7 +1,10 @@
-import pool from './pool.js';
+import pool from "./pool.js";
 
 const tokenExists = async (token) => {
-  const result = await pool.query('SELECT * FROM tokens AS t WHERE t.token = ?', [token]);
+  const result = await pool.query(
+    "SELECT * FROM tokens AS t WHERE t.token = ?",
+    [token]
+  );
 
   return result && result.length > 0;
 };

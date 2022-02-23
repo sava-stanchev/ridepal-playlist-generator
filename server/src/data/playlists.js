@@ -1,4 +1,4 @@
-import pool from './pool.js';
+import pool from "./pool.js";
 
 const setPlaylist = async (data) => {
   const sql = `
@@ -6,7 +6,12 @@ const setPlaylist = async (data) => {
     VALUES (?, ?, ?, ?, NOW())
   `;
 
-  const result = await pool.query(sql, [data.name, data.duration, data.rank, data.user]);
+  const result = await pool.query(sql, [
+    data.name,
+    data.duration,
+    data.rank,
+    data.user,
+  ]);
   const newSql = `SELECT * FROM playlists WHERE id = ?`;
   const newPlaylist = await pool.query(newSql, [result.insertId]);
   return newPlaylist[0];
@@ -97,7 +102,7 @@ const deletePlaylist = async (id) => {
 };
 
 const updatePlaylistName = async (playlist) => {
-  const {title} = playlist;
+  const { title } = playlist;
   const playlistId = playlist[0].id;
 
   const sql = `

@@ -1,4 +1,4 @@
-import errorStrings from '../common/error-strings.js';
+import errorStrings from "../common/error-strings.js";
 
 export default (resource, validator) => async (req, res, next) => {
   const errors = {};

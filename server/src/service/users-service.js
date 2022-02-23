@@ -1,12 +1,12 @@
-import usersData from '../data/users.js';
-import bcrypt from 'bcrypt';
-import serviceErrors from '../common/service-errors.js';
+import usersData from "../data/users.js";
+import bcrypt from "bcrypt";
+import serviceErrors from "../common/service-errors.js";
 
 const createUser = (usersData) => async (user) => {
-  const {username, email, password} = user;
+  const { username, email, password } = user;
 
-  const usernameExists = await usersData.getUserBy('username', username);
-  const emailExists = await usersData.getUserBy('email', email);
+  const usernameExists = await usersData.getUserBy("username", username);
+  const emailExists = await usersData.getUserBy("email", email);
 
   if (usernameExists || emailExists) {
     return {
@@ -27,7 +27,7 @@ const createUser = (usersData) => async (user) => {
 };
 
 const validateUser = (usersData) => async (username, password) => {
-  const user = await usersData.getUserBy('username', username);
+  const user = await usersData.getUserBy("username", username);
 
   if (!user || !(await bcrypt.compare(password, user.password))) {
     return {

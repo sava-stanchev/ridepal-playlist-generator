@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-import passportJwt from 'passport-jwt';
+import dotenv from "dotenv";
+import passportJwt from "passport-jwt";
 
 const config = dotenv.config().parsed;
 

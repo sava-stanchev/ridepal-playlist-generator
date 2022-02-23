@@ -1,4 +1,4 @@
-import pool from './pool.js';
+import pool from "./pool.js";
 
 const getUserBy = async (column, value) => {
   const sql = `
@@ -15,8 +15,11 @@ const createUser = async (user) => {
     INSERT INTO users (username, password, email)
     VALUES (?, ?, ?)
   `;
-  const result = await pool.query(sqlNewUser,
-      [user.username, user.password, user.email]);
+  const result = await pool.query(sqlNewUser, [
+    user.username,
+    user.password,
+    user.email,
+  ]);
 
   const sql = `
     SELECT u.username, u.email
