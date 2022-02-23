@@ -1,6 +1,6 @@
-import ReactDom from 'react-dom';
+import ReactDom from "react-dom";
 
-export default function Modal({alertMsg, open, onClose}) {
+export default function Modal({ alertMsg, open, onClose }) {
   if (!open) return null;
 
   return ReactDom.createPortal(
@@ -9,10 +9,12 @@ export default function Modal({alertMsg, open, onClose}) {
       <div className="modal-styles">
         <p>{alertMsg}</p>
         <div className="input-group">
-          <button className="btn" onClick={onClose}>OK</button>
+          <button className="btn" onClick={onClose}>
+            OK
+          </button>
         </div>
       </div>
     </>,
-    document.getElementById('portal')
+    document.getElementById("portal")
   );
 }
