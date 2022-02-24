@@ -130,19 +130,17 @@ const StartPage = () => {
                     <FaTrashAlt />
                   </button>
                 </>
-              ) : (
-                <></>
-              )}
+              ) : null}
             </div>
           </div>
-          <div className="description">
+          <>
             <h1 className="pl-name">Ranking: {playlist.rank}</h1>
             <p className="pl-about">
               Created:{" "}
               {new Date(playlist.created_on).toLocaleDateString("en-US")} by{" "}
               <b>{playlist.created_by}</b>
             </p>
-          </div>
+          </>
         </article>
       );
     });

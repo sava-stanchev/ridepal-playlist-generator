@@ -3,12 +3,12 @@
 *,
 *::before,
 *::after {
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
 }
 
 body {
-  padding: 0;
-  margin: 0;
   background-color: #2f303a;
   font-family: Poppins, sans-serif;
   font-size: 1.2rem;
@@ -188,107 +188,133 @@ body {
   justify-content: center;
   grid-gap: 40px;
   padding-bottom: 2rem;
-}
 
-.card {
-  width: 346px;
-  padding: 15px;
-  background: #202027;
-  border-radius: 0.5rem;
-  transition: background 320ms;
+  .card {
+    width: 346px;
+    padding: 15px;
+    background: #202027;
+    border-radius: 0.5rem;
+    transition: background 320ms;
 
-  &:hover {
-    background: #393959;
+    .cover {
+      width: 316px;
+      height: 166px;
+      position: relative;
+      background: linear-gradient(#3a56b0, #ba3a81);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 8px 18px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      .cover-text {
+        &:after {
+          content: "";
+          width: 100%;
+          height: 2px;
+          background: white;
+          border-radius: 1px;
+          opacity: 0.4;
+          margin: -0.5rem 0;
+        }
+
+        .cover-title {
+          font-size: 1.3rem;
+        }
+
+        .cover-subtitle {
+          letter-spacing: 1px;
+          order: 1;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    &:hover {
+      background: #393959;
+
+      .view-btn {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .delete-btn {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .edit-btn {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .pl-name {
+      font-size: 1rem;
+      font-weight: 300;
+      margin-bottom: 0.5rem;
+    }
+
+    .pl-about {
+      font-size: 0.9375rem;
+      color: #aaaaaa;
+    }
   }
-}
-
-.cover {
-  width: 316px;
-  height: 166px;
-  position: relative;
-  background: linear-gradient(#3a56b0, #ba3a81);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 8px 18px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.cover-text {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  opacity: 0.8;
-  transform: translateY(-1rem);
-}
-
-.cover-text::after {
-  content: "";
-  width: 100%;
-  height: 2px;
-  background: white;
-  border-radius: 1px;
-  opacity: 0.4;
-  margin: -0.5rem 0;
-}
-
-.cover-title {
-  font-size: 1.3rem;
-}
-
-.cover-subtitle {
-  letter-spacing: 1px;
-  order: 1;
-  font-size: 1rem;
 }
 
 .view-btn-wrapper {
   position: absolute;
   text-align: center;
   bottom: 1rem;
-}
 
-.view-btn {
-  color: white;
-  background-color: #88a73e;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  text-decoration: none;
-  font-size: 1rem;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  bottom: 1rem;
-  opacity: 0;
-  transform: translateY(1rem);
-  transition: transform 320ms, opacity 320ms;
-}
+  .view-btn {
+    color: white;
+    background-color: #88a73e;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-size: 1rem;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    bottom: 1rem;
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: transform 320ms, opacity 320ms;
 
-.delete-btn,
-.edit-btn {
-  color: white;
-  background-color: transparent;
-  padding: 0 0;
-  margin-left: 1rem;
-  border-radius: 0.5rem;
-  text-decoration: none;
-  font-size: 0.9rem;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  bottom: 1rem;
-  opacity: 0;
-  transform: translateY(1rem);
-  transition: transform 320ms, opacity 320ms;
-}
+    &:hover {
+      background-color: #7b8d51;
+    }
+  }
 
-.delete-btn:hover {
-  color: orange;
-}
+  .delete-btn {
+    color: white;
+    background-color: transparent;
+    margin-left: 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-size: 0.9rem;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    bottom: 1rem;
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: transform 320ms, opacity 320ms;
 
-.edit-btn:hover {
-  color: mediumturquoise;
+    &:hover {
+      color: orange;
+    }
+  }
+
+  .edit-btn {
+    @extend .delete-btn;
+
+    &:hover {
+      color: mediumturquoise;
+    }
+  }
 }
 
 .delete-btn-users {
@@ -333,38 +359,6 @@ body {
 
 .edit-btn-users:hover {
   color: mediumturquoise;
-}
-
-.card:hover .view-btn {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.card:hover .delete-btn {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.card:hover .edit-btn {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.view-btn:hover {
-  background-color: #7b8d51;
-}
-
-.pl-name {
-  font-size: 1rem;
-  margin-top: -1rem;
-  font-weight: 300;
-}
-
-.pl-about {
-  font-size: 0.9375rem;
-  color: #aaaaaa;
-  margin-top: -0.4rem;
-  margin-bottom: 0.3rem;
 }
 
 .songs-container-main-section {
