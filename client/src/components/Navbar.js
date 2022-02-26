@@ -45,9 +45,7 @@ const NavBar = () => {
               <Link to="/users">
                 <li>Users</li>
               </Link>
-            ) : (
-              <></>
-            )
+            ) : null
           ) : null}
           {auth.isLoggedIn ? (
             <>

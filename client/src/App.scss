@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,700");
 
+$pink-color: #ba3a81;
+
 *,
 *::before,
 *::after {
@@ -19,7 +21,7 @@ body {
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 30px;
   display: flex;
   flex-direction: column;
 }
@@ -38,9 +40,14 @@ body {
       display: flex;
       align-items: center;
       font-size: 1.25em;
+      margin-right: 0.5rem;
 
-      .brand-logo-name {
-        margin-left: 1rem;
+      img {
+        margin-right: 0.5rem;
+
+        @media (max-width: 600px) {
+          display: none;
+        }
       }
     }
   }
@@ -48,8 +55,6 @@ body {
   .main-nav {
     ul {
       display: flex;
-      margin: 0;
-      padding: 0;
       list-style: none;
 
       a {
@@ -66,9 +71,7 @@ body {
           text-decoration: none;
           outline: none;
           border: none;
-          padding: 0 0;
           padding-top: 0.1rem;
-          margin-right: 0;
           cursor: pointer;
         }
 
@@ -86,10 +89,13 @@ body {
         text-decoration: none;
         outline: none;
         border: none;
-        padding: 0 0;
         padding-top: 0.8rem;
         margin: 0 0.5rem;
         cursor: help;
+
+        @media (max-width: 600px) {
+          display: none;
+        }
       }
     }
   }
@@ -200,7 +206,7 @@ body {
       width: 316px;
       height: 166px;
       position: relative;
-      background: linear-gradient(#3a56b0, #ba3a81);
+      background: linear-gradient(#3a56b0, $pink-color);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 8px 18px rgba(0, 0, 0, 0.2);
       display: flex;
       flex-direction: column;
@@ -327,7 +333,6 @@ body {
   color: white;
   background-color: transparent;
   outline: none;
-  padding: 0 0;
   border: none;
   cursor: pointer;
   text-decoration: none;
@@ -338,7 +343,6 @@ body {
   color: white;
   background-color: transparent;
   outline: none;
-  padding: 0 0;
   margin-right: 1.2rem;
   border: none;
   cursor: pointer;
@@ -350,7 +354,6 @@ body {
   color: white;
   background-color: transparent;
   outline: none;
-  padding: 0 0;
   margin-top: 0.2rem;
   margin-left: 0.8rem;
   border: none;
@@ -397,7 +400,7 @@ body {
 
 .playlist-list {
   border-collapse: collapse;
-  background: linear-gradient(#3a56b0, #ba3a81);
+  background: linear-gradient(#3a56b0, $pink-color);
 
   tr {
     transform-origin: 0% 50%;
@@ -410,13 +413,11 @@ body {
 }
 
 .song-album-cover {
-  padding-right: 1rem;
-  padding-left: 1rem;
+  padding: 0 1rem;
 }
 
 .song-length {
-  padding-right: 1rem;
-  padding-left: 1rem;
+  padding: 0 1rem;
 }
 
 .song-title {
@@ -498,9 +499,9 @@ body {
 .btn-grad {
   background-image: linear-gradient(
     to right,
-    #ba3a81 0%,
+    $pink-color 0%,
     #3a56b0 51%,
-    #ba3a81 100%
+    $pink-color 100%
   );
   margin-right: 1rem;
   padding: 0.4rem 0.8rem;
@@ -535,7 +536,7 @@ body {
   width: 300px;
   height: 42px;
   border: 3px solid #e7e7e7;
-  padding: 0px 10px;
+  padding: 0 10px;
   border-radius: 50px;
 }
 
@@ -554,7 +555,7 @@ body {
   border: none;
   height: 100%;
   width: 100%;
-  padding: 0px 5px;
+  padding: 0 5px;
   border-radius: 50px;
   font-size: 18px;
   color: #e7e7e7;
@@ -685,8 +686,8 @@ body {
     height: 64px;
     margin: 8px;
     border-radius: 50%;
-    border: 6px solid #58f;
-    border-color: #58f transparent #58f transparent;
+    border: 6px solid $pink-color;
+    border-color: $pink-color transparent $pink-color transparent;
     animation: Loader 1.2s linear infinite;
   }
 }
@@ -841,10 +842,7 @@ select {
   letter-spacing: 0.35px;
   font-weight: normal;
   color: #f1f1f1;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 32px;
-  padding-right: 32px;
+  padding: 12px 32px;
   text-align: center;
   background: #393959;
 }
