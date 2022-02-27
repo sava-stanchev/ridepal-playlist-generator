@@ -107,8 +107,8 @@ const Users = () => {
         href="https://fonts.googleapis.com/icon?family=Material+Icons"
       />
       <section className="genre-section">
-        <div className="boxContainer">
-          <table className="elementsContainer">
+        <div className="search-container">
+          <table className="elements-container">
             <tbody>
               <tr>
                 <td>
@@ -130,7 +130,7 @@ const Users = () => {
         </div>
       </section>
       <br />
-      <div className="songs-container-main-section">
+      <div className="container-main-section">
         {showLoader()}
         <div className="table-container">
           <table className="table">

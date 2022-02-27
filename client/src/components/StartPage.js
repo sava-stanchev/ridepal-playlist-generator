@@ -227,8 +227,8 @@ const StartPage = () => {
             <option>&#60; 7 hours</option>
             <option>&#60; 8 hours</option>
           </select>
-          <div className="boxContainer">
-            <table className="elementsContainer">
+          <div className="search-container">
+            <table className="elements-container">
               <tbody>
                 <tr>
                   <td>

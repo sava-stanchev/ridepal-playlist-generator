@@ -60,17 +60,17 @@ const ViewPlaylist = (props) => {
   });
 
   return (
-    <div className="songs-container-main-section">
+    <div className="container-main-section">
       {showLoader()}
       <div className="songs-container">
         <table className="playlist-list">
           <thead>
             <tr>
               <th className="playlist-header" colSpan="4">
-                <h5 className="playlist-title">
+                <h1 className="playlist-title">
                   Tracklist for "{playlistData[0].title}" (
                   {convertHMS(playlistData[0].playtime)})
-                </h5>
+                </h1>
               </th>
             </tr>
           </thead>
