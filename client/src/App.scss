@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,700");
 
 $pink-color: #ba3a81;
+$lil-gray: #e7e7e7;
 
 *,
 *::before,
@@ -414,21 +415,6 @@ body {
   transition: all 0.3s ease-in;
 }
 
-.user-email {
-  width: 100%;
-  text-align: center;
-  padding-right: 1rem;
-  padding-left: 1rem;
-}
-
-.user-role {
-  width: 100%;
-  text-align: center;
-  padding-right: 1rem;
-  padding-left: 1rem;
-  transition: all 0.3s ease-in;
-}
-
 .album-img {
   width: 70px;
   height: 70px;
@@ -460,13 +446,48 @@ body {
 .genre-section {
   text-align: center;
 
+  .genre {
+    margin-right: 1rem;
+    border: 1px solid #606060;
+    border-radius: 900px;
+    background-color: $lil-gray;
+    padding: 0.4rem 0.8rem;
+    font-size: inherit;
+    cursor: pointer;
+    transition: background-color 150ms;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      background-color: #606060;
+      color: white;
+      border-color: #606060;
+    }
+  }
+
+  select {
+    margin-right: 1rem;
+    border: 1px solid #606060;
+    border-radius: 900px;
+    background-color: $lil-gray;
+    padding: 0.4rem 0.8rem;
+    font-size: inherit;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
   .search-container {
     margin: auto;
     margin-top: 1%;
     position: relative;
     width: 300px;
     height: 42px;
-    border: 3px solid #e7e7e7;
+    border: 3px solid $lil-gray;
     padding: 0 10px;
     border-radius: 50px;
 
@@ -482,7 +503,7 @@ body {
         padding: 0 5px;
         border-radius: 50px;
         font-size: 18px;
-        color: #e7e7e7;
+        color: $lil-gray;
         background-color: #2f303a;
         font-weight: 500;
 
@@ -493,31 +514,10 @@ body {
 
       .material-icons {
         font-size: 26;
-        color: #e7e7e7;
+        color: $lil-gray;
         margin-top: 2px;
       }
     }
-  }
-}
-
-.genre {
-  margin-right: 1rem;
-  border: 1px solid #606060;
-  border-radius: 900px;
-  background-color: #e7e7e7;
-  padding: 0.4rem 0.8rem;
-  font-size: inherit;
-  cursor: pointer;
-  transition: background-color 150ms;
-
-  &:focus {
-    outline: none;
-  }
-
-  &:hover {
-    background-color: #606060;
-    color: white;
-    border-color: #606060;
   }
 }
 
@@ -660,21 +660,21 @@ body {
     padding: 6px 12px;
     margin: 8px;
     border-radius: 5px;
-    border: 1.5px solid #e7e7e7;
-    color: #e7e7e7;
+    border: 1.5px solid $lil-gray;
+    color: $lil-gray;
     cursor: pointer;
     font-size: large;
 
     &:hover {
       color: black;
-      background-color: #e7e7e7;
+      background-color: $lil-gray;
     }
   }
 }
 
 .paginationActive a {
   color: black;
-  background-color: #e7e7e7;
+  background-color: $lil-gray;
 }
 
 .reminder-msg {
@@ -727,30 +727,20 @@ button:disabled {
   z-index: 1000;
 }
 
-select {
-  margin-right: 1rem;
-  border: 1px solid #606060;
-  border-radius: 900px;
-  background-color: #e7e7e7;
-  padding: 0.4rem 0.8rem;
-  font-size: inherit;
-  cursor: pointer;
-
-  &:focus {
-    outline: none;
-  }
-}
-
 .table-container {
   padding: 0 10%;
   margin: 5px auto 25px;
-}
 
-.heading {
-  font-size: 40px;
-  text-align: center;
-  color: #f1f1f1;
-  margin-bottom: 40px;
+  .table thead tr th {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.35px;
+    color: #ffffff;
+    opacity: 1;
+    padding: 12px;
+    vertical-align: top;
+    border-collapse: collapse;
+  }
 }
 
 .table {
@@ -762,17 +752,6 @@ select {
   }
 }
 
-.table thead tr th {
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: 0.35px;
-  color: #ffffff;
-  opacity: 1;
-  padding: 12px;
-  vertical-align: top;
-  border-collapse: collapse;
-}
-
 .table tbody tr td {
   font-size: 18px;
   letter-spacing: 0.35px;
@@ -781,6 +760,52 @@ select {
   padding: 12px 32px;
   text-align: center;
   background: #393959;
+
+  .inline-td {
+    display: flex;
+    justify-content: center;
+
+    .delete-btn-users {
+      color: white;
+      background-color: transparent;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 1rem;
+
+      &:hover {
+        color: crimson;
+      }
+    }
+
+    .edit-btn-users {
+      color: white;
+      background-color: transparent;
+      outline: none;
+      margin-right: 1.2rem;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 1rem;
+
+      &:hover {
+        color: mediumturquoise;
+      }
+    }
+
+    .role-btn-users {
+      color: white;
+      background-color: transparent;
+      outline: none;
+      margin-top: 0.2rem;
+      margin-left: 0.8rem;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+  }
 }
 
 @media (max-width: 768px) {
@@ -788,9 +813,11 @@ select {
     display: block;
     width: inherit;
   }
+
   .table thead tr th {
     display: block;
   }
+
   .table,
   .table tbody,
   .table tr,
@@ -798,59 +825,15 @@ select {
     display: block;
     width: 100%;
   }
+
   .table tr {
     margin-bottom: 15px;
   }
+
   .table tbody tr td {
     text-align: center;
     position: relative;
     outline: #202027 thin solid;
-  }
-}
-
-.inline-td {
-  display: flex;
-  justify-content: center;
-
-  .delete-btn-users {
-    color: white;
-    background-color: transparent;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 1rem;
-
-    &:hover {
-      color: crimson;
-    }
-  }
-
-  .edit-btn-users {
-    color: white;
-    background-color: transparent;
-    outline: none;
-    margin-right: 1.2rem;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 1rem;
-
-    &:hover {
-      color: mediumturquoise;
-    }
-  }
-
-  .role-btn-users {
-    color: white;
-    background-color: transparent;
-    outline: none;
-    margin-top: 0.2rem;
-    margin-left: 0.8rem;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 1rem;
   }
 }
 
