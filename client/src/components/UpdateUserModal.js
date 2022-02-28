@@ -73,7 +73,7 @@ export default function Modal({ user, open, onClose, users }) {
             onChange={(e) => updateUserProperties("username", e.target.value)}
           />
           <p
-            className="registerMsg"
+            className="register-msg"
             style={
               usernameError.properLength ? { color: "white" } : { color: "red" }
             }
@@ -94,7 +94,7 @@ export default function Modal({ user, open, onClose, users }) {
             onChange={(e) => updateUserProperties("email", e.target.value)}
           />
           <p
-            className="registerMsg"
+            className="register-msg"
             style={
               emailError.properEmail ? { color: "white" } : { color: "red" }
             }

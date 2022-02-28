@@ -149,6 +149,22 @@ body {
       display: flex;
       flex-direction: column;
 
+      .password-eye {
+        display: flex;
+        justify-content: space-between;
+
+        .show-password {
+          margin-bottom: 0;
+          color: white;
+          background-color: transparent;
+          outline: none;
+          border: none;
+          cursor: pointer;
+          text-decoration: none;
+          font-size: 1.4rem;
+        }
+      }
+
       label {
         font-weight: bold;
         margin-bottom: 0.5rem;
@@ -170,6 +186,10 @@ body {
 
       &:last-of-type {
         margin-bottom: 0;
+      }
+
+      .register-msg {
+        font-size: 0.8em;
       }
     }
 
@@ -334,47 +354,6 @@ body {
       color: mediumturquoise;
     }
   }
-}
-
-.delete-btn-users {
-  color: white;
-  background-color: transparent;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 1rem;
-
-  &:hover {
-    color: crimson;
-  }
-}
-
-.edit-btn-users {
-  color: white;
-  background-color: transparent;
-  outline: none;
-  margin-right: 1.2rem;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 1rem;
-
-  &:hover {
-    color: mediumturquoise;
-  }
-}
-
-.role-btn-users {
-  color: white;
-  background-color: transparent;
-  outline: none;
-  margin-top: 0.2rem;
-  margin-left: 0.8rem;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 1rem;
 }
 
 .container-main-section {
@@ -625,6 +604,7 @@ body {
 
 .checkbox-container {
   margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
   display: inline;
 
   #checkbox {
@@ -697,25 +677,15 @@ body {
   background-color: #e7e7e7;
 }
 
-.reminderMsg {
+.reminder-msg {
   font-size: 0.85rem;
-  margin-bottom: 0.3rem;
-}
-
-.reminderMsg-repeat {
-  font-size: 0.85rem;
+  margin-bottom: 0.1rem;
 }
 
 .cityReminderMsg {
   font-size: 0.85rem;
   margin-bottom: 0.3rem;
   margin-top: 0;
-}
-
-.registerMsg {
-  font-size: 0.85rem;
-  margin-bottom: -1rem;
-  margin-top: 0.5rem;
 }
 
 button:disabled {
@@ -731,6 +701,20 @@ button:disabled {
   padding: 50px;
   padding-top: 27px;
   z-index: 1000;
+
+  .close-button {
+    position: relative;
+    left: 17rem;
+    top: -1rem;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    color: white;
+    font-size: 1.5rem;
+    margin-top: 0;
+    font-weight: bold;
+  }
 }
 
 .overlay-styles {
@@ -741,20 +725,6 @@ button:disabled {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
-}
-
-.close-button {
-  position: relative;
-  left: 17rem;
-  top: -1rem;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  background: none;
-  color: white;
-  font-size: 1.5rem;
-  margin-top: 0;
-  font-weight: bold;
 }
 
 select {
@@ -841,22 +811,47 @@ select {
 .inline-td {
   display: flex;
   justify-content: center;
-}
 
-.password-eye {
-  display: flex;
-  justify-content: space-between;
-}
+  .delete-btn-users {
+    color: white;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1rem;
 
-.show-password {
-  margin-bottom: 0;
-  color: white;
-  background-color: transparent;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 1.4rem;
+    &:hover {
+      color: crimson;
+    }
+  }
+
+  .edit-btn-users {
+    color: white;
+    background-color: transparent;
+    outline: none;
+    margin-right: 1.2rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1rem;
+
+    &:hover {
+      color: mediumturquoise;
+    }
+  }
+
+  .role-btn-users {
+    color: white;
+    background-color: transparent;
+    outline: none;
+    margin-top: 0.2rem;
+    margin-left: 0.8rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1rem;
+  }
 }
 
 .error-container {
@@ -879,23 +874,23 @@ select {
   p {
     margin: 0;
   }
-}
 
-.error-btn {
-  color: white;
-  background-color: #1762a7;
-  padding: 0.75rem 1.5rem;
-  margin-top: 0.7rem;
-  border-radius: 900px;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 1rem;
-  outline: none;
-  border: none;
-  cursor: pointer;
+  .error-btn {
+    color: white;
+    background-color: #1762a7;
+    padding: 0.75rem 1.5rem;
+    margin-top: 0.7rem;
+    border-radius: 900px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1rem;
+    outline: none;
+    border: none;
+    cursor: pointer;
 
-  &:hover {
-    background-color: #2180d8;
+    &:hover {
+      background-color: #2180d8;
+    }
   }
 }
 

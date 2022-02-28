@@ -104,7 +104,7 @@ const GeneratePlaylist = ({ points }) => {
             onChange={(e) => updatePlaylistName("playlistName", e.target.value)}
           />
           <p
-            className="registerMsg"
+            className="register-msg"
             style={
               playlistNameError.properLength
                 ? { color: "white" }
@@ -172,7 +172,7 @@ const GeneratePlaylist = ({ points }) => {
           </div>
           <>
             <p
-              className="reminderMsg-repeat"
+              className="reminder-msg"
               style={
                 points.duration > 150 * 60 && repeatArtists === false
                   ? { color: "red" }
@@ -183,7 +183,7 @@ const GeneratePlaylist = ({ points }) => {
             </p>
             {totalDuration < 100 ? (
               <>
-                <p className="reminderMsg" style={{ color: "red" }}>
+                <p className="reminder-msg" style={{ color: "red" }}>
                   * Total of percentages must equal 100
                 </p>
                 <button
@@ -197,7 +197,7 @@ const GeneratePlaylist = ({ points }) => {
               </>
             ) : (
               <>
-                <p className="reminderMsg">
+                <p className="reminder-msg">
                   * Total of percentages must equal 100
                 </p>
                 <button

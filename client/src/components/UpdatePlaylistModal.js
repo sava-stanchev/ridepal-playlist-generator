@@ -54,7 +54,7 @@ export default function Modal({ playlist, open, onClose, playlists }) {
             onChange={(e) => updatePlaylistProperties("title", e.target.value)}
           />
           <p
-            className="registerMsg"
+            className="register-msg"
             style={
               playlistNameError.properLength
                 ? { color: "white" }
