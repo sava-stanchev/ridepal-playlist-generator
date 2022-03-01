@@ -1,7 +1,8 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,700");
 
-$pink-color: #ba3a81;
-$lil-gray: #e7e7e7;
+$violet-pink: #ba3a81;
+$light-gray: #e7e7e7;
+$dark-gray: #606060;
 
 *,
 *::before,
@@ -122,13 +123,13 @@ body {
   }
 }
 
-.join-login-main-section {
+.the-main-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-grow: 1;
 
-  .join-login-text {
+  .the-text {
     font-size: 3.5em;
     font-weight: bold;
     margin: 0;
@@ -138,7 +139,7 @@ body {
     }
   }
 
-  .join-login-form {
+  .the-form {
     background-color: #202027;
     width: 50vw;
     max-width: 50%;
@@ -149,6 +150,12 @@ body {
       margin-bottom: 2rem;
       display: flex;
       flex-direction: column;
+
+      .city-reminder-msg {
+        font-size: 0.85rem;
+        margin-bottom: 0.3rem;
+        margin-top: 0;
+      }
 
       .password-eye {
         display: flex;
@@ -192,6 +199,25 @@ body {
       .register-msg {
         font-size: 0.8em;
       }
+
+      .checkbox-container {
+        margin-top: -0.5rem;
+        margin-bottom: 0.5rem;
+        display: inline;
+
+        #checkbox {
+          margin-right: 0.7rem;
+          width: 18px;
+          height: 18px;
+          cursor: pointer;
+          vertical-align: middle;
+        }
+
+        label {
+          font-size: 1.15rem;
+          font-weight: 400 !important;
+        }
+      }
     }
 
     @media (max-width: 900px) {
@@ -234,7 +260,7 @@ body {
       width: 316px;
       height: 166px;
       position: relative;
-      background: linear-gradient(#3a56b0, $pink-color);
+      background: linear-gradient(#3a56b0, $violet-pink);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 8px 18px rgba(0, 0, 0, 0.2);
       display: flex;
       flex-direction: column;
@@ -374,7 +400,7 @@ body {
 
     .playlist-list {
       border-collapse: collapse;
-      background: linear-gradient(#3a56b0, $pink-color);
+      background: linear-gradient(#3a56b0, $violet-pink);
 
       tr {
         transform-origin: 0% 50%;
@@ -448,9 +474,9 @@ body {
 
   .genre {
     margin-right: 1rem;
-    border: 1px solid #606060;
+    border: 1px solid $dark-gray;
     border-radius: 900px;
-    background-color: $lil-gray;
+    background-color: $light-gray;
     padding: 0.4rem 0.8rem;
     font-size: inherit;
     cursor: pointer;
@@ -461,17 +487,17 @@ body {
     }
 
     &:hover {
-      background-color: #606060;
+      background-color: $dark-gray;
       color: white;
-      border-color: #606060;
+      border-color: $dark-gray;
     }
   }
 
   select {
     margin-right: 1rem;
-    border: 1px solid #606060;
+    border: 1px solid $dark-gray;
     border-radius: 900px;
-    background-color: $lil-gray;
+    background-color: $light-gray;
     padding: 0.4rem 0.8rem;
     font-size: inherit;
     cursor: pointer;
@@ -487,7 +513,7 @@ body {
     position: relative;
     width: 300px;
     height: 42px;
-    border: 3px solid $lil-gray;
+    border: 3px solid $light-gray;
     padding: 0 10px;
     border-radius: 50px;
 
@@ -503,7 +529,7 @@ body {
         padding: 0 5px;
         border-radius: 50px;
         font-size: 18px;
-        color: $lil-gray;
+        color: $light-gray;
         background-color: #2f303a;
         font-weight: 500;
 
@@ -514,7 +540,7 @@ body {
 
       .material-icons {
         font-size: 26;
-        color: $lil-gray;
+        color: $light-gray;
         margin-top: 2px;
       }
     }
@@ -524,9 +550,9 @@ body {
 .btn-grad {
   background-image: linear-gradient(
     to right,
-    $pink-color 0%,
+    $violet-pink 0%,
     #3a56b0 51%,
-    $pink-color 100%
+    $violet-pink 100%
   );
   margin-right: 1rem;
   padding: 0.4rem 0.8rem;
@@ -535,14 +561,14 @@ body {
   background-size: 200% auto;
   color: white;
   border-radius: 900px;
-  border: 1px solid #606060;
+  border: 1px solid $dark-gray;
   font-size: inherit;
   cursor: pointer;
 
   &:hover {
     background-position: right center;
     color: #fff;
-    border-color: #606060;
+    border-color: $dark-gray;
   }
 
   &:focus {
@@ -602,25 +628,6 @@ body {
   margin-bottom: 0.75rem;
 }
 
-.checkbox-container {
-  margin-top: -0.5rem;
-  margin-bottom: 0.5rem;
-  display: inline;
-
-  #checkbox {
-    margin-right: 0.7rem;
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    vertical-align: middle;
-  }
-
-  label {
-    font-size: 1.15rem;
-    font-weight: 400 !important;
-  }
-}
-
 .Loader {
   display: inline-block;
   width: 80px;
@@ -633,8 +640,8 @@ body {
     height: 64px;
     margin: 8px;
     border-radius: 50%;
-    border: 6px solid $pink-color;
-    border-color: $pink-color transparent $pink-color transparent;
+    border: 6px solid $violet-pink;
+    border-color: $violet-pink transparent $violet-pink transparent;
     animation: Loader 1.2s linear infinite;
   }
 }
@@ -660,32 +667,26 @@ body {
     padding: 6px 12px;
     margin: 8px;
     border-radius: 5px;
-    border: 1.5px solid $lil-gray;
-    color: $lil-gray;
+    border: 1.5px solid $light-gray;
+    color: $light-gray;
     cursor: pointer;
     font-size: large;
 
     &:hover {
       color: black;
-      background-color: $lil-gray;
+      background-color: $light-gray;
     }
   }
 }
 
 .paginationActive a {
   color: black;
-  background-color: $lil-gray;
+  background-color: $light-gray;
 }
 
 .reminder-msg {
   font-size: 0.85rem;
   margin-bottom: 0.1rem;
-}
-
-.cityReminderMsg {
-  font-size: 0.85rem;
-  margin-bottom: 0.3rem;
-  margin-top: 0;
 }
 
 button:disabled {

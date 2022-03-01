@@ -48,17 +48,17 @@ const Login = () => {
   };
 
   return (
-    <section className="join-login-main-section">
+    <section className="the-main-section">
       <AlertModal
         open={isOpen}
         onClose={() => setIsOpen(false)}
         alertMsg={alertMsg}
       />
-      <h1 className="join-login-text">
+      <h1 className="the-text">
         Welcome
         <span className="accent-text">!</span>
       </h1>
-      <form className="join-login-form">
+      <form className="the-form">
         <div className="input-group">
           <label>Username:</label>
           <input

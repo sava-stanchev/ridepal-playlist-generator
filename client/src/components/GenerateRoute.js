@@ -78,17 +78,17 @@ const GenerateRoute = ({ setPoints }) => {
   };
 
   return (
-    <section className="join-login-main-section">
+    <section className="the-main-section">
       <AlertModal
         open={isOpen}
         onClose={() => setIsOpen(false)}
         alertMsg={alertMsg}
       />
-      <h1 className="join-login-text">
+      <h1 className="the-text">
         Choose your
         <span className="accent-text"> route!</span>
       </h1>
-      <form className="join-login-form">
+      <form className="the-form">
         <div className="input-group">
           <label>From:</label>
           <input
@@ -111,7 +111,7 @@ const GenerateRoute = ({ setPoints }) => {
           {cityNameOneError.properCityName &&
           cityNameTwoError.properCityName ? (
             <>
-              <p className="cityReminderMsg">
+              <p className="city-reminder-msg">
                 * Travel locations should be valid city names
               </p>
               <button
@@ -124,7 +124,7 @@ const GenerateRoute = ({ setPoints }) => {
             </>
           ) : (
             <>
-              <p className="cityReminderMsg" style={{ color: "red" }}>
+              <p className="city-reminder-msg" style={{ color: "red" }}>
                 * Travel locations should be valid city names
               </p>
               <button
