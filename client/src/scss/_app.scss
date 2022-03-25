@@ -1,23 +1,3 @@
-.btn {
-  color: white;
-  background-color: #1762a7;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  text-decoration: none;
-  font-size: 0.9rem;
-  outline: none;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #2180d8;
-  }
-
-  &:focus {
-    background-color: #2796ff;
-  }
-}
-
 .the-main-section {
   display: flex;
   justify-content: space-between;
@@ -742,46 +722,6 @@ button:disabled {
 
   .song-album-cover {
     display: none;
-  }
-}
-
-.error-container {
-  width: 100%;
-  top: 50%;
-  text-align: center;
-  transform: translateY(20%);
-
-  h1 {
-    font-size: 160px;
-    margin-top: -0.7rem;
-    margin-bottom: -0.8rem;
-    letter-spacing: 20px;
-  }
-
-  h2 {
-    margin: 0;
-  }
-
-  p {
-    margin: 0;
-  }
-
-  .error-btn {
-    color: white;
-    background-color: #1762a7;
-    padding: 0.75rem 1.5rem;
-    margin-top: 0.7rem;
-    border-radius: 900px;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 1rem;
-    outline: none;
-    border: none;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #2180d8;
-    }
   }
 }
 

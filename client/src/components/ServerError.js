@@ -4,11 +4,11 @@ const ServerError = () => {
   const history = useHistory();
 
   return (
-    <div className="error-container">
+    <div className="error">
       <h2>Oops! Something went wrong.</h2>
       <h1>500</h1>
       <p>Our developers are working on fixing the server issue.</p>
-      <button className="error-btn" onClick={() => history.push("/home")}>
+      <button className="error__btn" onClick={() => history.push("/home")}>
         Go back home
       </button>
     </div>

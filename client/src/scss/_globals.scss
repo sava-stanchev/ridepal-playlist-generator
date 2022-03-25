@@ -37,3 +37,23 @@ a:hover {
   display: flex;
   flex-direction: column;
 }
+
+.btn {
+  color: white;
+  background-color: #1762a7;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 0.9rem;
+  outline: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #2180d8;
+  }
+
+  &:focus {
+    background-color: #2796ff;
+  }
+}
