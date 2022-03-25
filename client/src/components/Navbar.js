@@ -29,16 +29,16 @@ const NavBar = () => {
   };
 
   return (
-    <header className="main-header">
+    <header className="header">
       <Link to="/home">
-        <div className="brand-logo">
+        <div className="header__logo">
           <img src={brandLogo} alt="logo" />
           <div href="#home" className="brand-logo-name">
             RidePal
           </div>
         </div>
       </Link>
-      <nav className="main-nav">
+      <nav className="header__nav">
         <ul>
           {auth.isLoggedIn ? (
             auth.user.role === 1 ? (
@@ -54,7 +54,7 @@ const NavBar = () => {
               </Link>
               <li>
                 <button
-                  className="tooltip-icon-two"
+                  className="tooltip-icon-user"
                   data-tip
                   data-for="userTip"
                 >
@@ -67,7 +67,7 @@ const NavBar = () => {
               <Link to="/home">
                 <li onClick={() => logout()}>
                   <button
-                    className="tooltip-icon-one"
+                    className="tooltip-icon-logout"
                     data-tip
                     data-for="log-out"
                   >

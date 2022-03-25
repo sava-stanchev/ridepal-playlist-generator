@@ -1,0 +1,60 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    margin-right: 0.5rem;
+
+    img {
+      margin-right: 0.5rem;
+
+      @include breakpoint-down(small) {
+        display: none;
+      }
+    }
+  }
+
+  &__nav {
+    ul {
+      display: flex;
+      list-style: none;
+      align-items: center;
+
+      a {
+        color: inherit;
+        padding: 0.7rem;
+
+        &:hover {
+          color: #adadad;
+        }
+      }
+
+      .tooltip-icon-logout {
+        display: flex;
+        align-items: center;
+        font-size: 1.25rem;
+        color: white;
+        background-color: transparent;
+        text-decoration: none;
+        outline: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      .tooltip-icon-user {
+        @extend .tooltip-icon-logout;
+        margin: 0 0.5rem;
+        cursor: help;
+
+        @include breakpoint-down(small) {
+          display: none;
+        }
+      }
+    }
+  }
+}
