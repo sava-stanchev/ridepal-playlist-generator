@@ -1,4 +1,4 @@
-import "./App.scss";
+import "./scss/style.scss";
 import NavBar from "./components/Navbar";
 import Login from "./components/Login";
 import Register from "./components/Register";
