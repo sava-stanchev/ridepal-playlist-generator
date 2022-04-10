@@ -90,17 +90,17 @@ const Register = () => {
   };
 
   return (
-    <section className="the-main-section">
+    <section className="main">
       <AlertModal
         open={isOpen}
         onClose={() => setIsOpen(false)}
         alertMsg={alertMsg}
       />
-      <h1 className="the-text">
+      <h1 className="main__text">
         Join and
-        <span className="accent-text"> generate!</span>
+        <span className="main__text--accent"> generate!</span>
       </h1>
-      <form className="the-form">
+      <form className="main__form">
         <div
           className="input-group"
           name="username"

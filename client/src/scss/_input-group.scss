@@ -1,0 +1,78 @@
+.input-group {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  
+  .travel-duration {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    outline: none;
+    background: none;
+    border: rem(1) solid #374669;
+    font-size: 1em;
+    padding: 0.5em;
+    color: inherit;
+    border-radius: rem(5);
+
+    &:focus {
+      border-color: #596da0;
+    }
+  }
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .city-reminder-msg {
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+    margin-top: 0;
+  }
+
+  .register-msg {
+    font-size: 0.8em;
+    margin-top: rem(5);
+  }
+
+  .password-eye {
+    display: flex;
+    justify-content: space-between;
+
+    .show-password {
+      margin-bottom: 0;
+      color: white;
+      background-color: transparent;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 1.4rem;
+    }
+  }
+
+  .checkbox {
+    margin-top: -0.5rem;
+    margin-bottom: 0.5rem;
+    display: inline;
+
+    &__input {
+      margin-right: 0.7rem;
+      width: rem(18);
+      height: rem(18);
+      cursor: pointer;
+      vertical-align: middle;
+    }
+
+    &__label {
+      font-size: 1.15rem;
+      font-weight: 400 !important;
+    }
+  }
+}

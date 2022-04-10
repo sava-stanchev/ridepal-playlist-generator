@@ -40,9 +40,9 @@ export default function Modal({ playlist, open, onClose, playlists }) {
 
   return ReactDom.createPortal(
     <>
-      <div className="overlay-styles" />
-      <div className="modal-styles">
-        <button className="close-button" onClick={onClose}>
+      <div className="overlay" />
+      <div className="modal">
+        <button className="modal__close" onClick={onClose}>
           &times;
         </button>
         <div className="input-group">

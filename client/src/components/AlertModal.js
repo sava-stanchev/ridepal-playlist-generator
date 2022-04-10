@@ -5,14 +5,12 @@ export default function Modal({ alertMsg, open, onClose }) {
 
   return ReactDom.createPortal(
     <>
-      <div className="overlay-styles" />
-      <div className="modal-styles">
-        <p>{alertMsg}</p>
-        <div className="input-group">
-          <button className="btn" onClick={onClose}>
-            OK
-          </button>
-        </div>
+      <div className="overlay" />
+      <div className="modal">
+        <p className="modal__alert">{alertMsg}</p>
+        <button className="btn" onClick={onClose}>
+          OK
+        </button>
       </div>
     </>,
     document.getElementById("portal")

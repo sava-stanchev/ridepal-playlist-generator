@@ -90,14 +90,16 @@ const GeneratePlaylist = ({ points }) => {
   };
 
   return (
-    <section className="the-main-section">
-      <h1 className="the-text">
+    <section className="main">
+      <h1 className="main__text">
         Generate your
-        <span className="accent-text"> playlist!</span>
+        <span className="main__text--accent"> playlist!</span>
       </h1>
-      <form className="the-form">
+      <form className="main__form">
         <div className="input-group">
-          <p>Travel duration: {Math.round(points.duration / 60)} min.</p>
+          <p className="travel-duration">
+            Travel duration: {Math.round(points.duration / 60)} min.
+          </p>
           <label>Playlist name:</label>
           <input
             type="text"
@@ -161,14 +163,16 @@ const GeneratePlaylist = ({ points }) => {
           </tbody>
         </table>
         <div className="input-group">
-          <div className="checkbox-container">
+          <div className="checkbox">
             <input
               type="checkbox"
-              id="checkbox"
+              className="checkbox__input"
               checked={repeatArtists}
               onChange={() => setRepeatArtists(!repeatArtists)}
             />
-            <label>Allow tracks from the same artist</label>
+            <label className="checkbox__label">
+              Allow tracks from the same artist
+            </label>
           </div>
           <>
             <p
