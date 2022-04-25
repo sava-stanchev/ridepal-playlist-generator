@@ -78,7 +78,7 @@ const StartPage = () => {
     duration,
   ]);
 
-  const Loader = () => <div className="Loader"></div>;
+  const Loader = () => <div className="loader"></div>;
 
   const showLoader = () => {
     if (loading) {

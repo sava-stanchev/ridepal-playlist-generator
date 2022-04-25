@@ -20,7 +20,7 @@ const ViewPlaylist = (props) => {
       .finally(() => setLoading(false));
   }, [id, history]);
 
-  const Loader = () => <div className="Loader"></div>;
+  const Loader = () => <div className="loader"></div>;
 
   const showLoader = () => {
     if (loading) {
@@ -29,7 +29,7 @@ const ViewPlaylist = (props) => {
   };
 
   if (playlistData === null) {
-    return <div className="Loader"></div>;
+    return <div className="loader"></div>;
   }
 
   const displayTracks = playlistData.map((track) => {
