@@ -54,22 +54,24 @@
     }
   }
 
-  &:hover {
-    background: #393959;
-
-    .btn-wrapper__view {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    .btn-wrapper__delete {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    .btn-wrapper__edit {
-      transform: translateY(0);
-      opacity: 1;
+  @include breakpoint-up(large) {
+    &:hover {
+      background: #393959;
+  
+      .btn-wrapper__view {
+        transform: translateY(0);
+        opacity: 1;
+      }
+  
+      .btn-wrapper__delete {
+        transform: translateY(0);
+        opacity: 1;
+      }
+  
+      .btn-wrapper__edit {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
   }
 
@@ -101,12 +103,15 @@
     border: none;
     cursor: pointer;
     bottom: 1rem;
-    opacity: 0;
-    transform: translateY(1rem);
-    transition: transform 320ms, opacity 320ms;
 
     &:hover {
       background-color: #7b8d51;
+    }
+
+    @include breakpoint-up(large) {
+      opacity: 0;
+      transform: translateY(1rem);
+      transition: transform 320ms, opacity 320ms;
     }
   }
 
@@ -122,13 +127,16 @@
     border: none;
     cursor: pointer;
     bottom: 1rem;
-    opacity: 0;
-    transform: translateY(1rem);
-    transition: transform 320ms, opacity 320ms;
 
     &:hover svg {
       transform: scale(1.2);
       transition: transform 0.2s linear;
+    }
+
+    @include breakpoint-up(large) {
+      opacity: 0;
+      transform: translateY(1rem);
+      transition: transform 320ms, opacity 320ms;
     }
   }
 
