@@ -57,10 +57,10 @@ const Users = () => {
           <td>{user.username}</td>
           <td>{user.email}</td>
           <td>
-            <div className="inline-td">
+            <div className="users__buttons">
               {user.role}
               <button
-                className="role-btn-users"
+                className="users__buttons--role"
                 onClick={() => switchRole(user.id)}
               >
                 <FaCrown
@@ -74,15 +74,15 @@ const Users = () => {
             </div>
           </td>
           <td>
-            <div className="inline-td">
+            <div className="users__buttons">
               <button
-                className="edit-btn-users"
+                className="users__buttons--edit"
                 onClick={() => editFunction(user)}
               >
                 <FaEdit />
               </button>
               <button
-                className="delete-btn-users"
+                className="users__buttons--delete"
                 onClick={() => deleteUser(user.id)}
               >
                 <FaTrashAlt />
@@ -130,13 +130,15 @@ const Users = () => {
         </div>
       </section>
       <br />
-      <div className="container-main-section">
+      <div className="users">
         {showLoader()}
-        <div className="table-container">
-          <table className="table">
+        <div className="users__container">
+          <table className="users__table">
             <thead>
               <tr>
-                <th colSpan="4">List of Users</th>
+                <th className="users__header" colSpan="4">
+                  List of Users
+                </th>
               </tr>
             </thead>
             {displayUsers}
