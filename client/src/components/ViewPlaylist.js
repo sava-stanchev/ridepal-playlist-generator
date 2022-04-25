@@ -36,21 +36,21 @@ const ViewPlaylist = (props) => {
     return (
       <tbody key={track.track_id}>
         <tr className="song">
-          <td className="song-album-cover">
-            <div className="album-img">
+          <td className="song__cover">
+            <div className="song__cover-img">
               <img src={track.cover} alt="cover" />
             </div>
           </td>
-          <td className="song-title">
+          <td className="song__title">
             <h5>
               {track.artist_name} - {track.track_title}
             </h5>
           </td>
-          <td className="song-length">
+          <td className="song__length">
             <h5>{trackTimeFormat(track.duration)}</h5>
           </td>
-          <td className="play-preview">
-            <audio controls className="audio" controlsList="nodownload">
+          <td className="song__preview">
+            <audio controls className="song__audio" controlsList="nodownload">
               <source src={track.preview} type="audio/mp3" />
             </audio>
           </td>
@@ -60,14 +60,14 @@ const ViewPlaylist = (props) => {
   });
 
   return (
-    <div className="container-main-section">
+    <div className="playlist">
       {showLoader()}
-      <div className="songs-container">
-        <table className="playlist-list">
+      <div className="playlist__container">
+        <table className="playlist__table">
           <thead>
             <tr>
-              <th className="playlist-header" colSpan="4">
-                <h1 className="playlist-title">
+              <th className="playlist__header" colSpan="4">
+                <h1 className="playlist__title">
                   Tracklist for "{playlistData[0].title}" (
                   {convertHMS(playlistData[0].playtime)})
                 </h1>

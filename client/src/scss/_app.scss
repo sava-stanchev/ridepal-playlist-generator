@@ -3,77 +3,6 @@
   align-items: center;
   flex-grow: 1;
   justify-content: center;
-
-  .songs-container {
-    width: 65vw;
-    max-width: 100%;
-    display: block;
-    height: 75%;
-    max-height: 75vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-
-    @include breakpoint-down(medium) {
-      width: 90vw;
-    }
-
-    .playlist-list {
-      border-collapse: collapse;
-      background: linear-gradient(#3a56b0, $violet-pink);
-
-      tr {
-        transform-origin: 0% 50%;
-        text-align: center;
-
-        .playlist-header {
-          padding: 0.8rem;
-          text-align: center;
-          font-size: 1.5rem;
-          background: #202027;
-
-          .playlist-title {
-            font-size: 20px;
-          }
-        }
-
-        &:hover {
-          background: #393959;
-        }
-      }
-    }
-  }
-}
-
-.song-album-cover {
-  padding: 0 1rem;
-}
-
-.song-length {
-  padding: 1rem;
-}
-
-.play-preview {
-  padding: 1rem 0;
-}
-
-.song-title {
-  width: 100%;
-  text-align: left;
-  padding-right: 1rem;
-  padding-left: 1rem;
-  transition: all 0.3s ease-in;
-}
-
-.album-img {
-  width: 70px;
-  height: 70px;
-
-  img {
-    width: 60px;
-    height: 60px;
-    margin: 6px 6px;
-    padding: 1px;
-  }
 }
 
 ::-webkit-scrollbar {
@@ -397,16 +326,4 @@ button:disabled {
     position: relative;
     outline: #202027 thin solid;
   }
-
-  .song-album-cover {
-    display: none;
-  }
-}
-
-.audio {
-  vertical-align: middle;
-  margin-right: -4.9rem;
-  height: 2.5rem;
-  width: 7.35rem;
-  overflow-x: hidden;
 }
