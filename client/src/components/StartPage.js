@@ -100,16 +100,16 @@ const StartPage = () => {
     .map((playlist) => {
       return (
         <article className="card" key={playlist.id}>
-          <div className="cover">
-            <div className="cover-text">
-              <h1 className="cover-title">{playlist.title}</h1>
-              <h4 className="cover-subtitle">
+          <div className="card__cover">
+            <div className="card__cover-text">
+              <h1 className="card__cover-text--title">{playlist.title}</h1>
+              <h2 className="card__cover-text--subtitle">
                 {convertHMS(playlist.playtime)}
-              </h4>
+              </h2>
             </div>
-            <div className="view-btn-wrapper">
+            <div className="btn-wrapper">
               <button
-                className="view-btn"
+                className="btn-wrapper__view"
                 onClick={() => history.push(`/playlists/${playlist.id}`)}
               >
                 Tracklist
@@ -118,13 +118,13 @@ const StartPage = () => {
               (auth.isLoggedIn && auth.user.id === playlist.user_id) ? (
                 <>
                   <button
-                    className="edit-btn"
+                    className="btn-wrapper__edit"
                     onClick={() => editFunction(playlist)}
                   >
                     <FaEdit />
                   </button>
                   <button
-                    className="delete-btn"
+                    className="btn-wrapper__delete"
                     onClick={() => deletePlaylist(playlist.id)}
                   >
                     <FaTrashAlt />
@@ -134,8 +134,8 @@ const StartPage = () => {
             </div>
           </div>
           <>
-            <h1 className="pl-name">Ranking: {playlist.rank}</h1>
-            <p className="pl-about">
+            <h1 className="card__name">Ranking: {playlist.rank}</h1>
+            <p className="card__about">
               Created:{" "}
               {new Date(playlist.created_on).toLocaleDateString("en-US")} by{" "}
               <b>{playlist.created_by}</b>
