@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaTrashAlt, FaEdit, FaCrown } from "react-icons/fa";
+import { FaTrashAlt, FaEdit, FaCrown, FaSearch } from "react-icons/fa";
 import UpdateUserModal from "./UpdateUserModal";
 import * as userActions from "../store/actions/users";
 import { useDispatch, useSelector } from "react-redux";
@@ -102,27 +102,21 @@ const Users = () => {
         user={currentUser}
         users={users}
       />
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      />
-      <section className="genre-section">
-        <div className="search-container">
-          <table className="elements-container">
+      <section className="filters__container">
+        <div className="search">
+          <table className="search__container">
             <tbody>
               <tr>
                 <td>
                   <input
                     type="text"
                     placeholder="search by username"
-                    className="search"
+                    className="search__input"
                     onChange={(e) => setSearch(e.target.value)}
                   />
                 </td>
                 <td>
-                  <>
-                    <i className="material-icons">search</i>
-                  </>
+                  <FaSearch />
                 </td>
               </tr>
             </tbody>

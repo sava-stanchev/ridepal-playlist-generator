@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import ReactPaginate from "react-paginate";
 import { useHistory } from "react-router-dom";
-import { FaTrashAlt, FaEdit } from "react-icons/fa";
+import { FaTrashAlt, FaEdit, FaSearch } from "react-icons/fa";
 import AuthContext from "../providers/auth-context";
 import UpdatePlaylistModal from "./UpdatePlaylistModal";
 import { convertHMS } from "../common/utils";
@@ -158,14 +158,10 @@ const StartPage = () => {
         playlist={currentPlaylist}
         playlists={playlists}
       />
-      <div className="genres">
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        />
-        <section className="genre-section">
+      <div className="filters">
+        <section className="filters__container">
           <button
-            className="genre"
+            className="filters__btn"
             onClick={() => {
               document.getElementById("dropdown").selectedIndex = 0;
               setDuration(null);
@@ -179,7 +175,7 @@ const StartPage = () => {
             All
           </button>
           <button
-            className="genre"
+            className="filters__btn"
             onClick={() => {
               setFilterRap(true);
               setFilterPop(false);
@@ -189,7 +185,7 @@ const StartPage = () => {
             Rap
           </button>
           <button
-            className="genre"
+            className="filters__btn"
             onClick={() => {
               setFilterPop(true);
               setFilterRap(false);
@@ -199,7 +195,7 @@ const StartPage = () => {
             Pop
           </button>
           <button
-            className="genre"
+            className="filters__btn"
             onClick={() => {
               setFilterRock(true);
               setFilterRap(false);
@@ -208,10 +204,14 @@ const StartPage = () => {
           >
             Rock
           </button>
-          <button className="btn-grad" onClick={() => setShowMyPlaylists(true)}>
+          <button
+            className="filters__btn--gradient"
+            onClick={() => setShowMyPlaylists(true)}
+          >
             My playlists
           </button>
           <select
+            className="filters__select"
             name="durations"
             defaultValue="Duration"
             id="dropdown"
@@ -227,22 +227,20 @@ const StartPage = () => {
             <option>&#60; 7 hours</option>
             <option>&#60; 8 hours</option>
           </select>
-          <div className="search-container">
-            <table className="elements-container">
+          <div className="search">
+            <table className="search__container">
               <tbody>
                 <tr>
                   <td>
                     <input
                       type="text"
                       placeholder="search by name"
-                      className="search"
+                      className="search__input"
                       onChange={(e) => setSearch(e.target.value)}
                     />
                   </td>
                   <td>
-                    <>
-                      <i className="material-icons">search</i>
-                    </>
+                    <FaSearch />
                   </td>
                 </tr>
               </tbody>

@@ -67,3 +67,22 @@ a:hover {
     background-color: #2796ff;
   }
 }
+
+::-webkit-scrollbar {
+  width: 12px;
+  background: #202027;
+  border-radius: calc(12px / 2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #adadad;
+  border-radius: calc(12px / 2);
+}
+
+::placeholder {
+  color: #adadad;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
