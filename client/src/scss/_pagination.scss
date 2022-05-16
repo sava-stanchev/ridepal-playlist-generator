@@ -1,0 +1,28 @@
+.pagination-btns {
+  height: 40px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  a {
+    padding: 6px 12px;
+    margin: 8px;
+    border-radius: 5px;
+    border: 1.5px solid $light-gray;
+    color: $light-gray;
+    cursor: pointer;
+    font-size: large;
+
+    &:hover {
+      color: black;
+      background-color: $light-gray;
+    }
+  }
+}
+
+.pagination-active a {
+  color: black;
+  background-color: $light-gray;
+}

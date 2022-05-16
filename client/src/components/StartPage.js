@@ -257,11 +257,8 @@ const StartPage = () => {
         nextLabel={">"}
         pageCount={pageCount}
         onPageChange={changePage}
-        containerClassName={"paginationBttns"}
-        previousLinkClassName={"previousBttn"}
-        nextLinkClassName={"nextBttn"}
-        disabledClassName={"paginationDisabled"}
-        activeClassName={"paginationActive"}
+        containerClassName={"pagination-btns"}
+        activeClassName={"pagination-active"}
       />
     </>
   );

@@ -116,49 +116,49 @@ const GeneratePlaylist = ({ points }) => {
             * Between 3 and 20 chars
           </p>
         </div>
-        <table className="genres-list">
+        <table className="genres">
           <tbody>
-            <tr className="genre-row">
-              <td className="genre-col">Rock:</td>
-              <td className="slider-col">
+            <tr className="genres__row">
+              <td className="genres__col">Rock:</td>
+              <td className="slider">
                 <input
                   type="range"
                   min={0}
                   max={100}
                   value={sliderRock}
-                  id="slider"
+                  className="slider__input"
                   onChange={(e) => updateGenres("Rock", e.target.value)}
                 />
               </td>
-              <td className="percent-col">{sliderRock}%</td>
+              <td className="genres__percent">{sliderRock}%</td>
             </tr>
-            <tr className="genre-row">
-              <td className="genre-col">Pop:</td>
-              <td className="slider-col">
+            <tr className="genres__row">
+              <td className="genres__col">Pop:</td>
+              <td className="slider">
                 <input
                   type="range"
                   min={0}
                   max={100}
                   value={sliderPop}
-                  id="slider"
+                  className="slider__input"
                   onChange={(e) => updateGenres("Pop", e.target.value)}
                 />
               </td>
-              <td className="percent-col">{sliderPop}%</td>
+              <td className="genres__percent">{sliderPop}%</td>
             </tr>
-            <tr className="genre-row">
-              <td className="genre-col">Rap:</td>
-              <td className="slider-col">
+            <tr className="genres__row">
+              <td className="genres__col">Rap:</td>
+              <td className="slider">
                 <input
                   type="range"
                   min={0}
                   max={100}
                   value={sliderRap}
-                  id="slider"
+                  className="slider__input"
                   onChange={(e) => updateGenres("Rap/Hip Hop", e.target.value)}
                 />
               </td>
-              <td className="percent-col">{sliderRap}%</td>
+              <td className="genres__percent">{sliderRap}%</td>
             </tr>
           </tbody>
         </table>
