@@ -7,7 +7,7 @@ const getUserBy = async (column, value) => {
     AND u.is_deleted = 0
   `;
   const result = await pool.query(sql, [value]);
-  return result[0];
+  return result[0][0];
 };
 
 const createUser = async (user) => {
@@ -39,7 +39,7 @@ const getAllUsers = async () => {
     WHERE u.is_deleted = 0
   `;
   const result = await pool.query(sql);
-  return result;
+  return result[0];
 };
 
 const getUserById = async (id) => {
@@ -51,7 +51,7 @@ const getUserById = async (id) => {
     WHERE u.id = ?
   `;
   const user = await pool.query(sql, [id]);
-  return user;
+  return user[0];
 };
 
 const deleteUser = async (id) => {

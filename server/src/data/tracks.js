@@ -13,7 +13,8 @@ const getTracks = async ([rock, pop, rap]) => {
     ORDER BY rand()
   `;
 
-  return await pool.query(sql, [rock, pop, rap]);
+  const result = await pool.query(sql, [rock, pop, rap]);
+  return result[0];
 };
 
 const getTracksNotRepArtists = async ([rock, pop, rap]) => {
@@ -30,7 +31,8 @@ const getTracksNotRepArtists = async ([rock, pop, rap]) => {
     ORDER BY rand()
   `;
 
-  return await pool.query(sql, [rock, pop, rap]);
+  const result = await pool.query(sql, [rock, pop, rap]);
+  return result[0];
 };
 
 export default {

@@ -6,7 +6,7 @@ const getGenreByName = async (name) => {
     WHERE name = ?
   `;
   const result = await pool.query(sql, [name]);
-  return result[0];
+  return result[0][0];
 };
 
 export default {

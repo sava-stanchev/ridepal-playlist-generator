@@ -1,10 +1,10 @@
 import pool from "./pool.js";
 
 const setPlaylist = async (data) => {
-  const sql = `
-    INSERT INTO playlists (title, playtime, rank, user_id, created_on)
-    VALUES (?, ?, ?, ?, NOW())
-  `;
+  const sql = [
+    "INSERT INTO playlists (title, playtime, `rank`, user_id, created_on)",
+    "VALUES (?, ?, ?, ?, NOW())",
+  ].join("\n");
 
   const result = await pool.query(sql, [
     data.name,
@@ -12,9 +12,11 @@ const setPlaylist = async (data) => {
     data.rank,
     data.user,
   ]);
+
+  const resultObject = JSON.parse(JSON.stringify(result));
   const newSql = `SELECT * FROM playlists WHERE id = ?`;
-  const newPlaylist = await pool.query(newSql, [result.insertId]);
-  return newPlaylist[0];
+  const newPlaylist = await pool.query(newSql, [resultObject[0].insertId]);
+  return newPlaylist[0][0];
 };
 
 const addTrackToPlaylist = async (playlistId, trackId, trackDeezerId) => {
@@ -36,7 +38,7 @@ const addPlaylistToGenre = async (genreId, genreDeezerId, playlistId) => {
 };
 
 const getAllPlaylists = async () => {
-  return await pool.query(`
+  const result = await pool.query(`
     SELECT p.id, p.title, p.created_on, p.playtime, p.user_id, u.username AS created_by, p.rank, p.is_deleted,
       GROUP_CONCAT(g.name) as genres,
       (SELECT COUNT(*) 
@@ -57,6 +59,8 @@ const getAllPlaylists = async () => {
     HAVING p.is_deleted = 0
     ORDER BY p.rank
   `);
+
+  return result[0];
 };
 
 const getPlaylistById = async (id) => {
@@ -73,7 +77,8 @@ const getPlaylistById = async (id) => {
     WHERE p.id = ?
   `;
 
-  return await pool.query(sql, [id]);
+  const result = await pool.query(sql, [id]);
+  return result[0];
 };
 
 const getTracksForPlaylistById = async (id) => {
@@ -89,7 +94,8 @@ const getTracksForPlaylistById = async (id) => {
     WHERE p.id = ?
   `;
 
-  return await pool.query(sql, [id]);
+  const result = await pool.query(sql, [id]);
+  return result[0];
 };
 
 const deletePlaylist = async (id) => {
