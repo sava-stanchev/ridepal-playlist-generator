@@ -4,44 +4,71 @@ export const GET_PLAYLISTS = "GET_PLAYLISTS";
 
 export const getPlaylists = () => {
   return async (dispatch) => {
-    const result = await fetch(`${HOST}/playlists`, {
-      method: "GET",
-    }).then((response) => response.json());
+    try {
+      const response = await fetch(`${HOST}/playlists`, {
+        method: "GET",
+      });
 
-    dispatch({ type: GET_PLAYLISTS, data: result });
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
+        dispatch({ type: GET_PLAYLISTS, data: result });
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 };
 
 export const deletePlaylist = (id) => {
   return async (dispatch, getState) => {
-    await fetch(`${HOST}/playlists/${id}`, {
-      method: "DELETE",
-      headers: {
-        "content-type": "application/json",
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-    }).then((res) => res.json());
+    try {
+      const response = await fetch(`${HOST}/playlists/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
-    const playlists = [...getState().playlists.allPlaylists];
-    const result = playlists.filter((p) => p.id !== id);
-    dispatch({ type: GET_PLAYLISTS, data: result });
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const playlists = [...getState().playlists.allPlaylists];
+        const result = playlists.filter((p) => p.id !== id);
+        dispatch({ type: GET_PLAYLISTS, data: result });
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 };
 
 export const updatePlaylist = (id, thePlaylist) => {
   return async (dispatch, getState) => {
-    const editedPlaylist = await fetch(`${HOST}/playlists/${id}`, {
-      method: "PATCH",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(thePlaylist),
-    }).then((res) => res.json());
+    try {
+      const response = await fetch(`${HOST}/playlists/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(thePlaylist),
+      });
 
-    const playlists = [...getState().playlists.allPlaylists];
-    const result = playlists.map((p) =>
-      p.id === editedPlaylist.id ? editedPlaylist : p
-    );
-    dispatch({ type: GET_PLAYLISTS, data: result });
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
+        const playlists = [...getState().playlists.allPlaylists];
+        const editedPlaylist = playlists.map((p) =>
+          p.id === result.id ? result : p
+        );
+        dispatch({ type: GET_PLAYLISTS, data: editedPlaylist });
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 };
