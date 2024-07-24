@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
@@ -33,8 +33,6 @@ const Register = () => {
 
   const history = useHistory();
 
-  useEffect(() => {}, [newUser]);
-
   const createUser = (name, value) => {
     setNewUser({
       ...newUser,
@@ -60,26 +58,30 @@ const Register = () => {
     }
   };
 
-  const register = (e) => {
-    e.preventDefault();
-    fetch(`${HOST}/users`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newUser),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message) {
-          setAlertMsg(res.message);
-          setIsOpen(true);
-        } else {
-          history.push("/login");
-        }
-      })
-      .catch(() => history.push("/500"));
-  };
+  async function signUp(request) {
+    try {
+      const response = await fetch(request);
+      const result = await response.json();
+
+      if (!response.ok) {
+        setAlertMsg(result.message);
+        setIsOpen(true);
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        history.push("/login");
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  const registerRequest = new Request(`${HOST}/users`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newUser),
+  });
 
   const showThePassword = () => {
     if (showPassword === false) {
@@ -163,22 +165,18 @@ const Register = () => {
           </p>
         </div>
         <div className="input-group">
-          {usernameError.properLength &&
-          emailError.properEmail &&
-          passwordError.properLength ? (
-            <button type="button" className="btn" onClick={(e) => register(e)}>
-              Join Now
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="btn"
-              disabled={true}
-              onClick={(e) => register(e)}
-            >
-              Join Now
-            </button>
-          )}
+          <button
+            type="button"
+            className="btn"
+            disabled={
+              !usernameError.properLength ||
+              !emailError.properEmail ||
+              !passwordError.properLength
+            }
+            onClick={() => signUp(registerRequest)}
+          >
+            Join Now
+          </button>
         </div>
       </form>
     </section>
