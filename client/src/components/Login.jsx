@@ -22,30 +22,34 @@ const Login = () => {
     });
   };
 
-  const login = (e) => {
-    e.preventDefault();
-    fetch(`${HOST}/login`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(user),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message) {
-          setAlertMsg(res.message);
-          setIsOpen(true);
-        } else {
-          localStorage.clear();
-          localStorage.setItem("token", res.token);
-          const user = decode(res.token);
-          auth.setAuthState({ user, isLoggedIn: true });
-          history.push("/home");
-        }
-      })
-      .catch(() => history.push("/500"));
-  };
+  async function signIn(request) {
+    try {
+      const response = await fetch(request);
+      const result = await response.json();
+
+      if (!response.ok) {
+        setAlertMsg(result.message);
+        setIsOpen(true);
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        localStorage.clear();
+        localStorage.setItem("token", result.token);
+        const user = decode(result.token);
+        auth.setAuthState({ user, isLoggedIn: true });
+        history.push("/home");
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  const loginRequest = new Request(`${HOST}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  });
 
   return (
     <section className="main">
@@ -74,7 +78,11 @@ const Login = () => {
           />
         </div>
         <div className="input-group">
-          <button className="btn" onClick={(e) => login(e)}>
+          <button
+            type="button"
+            className="btn"
+            onClick={() => signIn(loginRequest)}
+          >
             Sign in
           </button>
         </div>

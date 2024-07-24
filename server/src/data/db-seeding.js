@@ -39,9 +39,9 @@ const users = [
       genresDeezer.map(({ id, name }) =>
         pool.query(
           `
-        INSERT INTO genres (deezer_id, name)
-        VALUES (?, ?)
-        `,
+            INSERT INTO genres (deezer_id, name)
+            VALUES (?, ?)
+          `,
           [id, name]
         )
       )
@@ -66,11 +66,11 @@ const users = [
           genreArtists.map(({ id, name, tracklist }) =>
             pool.query(
               `
-        INSERT INTO artists (deezer_id, name, tracklist, genre_id, genre_deezer_id)
-        VALUES (?, ?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE
-          name = ?
-        `,
+                INSERT INTO artists (deezer_id, name, tracklist, genre_id, genre_deezer_id)
+                VALUES (?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                name = ?
+              `,
               [id, name, tracklist, genre.id, genre.deezer_id, name]
             )
           )
@@ -102,11 +102,11 @@ const users = [
             if (selectedGenresMap.has(genre_id)) {
               pool.query(
                 `
-        INSERT INTO albums (deezer_id, title, cover, tracklist, artist_id, artist_deezer_id, genre_id, genre_deezer_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE
-          title = ?
-        `,
+                  INSERT INTO albums (deezer_id, title, cover, tracklist, artist_id, artist_deezer_id, genre_id, genre_deezer_id)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                  ON DUPLICATE KEY UPDATE
+                  title = ?
+                `,
                 [
                   id,
                   title,
@@ -144,11 +144,11 @@ const users = [
           albumTracks.map(({ id, title, duration, rank, preview }) =>
             pool.query(
               `
-        INSERT INTO tracks (deezer_id, title, duration, rank, preview, album_id, album_deezer_id, artist_id, artist_deezer_id, genre_id, genre_deezer_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE
-          title = ?
-        `,
+                INSERT INTO tracks (deezer_id, title, duration, rank, preview, album_id, album_deezer_id, artist_id, artist_deezer_id, genre_id, genre_deezer_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                title = ?
+              `,
               [
                 id,
                 title,
@@ -179,9 +179,9 @@ const users = [
       users.map(async ({ username, password, email }) =>
         pool.query(
           `
-        INSERT INTO users (username, password, email, role_id)
-        VALUES (?, ?, ?, ?)
-        `,
+            INSERT INTO users (username, password, email, role_id)
+            VALUES (?, ?, ?, ?)
+          `,
           [
             username,
             await bcrypt.hash(password, 10),
