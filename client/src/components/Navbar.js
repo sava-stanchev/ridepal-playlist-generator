@@ -10,23 +10,32 @@ import { HOST } from "../common/constants";
 const NavBar = () => {
   const history = useHistory();
   const auth = useContext(AuthContext);
-  const logout = () => {
-    fetch(`${HOST}/logout`, {
-      method: "DELETE",
-      headers: {
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then(() => {
+
+  async function signOut(request) {
+    try {
+      const response = await fetch(request);
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
         auth.setAuthState({
           user: null,
           isLoggedIn: false,
         });
         localStorage.removeItem("token");
         history.push("/home");
-      })
-      .catch(() => history.push("/500"));
-  };
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  const logoutRequest = new Request(`${HOST}/logout`, {
+    method: "DELETE",
+    headers: {
+      authorization: `bearer ${localStorage.getItem("token")}`,
+    },
+  });
 
   return (
     <header className="header">
@@ -41,14 +50,12 @@ const NavBar = () => {
       <nav className="header__nav">
         <ul>
           {auth.isLoggedIn ? (
-            auth.user.role === 1 ? (
-              <Link to="/users">
-                <li>Users</li>
-              </Link>
-            ) : null
-          ) : null}
-          {auth.isLoggedIn ? (
             <>
+              {auth.user.role === 1 && (
+                <Link to="/users">
+                  <li>Users</li>
+                </Link>
+              )}
               <Link to="/generate-route">
                 <li>Generate</li>
               </Link>
@@ -65,7 +72,7 @@ const NavBar = () => {
                 {auth.user.username}
               </ReactTooltip>
               <Link to="/home">
-                <li onClick={() => logout()}>
+                <li onClick={() => signOut(logoutRequest)}>
                   <button
                     className="tooltip-icon-logout"
                     data-tip
