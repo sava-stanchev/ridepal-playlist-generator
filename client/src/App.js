@@ -7,7 +7,7 @@ import { useState } from "react";
 import AuthContext, { getUser } from "./providers/auth-context";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import StartPage from "./components/StartPage";
-import ViewPlaylist from "./components/ViewPlaylist";
+import SinglePlaylist from "./components/SinglePlaylist";
 import GenerateRoute from "./components/GenerateRoute";
 import GeneratePlaylist from "./components/GeneratePlaylist";
 import PageNotFound from "./components/PageNotFound";
@@ -53,7 +53,7 @@ const App = () => {
                 <GeneratePlaylist {...props} points={points} />
               )}
             />
-            <Route exact path="/playlists/:id" component={ViewPlaylist} />
+            <Route exact path="/playlists/:id" component={SinglePlaylist} />
             <Route path="/500" component={ServerError} />
             <Route path="*" component={PageNotFound} />
           </Switch>
