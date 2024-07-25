@@ -26,6 +26,7 @@ usersController
     })
   )
 
+  // Get all users
   .get("/", async (req, res) => {
     try {
       const users = await usersService.getAllUsers();
@@ -37,12 +38,14 @@ usersController
     }
   })
 
+  // Update user
   .patch("/:id", async (req, res) => {
-    const userId = req.params.id;
-    const data = req.body;
+    const user = req.body;
+
     try {
-      const user = await usersService.updateUser(userId, data);
-      res.status(200).send(user);
+      await usersService.updateUser(user);
+      const updatedUser = await usersService.getUserById(user.id);
+      res.status(200).send(updatedUser[0]);
     } catch (error) {
       return res.status(400).json({
         error: error.message,
@@ -50,16 +53,11 @@ usersController
     }
   })
 
+  // Delete user
   .delete("/:id", async (req, res) => {
     try {
-      const user = await usersData.getUserById(+req.params.id);
-      if (!user || user.is_deleted === 1) {
-        return res.status(400).json({
-          message: "User not found!",
-        });
-      }
-      await usersData.deleteUser(+req.params.id);
-      res.status(200).send(user);
+      await usersData.deleteUser(req.params.id);
+      res.end();
     } catch (error) {
       return res.status(400).json({
         error: error.message,
@@ -67,17 +65,15 @@ usersController
     }
   })
 
+  // Change user role
   .put("/:id", async (req, res) => {
+    const userId = req.params.id;
+
     try {
-      const user = await usersData.getUserById(+req.params.id);
-      if (!user || user.is_deleted === 1) {
-        return res.status(400).json({
-          message: "User not found!",
-        });
-      }
-      await usersData.changeRole(+req.params.id);
-      const users = await usersService.getAllUsers();
-      res.status(200).send(users);
+      const user = await usersService.getUserById(userId);
+      await usersData.changeRole(user[0]);
+      const updatedUser = await usersService.getUserById(userId);
+      res.status(200).send(updatedUser[0]);
     } catch (error) {
       return res.status(400).json({
         error: error.message,

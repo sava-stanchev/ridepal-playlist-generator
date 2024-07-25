@@ -62,22 +62,20 @@ const deleteUser = async (id) => {
   return await pool.query(sql, [id]);
 };
 
-const updateUser = async (id, data) => {
+const updateUser = async (user) => {
   const sql = `
     UPDATE users AS u
     SET username = ?, email = ? 
     WHERE u.id = ?
   `;
 
-  await pool.query(sql, [data.username, data.email, id]);
-  const user = await getUserById(id);
-  return user[0];
+  await pool.query(sql, [user.username, user.email, user.id]);
 };
 
-const changeRole = async (id) => {
-  const user = await getUserById(id);
+const changeRole = async (user) => {
   let sql;
-  if (user[0].role_id === 2) {
+
+  if (user.role_id === 2) {
     sql = `
     UPDATE users SET users.role_id = 1
     WHERE users.id = ?
@@ -89,7 +87,7 @@ const changeRole = async (id) => {
   `;
   }
 
-  return await pool.query(sql, [id]);
+  await pool.query(sql, [user.id]);
 };
 
 export default {

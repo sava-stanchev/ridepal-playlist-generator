@@ -4,60 +4,98 @@ export const GET_USERS = "GET_USERS";
 
 export const getUsers = () => {
   return async (dispatch) => {
-    const result = await fetch(`${HOST}/users`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-    }).then((res) => res.json());
+    try {
+      const response = await fetch(`${HOST}/users`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
-    dispatch({ type: GET_USERS, data: result });
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
+        dispatch({ type: GET_USERS, data: result });
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 };
 
 export const deleteUser = (id) => {
   return async (dispatch, getState) => {
-    await fetch(`${HOST}/users/${id}`, {
-      method: "DELETE",
-      headers: {
-        "content-type": "application/json",
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-    }).then((res) => res.json());
+    try {
+      const response = await fetch(`${HOST}/users/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
-    const users = [...getState().users.allUsers];
-    const result = users.filter((u) => u.id !== id);
-    dispatch({ type: GET_USERS, data: result });
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const users = [...getState().users.allUsers];
+        const result = users.filter((u) => u.id !== id);
+        dispatch({ type: GET_USERS, data: result });
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 };
 
 export const switchRole = (id) => {
-  return async (dispatch) => {
-    const result = await fetch(`${HOST}/users/${id}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-    }).then((res) => res.json());
+  return async (dispatch, getState) => {
+    try {
+      const response = await fetch(`${HOST}/users/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
-    dispatch({ type: GET_USERS, data: result });
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
+        const users = [...getState().users.allUsers];
+        const updatedUser = users.map((u) => (u.id === result.id ? result : u));
+        dispatch({ type: GET_USERS, data: updatedUser });
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 };
 
 export const updateUser = (id, theUser) => {
   return async (dispatch, getState) => {
-    const editedUser = await fetch(`${HOST}/users/${id}`, {
-      method: "PATCH",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(theUser),
-    }).then((res) => res.json());
+    try {
+      const response = await fetch(`${HOST}/users/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(theUser),
+      });
 
-    const users = [...getState().users.allUsers];
-    const result = users.map((u) => (u.id === editedUser.id ? editedUser : u));
-    dispatch({ type: GET_USERS, data: result });
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
+        const users = [...getState().users.allUsers];
+        const updatedUser = users.map((u) => (u.id === result.id ? result : u));
+        dispatch({ type: GET_USERS, data: updatedUser });
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 };
