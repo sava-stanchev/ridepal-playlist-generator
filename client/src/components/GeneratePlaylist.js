@@ -69,25 +69,28 @@ const GeneratePlaylist = ({ points }) => {
     repeatArtist: repeatArtists,
   };
 
-  const routeChange = (id) => {
-    const path = `/playlists/${id}`;
-    history.push(path);
-  };
+  async function generatePlaylistRequest(data) {
+    try {
+      const response = await fetch(`${HOST}/playlists`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(data),
+      });
 
-  const generatePlaylist = (data, e) => {
-    e.preventDefault();
-    fetch(`${HOST}/playlists`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((data) => routeChange(data.id))
-      .catch(() => history.push("/500"));
-  };
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
+        const path = `/playlists/${result.id}`;
+        history.push(path);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
   return (
     <section className="main">
@@ -185,34 +188,25 @@ const GeneratePlaylist = ({ points }) => {
             >
               * Allow same artist's tracks if travel duration over 150 min.
             </p>
-            {totalDuration < 100 ? (
-              <>
-                <p className="reminder-msg" style={{ color: "red" }}>
-                  * Total of percentages must equal 100
-                </p>
-                <button
-                  type="submit"
-                  className="btn"
-                  disabled={true}
-                  onClick={() => generatePlaylist(playlistData)}
-                >
-                  Generate Playlist
-                </button>
-              </>
-            ) : (
-              <>
-                <p className="reminder-msg">
-                  * Total of percentages must equal 100
-                </p>
-                <button
-                  type="submit"
-                  className="btn"
-                  onClick={(e) => generatePlaylist(playlistData, e)}
-                >
-                  Generate Playlist
-                </button>
-              </>
-            )}
+            <p
+              className="reminder-msg"
+              style={{ color: totalDuration < 100 ? "red" : "white" }}
+            >
+              * Total of percentages must equal 100
+            </p>
+            <button
+              type="button"
+              className="btn"
+              disabled={
+                totalDuration < 100 ||
+                (points.duration > 150 * 60 && repeatArtists === false)
+                  ? true
+                  : false
+              }
+              onClick={() => generatePlaylistRequest(playlistData)}
+            >
+              Generate Playlist
+            </button>
           </>
         </div>
       </form>
