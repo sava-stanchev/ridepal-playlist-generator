@@ -9,30 +9,30 @@ const SinglePlaylist = (props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getPlaylistRequest();
-  });
+    async function getPlaylistRequest() {
+      try {
+        const response = await fetch(`${HOST}/playlists/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-  async function getPlaylistRequest() {
-    try {
-      const response = await fetch(`${HOST}/playlists/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      } else {
-        const result = await response.json();
-        setPlaylistData(result);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        } else {
+          const result = await response.json();
+          setPlaylistData(result);
+        }
+      } catch (error) {
+        console.error(error.message);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error(error.message);
-    } finally {
-      setLoading(false);
     }
-  }
+
+    getPlaylistRequest();
+  }, [id]);
 
   const renderTracks = playlistData.map((track) => {
     return (
