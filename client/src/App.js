@@ -54,7 +54,6 @@ const App = () => {
               )}
             />
             <Route exact path="/playlists/:id" component={SinglePlaylist} />
-            <Route path="/500" component={ServerError} />
             <Route path="*" component={PageNotFound} />
           </Switch>
         </AuthContext.Provider>
