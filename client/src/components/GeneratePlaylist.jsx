@@ -109,7 +109,7 @@ const GeneratePlaylist = ({ points }) => {
             onChange={(e) => updatePlaylistName("playlistName", e.target.value)}
           />
           <p
-            className="register-msg"
+            className="validation-msg"
             style={
               playlistNameError.properLength
                 ? { color: "white" }

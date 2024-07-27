@@ -112,7 +112,7 @@ const Register = () => {
           <label>Username:</label>
           <input type="text" />
           <p
-            className="register-msg"
+            className="validation-msg"
             style={
               usernameError.properLength ? { color: "white" } : { color: "red" }
             }
@@ -129,7 +129,7 @@ const Register = () => {
           <label>Email:</label>
           <input type="email" />
           <p
-            className="register-msg"
+            className="validation-msg"
             style={
               emailError.properEmail ? { color: "white" } : { color: "red" }
             }
@@ -156,7 +156,7 @@ const Register = () => {
           </div>
           <input type={showPassword === false ? "password" : "text"} />
           <p
-            className="register-msg"
+            className="validation-msg"
             style={
               passwordError.properLength ? { color: "white" } : { color: "red" }
             }

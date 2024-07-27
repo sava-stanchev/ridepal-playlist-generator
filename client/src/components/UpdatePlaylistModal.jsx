@@ -7,19 +7,18 @@ const playlistNameVerificationError = {
   properLength: true,
 };
 
-export default function Modal({ playlist, open, onClose, playlists }) {
-  const [thePlaylist, setThePlaylist] = useState(null);
+export default function Modal({ playlist, open, onClose }) {
+  const [updatedPlaylist, setUpdatedPlaylist] = useState(null);
   const [playlistNameError, setPlaylistNameError] = useState(
     playlistNameVerificationError
   );
   const dispatch = useDispatch();
 
-  if (!playlist) return null;
-  if (!open) return null;
+  if (!playlist || !open) return null;
 
   const updatePlaylistProperties = (prop, value) => {
-    setThePlaylist({
-      ...thePlaylist,
+    setUpdatedPlaylist({
+      ...updatedPlaylist,
       [prop]: value,
     });
 
@@ -30,7 +29,7 @@ export default function Modal({ playlist, open, onClose, playlists }) {
   };
 
   const updatePlaylist = () => {
-    dispatch(playlistActions.updatePlaylist(playlist.id, thePlaylist));
+    dispatch(playlistActions.updatePlaylist(playlist.id, updatedPlaylist));
   };
 
   const closeFunction = () => {
@@ -50,30 +49,24 @@ export default function Modal({ playlist, open, onClose, playlists }) {
           <input
             type="text"
             name="title"
-            value={thePlaylist ? thePlaylist.title : playlist.title}
+            value={updatedPlaylist ? updatedPlaylist.title : playlist.title}
             onChange={(e) => updatePlaylistProperties("title", e.target.value)}
           />
           <p
-            className="register-msg"
-            style={
-              playlistNameError.properLength
-                ? { color: "white" }
-                : { color: "red" }
-            }
+            className="validation-msg"
+            style={{ color: playlistNameError.properLength ? "white" : "red" }}
           >
             * Between 3 and 20 chars
           </p>
         </div>
         <div className="input-group">
-          {playlistNameError.properLength ? (
-            <button className="btn" onClick={closeFunction}>
-              Update
-            </button>
-          ) : (
-            <button className="btn" disabled={true} onClick={closeFunction}>
-              Update
-            </button>
-          )}
+          <button
+            className="btn"
+            disabled={playlistNameError.properLength ? false : true}
+            onClick={closeFunction}
+          >
+            Update
+          </button>
         </div>
       </div>
     </>,

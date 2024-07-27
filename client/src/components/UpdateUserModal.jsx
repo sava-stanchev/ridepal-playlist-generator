@@ -14,18 +14,17 @@ const emailVerificationError = {
 export default function Modal({ user, open, onClose, users }) {
   const [emailError, setEmailError] = useState(emailVerificationError);
   const [usernameError, setUsernameError] = useState(usernameVerificationError);
-  const [theUser, setTheUser] = useState(null);
+  const [updatedUser, setUpdatedUser] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setTheUser(user);
+    setUpdatedUser(user);
   }, [user]);
 
-  if (!user) return null;
-  if (!open) return null;
+  if (!user || !open) return null;
 
   const updateUserProperties = (prop, value) => {
-    setTheUser({
+    setUpdatedUser({
       ...theUser,
       [prop]: value,
     });
@@ -45,7 +44,7 @@ export default function Modal({ user, open, onClose, users }) {
   };
 
   const updateUser = () => {
-    dispatch(userActions.updateUser(user.id, theUser));
+    dispatch(userActions.updateUser(user.id, updatedUser));
   };
 
   const closeFunction = () => {
@@ -66,17 +65,15 @@ export default function Modal({ user, open, onClose, users }) {
             type="text"
             name="username"
             value={
-              theUser
-                ? theUser.username
+              updatedUser
+                ? updatedUser.username
                 : users.filter((u) => u.id === user.id)[0].username
             }
             onChange={(e) => updateUserProperties("username", e.target.value)}
           />
           <p
-            className="register-msg"
-            style={
-              usernameError.properLength ? { color: "white" } : { color: "red" }
-            }
+            className="validation-msg"
+            style={{ color: usernameError.properLength ? "white" : "red" }}
           >
             * Between 3 and 15 chars
           </p>
@@ -87,31 +84,31 @@ export default function Modal({ user, open, onClose, users }) {
             type="text"
             name="email"
             value={
-              theUser
-                ? theUser.email
+              updatedUser
+                ? updatedUser.email
                 : users.filter((u) => u.id === user.id)[0].email
             }
             onChange={(e) => updateUserProperties("email", e.target.value)}
           />
           <p
-            className="register-msg"
-            style={
-              emailError.properEmail ? { color: "white" } : { color: "red" }
-            }
+            className="validation-msg"
+            style={{ color: emailError.properEmail ? "white" : "red" }}
           >
             * Valid email address
           </p>
         </div>
         <div className="input-group">
-          {usernameError.properLength && emailError.properEmail ? (
-            <button className="btn" onClick={closeFunction}>
-              Update
-            </button>
-          ) : (
-            <button className="btn" disabled={true} onClick={closeFunction}>
-              Update
-            </button>
-          )}
+          <button
+            className="btn"
+            disabled={
+              usernameError.properLength && emailError.properEmail
+                ? false
+                : true
+            }
+            onClick={closeFunction}
+          >
+            Update
+          </button>
         </div>
       </div>
     </>,
