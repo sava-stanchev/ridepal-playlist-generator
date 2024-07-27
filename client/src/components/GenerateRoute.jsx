@@ -22,10 +22,6 @@ const GenerateRoute = ({ setPoints }) => {
   });
 
   const history = useHistory();
-  const routeChange = () => {
-    const path = `/generate-playlist`;
-    history.push(path);
-  };
 
   const createRoute = (prop, value) => {
     setRoute({
@@ -50,32 +46,36 @@ const GenerateRoute = ({ setPoints }) => {
     }
   };
 
-  const getDuration = (e) => {
-    e.preventDefault();
-    fetch(
-      `http://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0=${route.from}&wp.1=${route.to}&routeAttributes=excludeItinerary&key=${BING_KEY}`,
-      {
-        method: "GET",
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        try {
-          setPoints({
-            duration: data.resourceSets[0].resources[0].travelDuration,
-            from: route.from,
-            to: route.to,
-          });
-          if (data.resourceSets[0].resources[0].travelDuration) {
-            routeChange();
-          }
-        } catch (error) {
-          setAlertMsg("Invalid waypoints!");
-          setIsOpen(true);
+  async function getDurationRequest() {
+    try {
+      const response = await fetch(
+        `http://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0=${route.from}&wp.1=${route.to}&routeAttributes=excludeItinerary&key=${BING_KEY}`,
+        {
+          method: "GET",
         }
-      })
-      .catch(history.push("/generate-route"));
-  };
+      );
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      } else {
+        const result = await response.json();
+        setPoints({
+          duration: result.resourceSets[0].resources[0].travelDuration,
+          from: route.from,
+          to: route.to,
+        });
+
+        if (result.resourceSets[0].resources[0].travelDuration) {
+          const path = `/generate-playlist`;
+          history.push(path);
+        }
+      }
+    } catch (error) {
+      console.error(error.message);
+      setAlertMsg("Something went wrong!");
+      setIsOpen(true);
+    }
+  }
 
   return (
     <section className="main">
@@ -108,35 +108,30 @@ const GenerateRoute = ({ setPoints }) => {
           />
         </div>
         <div className="input-group">
-          {cityNameOneError.properCityName &&
-          cityNameTwoError.properCityName ? (
-            <>
-              <p className="city-reminder-msg">
-                * Travel locations should be valid city names
-              </p>
-              <button
-                type="submit"
-                className="btn"
-                onClick={(e) => getDuration(e)}
-              >
-                Next
-              </button>
-            </>
-          ) : (
-            <>
-              <p className="city-reminder-msg" style={{ color: "red" }}>
-                * Travel locations should be valid city names
-              </p>
-              <button
-                type="submit"
-                className="btn"
-                disabled={true}
-                onClick={(e) => getDuration(e)}
-              >
-                Next
-              </button>
-            </>
-          )}
+          <p
+            className="city-reminder-msg"
+            style={{
+              color:
+                cityNameOneError.properCityName &&
+                cityNameTwoError.properCityName
+                  ? "white"
+                  : "red",
+            }}
+          >
+            * Travel locations should be valid city names
+          </p>
+          <button
+            type="button"
+            className="btn"
+            disabled={
+              cityNameOneError.properCityName && cityNameTwoError.properCityName
+                ? false
+                : true
+            }
+            onClick={() => getDurationRequest()}
+          >
+            Next
+          </button>
         </div>
       </form>
     </section>

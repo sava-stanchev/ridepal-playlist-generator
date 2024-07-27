@@ -25,7 +25,7 @@ export default function Modal({ user, open, onClose, users }) {
 
   const updateUserProperties = (prop, value) => {
     setUpdatedUser({
-      ...theUser,
+      ...updatedUser,
       [prop]: value,
     });
 
