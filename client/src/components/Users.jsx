@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { FaTrashAlt, FaEdit, FaCrown, FaSearch } from "react-icons/fa";
+import { FaTrashAlt, FaEdit, FaCrown } from "react-icons/fa";
 import UpdateUserModal from "./UpdateUserModal";
 import * as userActions from "../store/actions/users";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "./Loader";
+import Search from "./Search";
 
 const Users = () => {
   const dispatch = useDispatch();
@@ -96,25 +97,7 @@ const Users = () => {
             users={users}
           />
           <section className="filters__container">
-            <div className="search">
-              <table className="search__container">
-                <tbody>
-                  <tr>
-                    <td>
-                      <input
-                        type="text"
-                        placeholder="search by username"
-                        className="search__input"
-                        onChange={(e) => setSearch(e.target.value)}
-                      />
-                    </td>
-                    <td>
-                      <FaSearch />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <Search setSearch={setSearch} />
           </section>
           <div className="users">
             <div className="users__container">

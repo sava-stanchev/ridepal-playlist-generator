@@ -1,12 +1,13 @@
 import { useEffect, useState, useContext } from "react";
 import ReactPaginate from "react-paginate";
 import { useHistory } from "react-router-dom";
-import { FaTrashAlt, FaEdit, FaSearch } from "react-icons/fa";
+import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import AuthContext from "../providers/auth-context";
 import UpdatePlaylistModal from "./UpdatePlaylistModal";
 import { convertHMS } from "../common/utils";
 import * as playlistActions from "../store/actions/playlists";
 import { useDispatch, useSelector } from "react-redux";
+import Search from "./Search";
 
 const StartPage = () => {
   const auth = useContext(AuthContext);
@@ -227,25 +228,7 @@ const StartPage = () => {
             <option>&#60; 7 hours</option>
             <option>&#60; 8 hours</option>
           </select>
-          <div className="search">
-            <table className="search__container">
-              <tbody>
-                <tr>
-                  <td>
-                    <input
-                      type="text"
-                      placeholder="search by name"
-                      className="search__input"
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <FaSearch />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <Search setSearch={setSearch} />
         </section>
       </div>
       <div className="cards-container">
