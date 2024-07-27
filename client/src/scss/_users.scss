@@ -1,6 +1,6 @@
 .users {
   &__container {
-    padding: 0 5%;
+    padding: 20px 5%;
     margin: rem(10) auto rem(25);
   }
 
@@ -19,7 +19,7 @@
     }
   }
 
-  &__header {
+  &__table-header {
     font-size: rem(18);
     font-weight: 600;
     letter-spacing: rem(0.35);
@@ -31,7 +31,11 @@
     background: #202027;
   }
 
-  &__buttons {
+  &__table-row {
+    outline: #202027 thin solid;
+  }
+
+  &__table-buttons {
     display: flex;
     justify-content: center;
 
@@ -51,12 +55,12 @@
     }
 
     &--edit {
-      @extend .users__buttons--delete;
+      @extend .users__table-buttons--delete;
       margin-right: 1.2rem;
     }
 
     &--role {
-      @extend .users__buttons--delete;
+      @extend .users__table-buttons--delete;
       margin-top: auto;
       margin-bottom: auto;
       margin-left: 0.8rem;
@@ -70,13 +74,10 @@
 
 @include breakpoint-down(large) {
   .users {
-    &__header {
-      display: block;
-      width: inherit;
-    }
-
     &__table {
-      tbody, tr, td {
+      tbody,
+      tr,
+      td {
         display: block;
         width: 100%;
       }
@@ -85,11 +86,16 @@
     &__table tr {
       margin-bottom: rem(15);
     }
-  
+
     &__table tbody tr td {
       text-align: center;
       position: relative;
       outline: #202027 thin solid;
+    }
+
+    &__table-header {
+      display: block;
+      width: inherit;
     }
   }
 }

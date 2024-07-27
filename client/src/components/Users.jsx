@@ -3,10 +3,10 @@ import { FaTrashAlt, FaEdit, FaCrown, FaSearch } from "react-icons/fa";
 import UpdateUserModal from "./UpdateUserModal";
 import * as userActions from "../store/actions/users";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "./Loader";
 
 const Users = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -14,9 +14,7 @@ const Users = () => {
   const users = useSelector((state) => state.users.allUsers);
 
   useEffect(() => {
-    setLoading(true);
     dispatch(userActions.getUsers());
-    setLoading(false);
   }, [dispatch]);
 
   useEffect(() => {
@@ -42,25 +40,17 @@ const Users = () => {
     setIsOpen(true);
   };
 
-  const Loader = () => <div className="loader"></div>;
-
-  const showLoader = () => {
-    if (loading) {
-      return <Loader />;
-    }
-  };
-
   const displayUsers = foundUsers.map((user) => {
     return (
       <tbody key={user.id}>
-        <tr style={{ outline: "#202027 thin solid" }}>
+        <tr className="users__table-row">
           <td>{user.username}</td>
           <td>{user.email}</td>
           <td>
-            <div className="users__buttons">
+            <div className="users__table-buttons">
               {user.role}
               <button
-                className="users__buttons--role"
+                className="users__table-buttons--role"
                 onClick={() => switchRole(user.id)}
               >
                 <FaCrown
@@ -74,15 +64,15 @@ const Users = () => {
             </div>
           </td>
           <td>
-            <div className="users__buttons">
+            <div className="users__table-buttons">
               <button
-                className="users__buttons--edit"
+                className="users__table-buttons--edit"
                 onClick={() => editFunction(user)}
               >
                 <FaEdit />
               </button>
               <button
-                className="users__buttons--delete"
+                className="users__table-buttons--delete"
                 onClick={() => deleteUser(user.id)}
               >
                 <FaTrashAlt />
@@ -96,49 +86,52 @@ const Users = () => {
 
   return (
     <>
-      <UpdateUserModal
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        user={currentUser}
-        users={users}
-      />
-      <section className="filters__container">
-        <div className="search">
-          <table className="search__container">
-            <tbody>
-              <tr>
-                <td>
-                  <input
-                    type="text"
-                    placeholder="search by username"
-                    className="search__input"
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                </td>
-                <td>
-                  <FaSearch />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-      <br />
-      <div className="users">
-        {showLoader()}
-        <div className="users__container">
-          <table className="users__table">
-            <thead>
-              <tr>
-                <th className="users__header" colSpan="4">
-                  List of Users
-                </th>
-              </tr>
-            </thead>
-            {displayUsers}
-          </table>
-        </div>
-      </div>
+      {!foundUsers.length && <Loader />}
+      {foundUsers.length > 0 && (
+        <>
+          <UpdateUserModal
+            open={isOpen}
+            onClose={() => setIsOpen(false)}
+            user={currentUser}
+            users={users}
+          />
+          <section className="filters__container">
+            <div className="search">
+              <table className="search__container">
+                <tbody>
+                  <tr>
+                    <td>
+                      <input
+                        type="text"
+                        placeholder="search by username"
+                        className="search__input"
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
+                    </td>
+                    <td>
+                      <FaSearch />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <div className="users">
+            <div className="users__container">
+              <table className="users__table">
+                <thead>
+                  <tr>
+                    <th className="users__table-header" colSpan="4">
+                      List of Users
+                    </th>
+                  </tr>
+                </thead>
+                {displayUsers}
+              </table>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

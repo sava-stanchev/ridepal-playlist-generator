@@ -11,7 +11,6 @@ import SinglePlaylist from "./components/SinglePlaylist";
 import GenerateRoute from "./components/GenerateRoute";
 import GeneratePlaylist from "./components/GeneratePlaylist";
 import PageNotFound from "./components/PageNotFound";
-import ServerError from "./components/ServerError";
 import GuardedRoute from "./providers/GuardedRoute";
 
 const App = () => {
