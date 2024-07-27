@@ -1,5 +1,3 @@
-/* eslint-disable import/no-anonymous-default-export */
-
 import { GET_USERS } from "../actions/users";
 
 const initialState = {
