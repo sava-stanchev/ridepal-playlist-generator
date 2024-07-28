@@ -6,9 +6,56 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "./Loader";
 import Search from "./Search";
 
+const User = ({
+  user,
+  username,
+  email,
+  role,
+  id,
+  switchRole,
+  editUser,
+  deleteUser,
+}) => {
+  return (
+    <tr className="users__table-row">
+      <td>{username}</td>
+      <td>{email}</td>
+      <td>
+        <div className="users__table-buttons">
+          {role}
+          <button
+            className="users__table-buttons--role"
+            onClick={() => switchRole(id)}
+          >
+            <FaCrown
+              style={{ color: role === "admin" ? "#FFD700" : "white" }}
+            />
+          </button>
+        </div>
+      </td>
+      <td>
+        <div className="users__table-buttons">
+          <button
+            className="users__table-buttons--edit"
+            onClick={() => editUser(user)}
+          >
+            <FaEdit />
+          </button>
+          <button
+            className="users__table-buttons--delete"
+            onClick={() => deleteUser(id)}
+          >
+            <FaTrashAlt />
+          </button>
+        </div>
+      </td>
+    </tr>
+  );
+};
+
 const Users = () => {
   const dispatch = useDispatch();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [search, setSearch] = useState("");
@@ -36,69 +83,25 @@ const Users = () => {
     dispatch(userActions.switchRole(id));
   };
 
-  const editFunction = (user) => {
+  const editUser = (user) => {
     setCurrentUser(user);
-    setIsOpen(true);
+    setIsModalOpen(true);
   };
-
-  const displayUsers = foundUsers.map((user) => {
-    return (
-      <tbody key={user.id}>
-        <tr className="users__table-row">
-          <td>{user.username}</td>
-          <td>{user.email}</td>
-          <td>
-            <div className="users__table-buttons">
-              {user.role}
-              <button
-                className="users__table-buttons--role"
-                onClick={() => switchRole(user.id)}
-              >
-                <FaCrown
-                  style={
-                    user.role === "admin"
-                      ? { color: "#FFD700" }
-                      : { color: "white" }
-                  }
-                />
-              </button>
-            </div>
-          </td>
-          <td>
-            <div className="users__table-buttons">
-              <button
-                className="users__table-buttons--edit"
-                onClick={() => editFunction(user)}
-              >
-                <FaEdit />
-              </button>
-              <button
-                className="users__table-buttons--delete"
-                onClick={() => deleteUser(user.id)}
-              >
-                <FaTrashAlt />
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    );
-  });
 
   return (
     <>
-      {!foundUsers.length && <Loader />}
+      <section className="filters__container">
+        <Search setSearch={setSearch} />
+      </section>
+      {!foundUsers.length && !search.length && <Loader />}
       {foundUsers.length > 0 && (
         <>
           <UpdateUserModal
-            open={isOpen}
-            onClose={() => setIsOpen(false)}
+            open={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
             user={currentUser}
             users={users}
           />
-          <section className="filters__container">
-            <Search setSearch={setSearch} />
-          </section>
           <div className="users">
             <div className="users__container">
               <table className="users__table">
@@ -109,7 +112,18 @@ const Users = () => {
                     </th>
                   </tr>
                 </thead>
-                {displayUsers}
+                <tbody>
+                  {foundUsers.map((user) => (
+                    <User
+                      key={user.id}
+                      {...user}
+                      user={user}
+                      switchRole={switchRole}
+                      editUser={editUser}
+                      deleteUser={deleteUser}
+                    />
+                  ))}
+                </tbody>
               </table>
             </div>
           </div>
