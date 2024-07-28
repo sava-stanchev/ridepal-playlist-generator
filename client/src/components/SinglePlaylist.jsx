@@ -5,28 +5,26 @@ import Loader from "./Loader";
 
 const Track = ({ cover, artist_name, track_title, duration, preview }) => {
   return (
-    <tbody>
-      <tr className="song">
-        <td className="song__cover">
-          <div className="song__cover-img">
-            <img src={cover} alt="cover" />
-          </div>
-        </td>
-        <td className="song__title">
-          <h5>
-            {artist_name} - {track_title}
-          </h5>
-        </td>
-        <td className="song__length">
-          <h5>{trackTimeFormat(duration)}</h5>
-        </td>
-        <td className="song__preview">
-          <audio controls className="song__audio" controlsList="nodownload">
-            <source src={preview} type="audio/mp3" />
-          </audio>
-        </td>
-      </tr>
-    </tbody>
+    <tr className="song">
+      <td className="song__cover">
+        <div className="song__cover-img">
+          <img src={cover} alt="cover" />
+        </div>
+      </td>
+      <td className="song__title">
+        <h5>
+          {artist_name} - {track_title}
+        </h5>
+      </td>
+      <td className="song__length">
+        <h5>{trackTimeFormat(duration)}</h5>
+      </td>
+      <td className="song__preview">
+        <audio controls className="song__audio" controlsList="nodownload">
+          <source src={preview} type="audio/mp3" />
+        </audio>
+      </td>
+    </tr>
   );
 };
 
@@ -77,9 +75,11 @@ const SinglePlaylist = (props) => {
                 </th>
               </tr>
             </thead>
-            {playlistData.map((track) => (
-              <Track key={track.track_id} {...track} />
-            ))}
+            <tbody>
+              {playlistData.map((track) => (
+                <Track key={track.track_id} {...track} />
+              ))}
+            </tbody>
           </table>
         </div>
       )}
