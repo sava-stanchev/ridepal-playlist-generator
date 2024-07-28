@@ -1,0 +1,41 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Poppins, sans-serif;
+  font-size: 1.2rem;
+  background-color: $dark-grayish-blue;
+  color: white;
+}
+
+a,
+a:visited,
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  background: $dark-blue-magenta;
+  border-radius: calc(12px / 2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: $medium-gray;
+  border-radius: calc(12px / 2);
+}
+
+::placeholder {
+  color: $medium-gray;
+}
