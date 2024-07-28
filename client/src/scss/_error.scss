@@ -16,20 +16,7 @@
   }
 
   &__btn {
-    color: white;
-    background-color: $blue-button;
-    padding: 0.75rem 1.5rem;
+    @extend .btn;
     margin-top: 0.7rem;
-    border-radius: rem(900);
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 1rem;
-    outline: none;
-    border: none;
-    cursor: pointer;
-
-    &:hover {
-      background-color: $blue-button-hover;
-    }
   }
 }
