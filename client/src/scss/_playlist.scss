@@ -20,14 +20,14 @@
 
   &__table {
     border-collapse: collapse;
-    background: linear-gradient(#3a56b0, $violet-pink);
+    background: linear-gradient($medium-blue, $violet-pink);
 
     tr {
       transform-origin: 0% 50%;
       text-align: center;
 
       &:hover {
-        background: #393959;
+        background: $medium-blue-magenta;
       }
     }
   }
@@ -36,7 +36,7 @@
     padding: 0.8rem;
     text-align: center;
     font-size: 1.5rem;
-    background: #202027;
+    background: $dark-blue-magenta;
   }
 
   &__title {
@@ -56,7 +56,7 @@
   &__cover-img {
     width: 70px;
     height: 70px;
-  
+
     img {
       width: 60px;
       height: 60px;

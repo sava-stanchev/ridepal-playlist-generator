@@ -15,7 +15,7 @@
       color: #f1f1f1;
       padding: rem(12) rem(32);
       text-align: center;
-      background: #393959;
+      background: $medium-blue-magenta;
     }
   }
 
@@ -23,16 +23,16 @@
     font-size: rem(18);
     font-weight: 600;
     letter-spacing: rem(0.35);
-    color: #ffffff;
+    color: white;
     opacity: 1;
     padding: rem(12);
     vertical-align: top;
     border-collapse: collapse;
-    background: #202027;
+    background: $dark-blue-magenta;
   }
 
   &__table-row {
-    outline: #202027 thin solid;
+    outline: $dark-blue-magenta thin solid;
   }
 
   &__table-buttons {
@@ -90,7 +90,7 @@
     &__table tbody tr td {
       text-align: center;
       position: relative;
-      outline: #202027 thin solid;
+      outline: $dark-blue-magenta thin solid;
     }
 
     &__table-header {

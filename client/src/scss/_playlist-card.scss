@@ -9,7 +9,7 @@
 .card {
   width: 346px;
   padding: 15px;
-  background: #202027;
+  background: $dark-blue-magenta;
   border-radius: 0.5rem;
   transition: background 320ms;
 
@@ -17,7 +17,7 @@
     width: 316px;
     height: 166px;
     position: relative;
-    background: linear-gradient(#3a56b0, $violet-pink);
+    background: linear-gradient($medium-blue, $violet-pink);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 8px 18px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
@@ -56,18 +56,18 @@
 
   @include breakpoint-up(large) {
     &:hover {
-      background: #393959;
-  
+      background: $medium-blue-magenta;
+
       .btn-wrapper__view {
         transform: translateY(0);
         opacity: 1;
       }
-  
+
       .btn-wrapper__delete {
         transform: translateY(0);
         opacity: 1;
       }
-  
+
       .btn-wrapper__edit {
         transform: translateY(0);
         opacity: 1;

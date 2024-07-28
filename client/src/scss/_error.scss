@@ -17,7 +17,7 @@
 
   &__btn {
     color: white;
-    background-color: #1762a7;
+    background-color: $blue-button;
     padding: 0.75rem 1.5rem;
     margin-top: 0.7rem;
     border-radius: rem(900);
@@ -29,7 +29,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: #2180d8;
+      background-color: $blue-button-hover;
     }
   }
 }
