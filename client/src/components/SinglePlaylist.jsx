@@ -3,6 +3,33 @@ import { useEffect, useState } from "react";
 import { convertHMS, trackTimeFormat } from "../common/utils";
 import Loader from "./Loader";
 
+const Track = ({ cover, artist_name, track_title, duration, preview }) => {
+  return (
+    <tbody>
+      <tr className="song">
+        <td className="song__cover">
+          <div className="song__cover-img">
+            <img src={cover} alt="cover" />
+          </div>
+        </td>
+        <td className="song__title">
+          <h5>
+            {artist_name} - {track_title}
+          </h5>
+        </td>
+        <td className="song__length">
+          <h5>{trackTimeFormat(duration)}</h5>
+        </td>
+        <td className="song__preview">
+          <audio controls className="song__audio" controlsList="nodownload">
+            <source src={preview} type="audio/mp3" />
+          </audio>
+        </td>
+      </tr>
+    </tbody>
+  );
+};
+
 const SinglePlaylist = (props) => {
   const { id } = props.match.params;
   const [playlistData, setPlaylistData] = useState([]);
@@ -34,33 +61,6 @@ const SinglePlaylist = (props) => {
     getPlaylistRequest();
   }, [id]);
 
-  const renderTracks = playlistData.map((track) => {
-    return (
-      <tbody key={track.track_id}>
-        <tr className="song">
-          <td className="song__cover">
-            <div className="song__cover-img">
-              <img src={track.cover} alt="cover" />
-            </div>
-          </td>
-          <td className="song__title">
-            <h5>
-              {track.artist_name} - {track.track_title}
-            </h5>
-          </td>
-          <td className="song__length">
-            <h5>{trackTimeFormat(track.duration)}</h5>
-          </td>
-          <td className="song__preview">
-            <audio controls className="song__audio" controlsList="nodownload">
-              <source src={track.preview} type="audio/mp3" />
-            </audio>
-          </td>
-        </tr>
-      </tbody>
-    );
-  });
-
   return (
     <div className="playlist">
       {loading && <Loader />}
@@ -77,7 +77,9 @@ const SinglePlaylist = (props) => {
                 </th>
               </tr>
             </thead>
-            {renderTracks}
+            {playlistData.map((track) => (
+              <Track key={track.track_id} {...track} />
+            ))}
           </table>
         </div>
       )}
