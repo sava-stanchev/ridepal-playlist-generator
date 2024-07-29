@@ -1,14 +1,19 @@
 @import "./abstracts/colors";
 @import "./abstracts/breakpoints";
 @import "./abstracts/functions";
+
 @import "./base/reset";
 @import "./base/global";
+
 @import "./utilities/container";
+
+@import "./layout/header";
+
 @import "./pages/form";
 @import "./pages/error";
 @import "./pages/users";
 @import "./pages/playlist";
-@import "./layout/header";
+
 @import "./components/input-group";
 @import "./components/filters";
 @import "./components/search";

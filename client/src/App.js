@@ -6,7 +6,7 @@ import Users from "./components/Users";
 import { useState } from "react";
 import AuthContext, { getUser } from "./providers/auth-context";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import StartPage from "./components/StartPage";
+import Home from "./components/Home";
 import SinglePlaylist from "./components/SinglePlaylist";
 import GenerateRoute from "./components/GenerateRoute";
 import GeneratePlaylist from "./components/GeneratePlaylist";
@@ -34,7 +34,7 @@ const App = () => {
           <NavBar />
           <Switch>
             <Redirect path="/" exact to="/home" />
-            <Route exact path="/home" component={StartPage} />
+            <Route exact path="/home" component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <GuardedRoute exact admin path="/users" component={Users} />

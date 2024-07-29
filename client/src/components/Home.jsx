@@ -8,12 +8,69 @@ import { convertHMS } from "../common/utils";
 import * as playlistActions from "../store/actions/playlists";
 import { useDispatch, useSelector } from "react-redux";
 import Search from "./Search";
+import Loader from "./Loader";
 
-const StartPage = () => {
+const Playlist = ({
+  playlist,
+  id,
+  title,
+  playtime,
+  rank,
+  created_by,
+  created_on,
+  user_id,
+  auth,
+  editPlaylist,
+  deletePlaylist,
+}) => {
+  return (
+    <article className="card">
+      <div className="card__cover">
+        <div className="card__cover-text">
+          <h1 className="card__cover-text--title">{title}</h1>
+          <h2 className="card__cover-text--subtitle">{convertHMS(playtime)}</h2>
+        </div>
+        <div className="btn-wrapper">
+          <button
+            className="btn-wrapper__view"
+            onClick={() => history.push(`/playlists/${id}`)}
+          >
+            Tracklist
+          </button>
+          {(auth.isLoggedIn && auth.user.role === 1) ||
+          (auth.isLoggedIn && auth.user.id === user_id) ? (
+            <>
+              <button
+                className="btn-wrapper__edit"
+                onClick={() => editPlaylist(playlist)}
+              >
+                <FaEdit />
+              </button>
+              <button
+                className="btn-wrapper__delete"
+                onClick={() => deletePlaylist(id)}
+              >
+                <FaTrashAlt />
+              </button>
+            </>
+          ) : null}
+        </div>
+      </div>
+      <>
+        <h1 className="card__name">Ranking: {rank}</h1>
+        <p className="card__about">
+          Created: {new Date(created_on).toLocaleDateString("en-US")} by{" "}
+          <b>{created_by}</b>
+        </p>
+      </>
+    </article>
+  );
+};
+
+const Home = () => {
   const auth = useContext(AuthContext);
   const history = useHistory();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState("");
   const [returnedPlaylists, setReturnedPlaylists] = useState([]);
@@ -30,9 +87,7 @@ const StartPage = () => {
   const pagesVisited = pageNumber * playlistsPerPage;
 
   useEffect(() => {
-    setLoading(true);
     dispatch(playlistActions.getPlaylists());
-    setLoading(false);
   }, [history, dispatch]);
 
   useEffect(() => {
@@ -79,72 +134,14 @@ const StartPage = () => {
     duration,
   ]);
 
-  const Loader = () => <div className="loader"></div>;
-
-  const showLoader = () => {
-    if (loading) {
-      return <Loader />;
-    }
-  };
-
   const deletePlaylist = (id) => {
     dispatch(playlistActions.deletePlaylist(id));
   };
 
-  const editFunction = (playlist) => {
+  const editPlaylist = (playlist) => {
     setCurrentPlaylist(playlist);
     setIsOpen(true);
   };
-
-  const displayPlaylists = returnedPlaylists
-    .slice(pagesVisited, pagesVisited + playlistsPerPage)
-    .map((playlist) => {
-      return (
-        <article className="card" key={playlist.id}>
-          <div className="card__cover">
-            <div className="card__cover-text">
-              <h1 className="card__cover-text--title">{playlist.title}</h1>
-              <h2 className="card__cover-text--subtitle">
-                {convertHMS(playlist.playtime)}
-              </h2>
-            </div>
-            <div className="btn-wrapper">
-              <button
-                className="btn-wrapper__view"
-                onClick={() => history.push(`/playlists/${playlist.id}`)}
-              >
-                Tracklist
-              </button>
-              {(auth.isLoggedIn && auth.user.role === 1) ||
-              (auth.isLoggedIn && auth.user.id === playlist.user_id) ? (
-                <>
-                  <button
-                    className="btn-wrapper__edit"
-                    onClick={() => editFunction(playlist)}
-                  >
-                    <FaEdit />
-                  </button>
-                  <button
-                    className="btn-wrapper__delete"
-                    onClick={() => deletePlaylist(playlist.id)}
-                  >
-                    <FaTrashAlt />
-                  </button>
-                </>
-              ) : null}
-            </div>
-          </div>
-          <>
-            <h1 className="card__name">Ranking: {playlist.rank}</h1>
-            <p className="card__about">
-              Created:{" "}
-              {new Date(playlist.created_on).toLocaleDateString("en-US")} by{" "}
-              <b>{playlist.created_by}</b>
-            </p>
-          </>
-        </article>
-      );
-    });
 
   const pageCount = Math.ceil(returnedPlaylists.length / playlistsPerPage);
   const changePage = ({ selected }) => {
@@ -231,20 +228,35 @@ const StartPage = () => {
           <Search setSearch={setSearch} />
         </section>
       </div>
-      <div className="cards-container">
-        {showLoader()}
-        {displayPlaylists}
-      </div>
-      <ReactPaginate
-        previousLabel={"<"}
-        nextLabel={">"}
-        pageCount={pageCount}
-        onPageChange={changePage}
-        containerClassName={"pagination-btns"}
-        activeClassName={"pagination-active"}
-      />
+      {!playlists.length && !search.length && <Loader />}
+      {playlists.length > 0 && (
+        <>
+          <div className="cards-container">
+            {returnedPlaylists
+              .slice(pagesVisited, pagesVisited + playlistsPerPage)
+              .map((playlist) => (
+                <Playlist
+                  key={playlist.id}
+                  {...playlist}
+                  playlist={playlist}
+                  auth={auth}
+                  editPlaylist={editPlaylist}
+                  deletePlaylist={deletePlaylist}
+                />
+              ))}
+          </div>
+          <ReactPaginate
+            previousLabel={"<"}
+            nextLabel={">"}
+            pageCount={pageCount}
+            onPageChange={changePage}
+            containerClassName={"pagination-btns"}
+            activeClassName={"pagination-active"}
+          />
+        </>
+      )}
     </>
   );
 };
 
-export default StartPage;
+export default Home;
