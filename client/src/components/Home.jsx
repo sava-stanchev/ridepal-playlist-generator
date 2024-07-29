@@ -37,23 +37,23 @@ const Playlist = ({
           >
             Tracklist
           </button>
-          {(auth.isLoggedIn && auth.user.role === 1) ||
-          (auth.isLoggedIn && auth.user.id === user_id) ? (
-            <>
-              <button
-                className="btn-wrapper__edit"
-                onClick={() => editPlaylist(playlist)}
-              >
-                <FaEdit />
-              </button>
-              <button
-                className="btn-wrapper__delete"
-                onClick={() => deletePlaylist(id)}
-              >
-                <FaTrashAlt />
-              </button>
-            </>
-          ) : null}
+          {auth.isLoggedIn &&
+            (auth.user.role === 1 || auth.user.id === user_id) && (
+              <>
+                <button
+                  className="btn-wrapper__edit"
+                  onClick={() => editPlaylist(playlist)}
+                >
+                  <FaEdit />
+                </button>
+                <button
+                  className="btn-wrapper__delete"
+                  onClick={() => deletePlaylist(id)}
+                >
+                  <FaTrashAlt />
+                </button>
+              </>
+            )}
         </div>
       </div>
       <>
@@ -235,14 +235,9 @@ const Home = () => {
             onChange={(e) => setDuration(e.target.value)}
           >
             <option>Duration</option>
-            <option>&#60; 1 hour</option>
-            <option>&#60; 2 hours</option>
-            <option>&#60; 3 hours</option>
-            <option>&#60; 4 hours</option>
-            <option>&#60; 5 hours</option>
-            <option>&#60; 6 hours</option>
-            <option>&#60; 7 hours</option>
-            <option>&#60; 8 hours</option>
+            {[...Array(8)].map((e, i) => (
+              <option key={++i}>&#60; {++i} hours</option>
+            ))}
           </select>
           <Search setSearch={setSearch} />
         </section>
