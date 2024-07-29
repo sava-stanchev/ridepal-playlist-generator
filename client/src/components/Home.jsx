@@ -105,19 +105,19 @@ const Home = () => {
       );
     }
 
-    if (showMyPlaylists === true && auth.user) {
+    if (showMyPlaylists && auth.user) {
       result = result.filter((pl) => pl.user_id === auth.user.id);
     }
 
-    if (filterRap === true) {
+    if (filterRap) {
       result = result.filter((pl) => pl.genres.includes("Rap/Hip Hop"));
     }
 
-    if (filterPop === true) {
+    if (filterPop) {
       result = result.filter((pl) => pl.genres.includes("Pop"));
     }
 
-    if (filterRock === true) {
+    if (filterRock) {
       result = result.filter((pl) => pl.genres.includes("Rock"));
     }
 
@@ -173,38 +173,57 @@ const Home = () => {
             All
           </button>
           <button
-            className="filters__btn"
+            className={["filters__btn", filterRap && "filters__btn--gradient"]
+              .filter(Boolean)
+              .join(" ")}
             onClick={() => {
               setFilterRap(true);
               setFilterPop(false);
               setFilterRock(false);
+              setShowMyPlaylists(false);
             }}
           >
             Rap
           </button>
           <button
-            className="filters__btn"
+            className={["filters__btn", filterPop && "filters__btn--gradient"]
+              .filter(Boolean)
+              .join(" ")}
             onClick={() => {
               setFilterPop(true);
               setFilterRap(false);
               setFilterRock(false);
+              setShowMyPlaylists(false);
             }}
           >
             Pop
           </button>
           <button
-            className="filters__btn"
+            className={["filters__btn", filterRock && "filters__btn--gradient"]
+              .filter(Boolean)
+              .join(" ")}
             onClick={() => {
               setFilterRock(true);
               setFilterRap(false);
               setFilterPop(false);
+              setShowMyPlaylists(false);
             }}
           >
             Rock
           </button>
           <button
-            className="filters__btn--gradient"
-            onClick={() => setShowMyPlaylists(true)}
+            className={[
+              "filters__btn",
+              showMyPlaylists && "filters__btn--gradient",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            onClick={() => {
+              setShowMyPlaylists(true);
+              setFilterRock(false);
+              setFilterRap(false);
+              setFilterPop(false);
+            }}
           >
             My playlists
           </button>
