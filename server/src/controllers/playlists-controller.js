@@ -46,14 +46,8 @@ playlistsController
 
   .delete("/:id", async (req, res) => {
     try {
-      const playlist = await playlistsData.getPlaylistById(+req.params.id);
-      if (!playlist || playlist.is_deleted === 1) {
-        return res.status(400).json({
-          message: "Playlist not found!",
-        });
-      }
-      await playlistsData.deletePlaylist(+req.params.id);
-      res.status(200).send(playlist);
+      await playlistsData.deletePlaylist(req.params.id);
+      res.end();
     } catch (error) {
       return res.status(400).json({
         error: error.message,
@@ -62,21 +56,15 @@ playlistsController
   })
 
   .patch("/:id", async (req, res) => {
-    const playlistId = req.params.id;
-    const updateData = req.body;
     try {
-      const playlist = await playlistsData.getPlaylistById(+playlistId);
-      if (!playlist) {
-        res.status(404).send({
-          message: "Playlist not found!",
-        });
-      }
+      const playlistId = req.params.id;
+      const updateData = req.body;
 
       const playlistUpdated = await playlistServices.updatePlaylist(
-        +playlistId,
+        playlistId,
         updateData
       );
-      const newPlaylist = await playlistsData.getPlaylistById(+playlistId);
+      const newPlaylist = await playlistsData.getPlaylistById(playlistId);
       if (playlistUpdated) {
         res.status(200).send(newPlaylist[0]);
       }

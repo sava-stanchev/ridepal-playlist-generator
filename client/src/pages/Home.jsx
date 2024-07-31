@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from "react";
 import ReactPaginate from "react-paginate";
-import { useHistory } from "react-router-dom";
 import AuthContext from "../providers/auth-context";
 import UpdatePlaylistModal from "../components/UpdatePlaylistModal";
 import { joinClasses } from "../common/utils";
@@ -12,7 +11,6 @@ import PlaylistCard from "../components/PlaylistCard";
 
 const Home = () => {
   const auth = useContext(AuthContext);
-  const history = useHistory();
   const dispatch = useDispatch();
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState("");

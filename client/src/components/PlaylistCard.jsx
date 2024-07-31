@@ -1,5 +1,6 @@
 import { convertHMS } from "../common/utils";
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
 
 const PlaylistCard = ({
   playlist,
@@ -14,6 +15,8 @@ const PlaylistCard = ({
   editPlaylist,
   deletePlaylist,
 }) => {
+  const history = useHistory();
+
   return (
     <article className="card">
       <div className="card__cover">

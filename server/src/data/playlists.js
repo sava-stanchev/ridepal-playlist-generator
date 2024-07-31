@@ -39,7 +39,8 @@ const addPlaylistToGenre = async (genreId, genreDeezerId, playlistId) => {
 
 const getAllPlaylists = async () => {
   const result = await pool.query(`
-    SELECT p.id, p.title, p.created_on, p.playtime, p.user_id, u.username AS created_by, p.rank, p.is_deleted,
+    SELECT p.id, p.title, p.created_on, p.playtime, p.user_id,
+      u.username AS created_by, p.rank, p.is_deleted,
       GROUP_CONCAT(g.name) as genres,
       (SELECT COUNT(*) 
         FROM (SELECT p.id, p.title, p.playtime, p.rank, p.created_on, p.user_id, p.is_deleted, u.username,
@@ -66,14 +67,12 @@ const getAllPlaylists = async () => {
 const getPlaylistById = async (id) => {
   const sql = `
     SELECT p.id, p.title, p.created_on, p.playtime, p.user_id,
-    u.username AS created_by, p.rank, g.deezer_id, g.name, p.is_deleted
+      u.username AS created_by, p.rank, p.is_deleted,
+      GROUP_CONCAT(g.name) as genres
     FROM playlists p
-    JOIN users AS u 
-    ON p.user_id = u.id
-    JOIN genres_has_playlists AS ghp
-    ON p.id = ghp.playlist_id
-    JOIN genres AS g
-    ON ghp.genre_deezer_id = g.deezer_id
+    JOIN genres_has_playlists as gp ON p.id = gp.playlist_id
+    JOIN genres g ON gp.genre_id = g.id
+    JOIN users u ON p.user_id = u.id
     WHERE p.id = ?
   `;
 
