@@ -2,13 +2,13 @@ import { useEffect, useState, useContext } from "react";
 import ReactPaginate from "react-paginate";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../providers/auth-context";
-import UpdatePlaylistModal from "./UpdatePlaylistModal";
+import UpdatePlaylistModal from "../components/UpdatePlaylistModal";
 import { joinClasses } from "../common/utils";
 import * as playlistActions from "../store/actions/playlists";
 import { useDispatch, useSelector } from "react-redux";
-import Search from "./Search";
-import Loader from "./Loader";
-import PlaylistCard from "./PlaylistCard";
+import Search from "../components/Search";
+import Loader from "../components/Loader";
+import PlaylistCard from "../components/PlaylistCard";
 
 const Home = () => {
   const auth = useContext(AuthContext);
@@ -118,12 +118,9 @@ const Home = () => {
             className="filters__btn"
             onClick={() => {
               document.getElementById("dropdown").selectedIndex = 0;
+              setActiveFilter(null);
               setDuration(null);
               setSearch("");
-              setFilterRap(false);
-              setFilterPop(false);
-              setFilterRock(false);
-              setFilterMyPlaylists(false);
             }}
           >
             All

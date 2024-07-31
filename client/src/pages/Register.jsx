@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
-import AlertModal from "./AlertModal";
+import AlertModal from "../components/AlertModal";
 
 const initialState = {
   username: "",

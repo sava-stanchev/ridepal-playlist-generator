@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { BING_KEY } from "../common/constants";
-import AlertModal from "./AlertModal";
+import AlertModal from "../components/AlertModal";
 
 const cityNameVerificationError = {
   properCityName: false,

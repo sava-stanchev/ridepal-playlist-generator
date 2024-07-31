@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { FaTrashAlt, FaEdit, FaCrown } from "react-icons/fa";
-import UpdateUserModal from "./UpdateUserModal";
+import UpdateUserModal from "../components/UpdateUserModal";
 import * as userActions from "../store/actions/users";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "./Loader";
-import Search from "./Search";
+import Loader from "../components/Loader";
+import Search from "../components/Search";
 
 const User = ({
   user,

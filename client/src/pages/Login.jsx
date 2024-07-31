@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
 import decode from "jwt-decode";
 import AuthContext from "../providers/auth-context";
-import AlertModal from "./AlertModal";
+import AlertModal from "../components/AlertModal";
 
 const Login = () => {
   const history = useHistory();

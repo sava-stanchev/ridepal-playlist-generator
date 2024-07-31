@@ -1,7 +1,7 @@
 import { HOST } from "../common/constants";
 import { useEffect, useState } from "react";
 import { convertHMS, trackTimeFormat } from "../common/utils";
-import Loader from "./Loader";
+import Loader from "../components/Loader";
 
 const Track = ({ cover, artist_name, track_title, duration, preview }) => {
   return (

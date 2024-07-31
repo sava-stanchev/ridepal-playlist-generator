@@ -1,17 +1,17 @@
 import "./scss/style.scss";
-import NavBar from "./components/Navbar";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Users from "./components/Users";
 import { useState } from "react";
-import AuthContext, { getUser } from "./providers/auth-context";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import Home from "./components/Home";
-import SinglePlaylist from "./components/SinglePlaylist";
-import GenerateRoute from "./components/GenerateRoute";
-import GeneratePlaylist from "./components/GeneratePlaylist";
-import PageNotFound from "./components/PageNotFound";
+import AuthContext, { getUser } from "./providers/auth-context";
 import GuardedRoute from "./providers/GuardedRoute";
+import NavBar from "./components/Navbar";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Users from "./pages/Users";
+import Home from "./pages/Home";
+import SinglePlaylist from "./pages/SinglePlaylist";
+import GenerateRoute from "./pages/GenerateRoute";
+import GeneratePlaylist from "./pages/GeneratePlaylist";
+import PageNotFound from "./pages/PageNotFound";
 
 const App = () => {
   const [authValue, setAuthValue] = useState({
