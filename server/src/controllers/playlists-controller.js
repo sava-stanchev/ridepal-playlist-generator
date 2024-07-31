@@ -7,6 +7,7 @@ const playlistsController = express.Router();
 
 playlistsController
 
+  // Get all playlists
   .get("/", async (req, res) => {
     try {
       const thePlaylists = await playlistsData.getAllPlaylists();
@@ -18,6 +19,7 @@ playlistsController
     }
   })
 
+  // Generate playlist
   .post("/", authMiddleware, async (req, res) => {
     try {
       const playlist = await playlistServices.playlistGenerator(req);
@@ -29,9 +31,10 @@ playlistsController
     }
   })
 
+  // Get a playlist
   .get("/:id", async (req, res) => {
     try {
-      const playlistId = +req.params.id;
+      const playlistId = req.params.id;
       const playlist = await playlistsData.getTracksForPlaylistById(playlistId);
       const filteredPlaylist = playlist.filter((t) =>
         t.hasOwnProperty("track_id")
@@ -44,6 +47,7 @@ playlistsController
     }
   })
 
+  // Delete playlist
   .delete("/:id", async (req, res) => {
     try {
       await playlistsData.deletePlaylist(req.params.id);
@@ -55,6 +59,7 @@ playlistsController
     }
   })
 
+  // Update playlist
   .patch("/:id", async (req, res) => {
     try {
       const playlistId = req.params.id;

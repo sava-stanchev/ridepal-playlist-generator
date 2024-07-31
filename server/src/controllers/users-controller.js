@@ -6,11 +6,13 @@ import createUserValidator from "../validators/create-user-validator.js";
 import validateBody from "../middlewares/validate-body.js";
 import transformBody from "../middlewares/transform-body.js";
 import serviceErrors from "../common/service-errors.js";
+import { authMiddleware } from "../auth/auth-middleware.js";
 
 const usersController = express.Router();
 
 usersController
 
+  // Register user
   .post(
     "/",
     transformBody(createUserValidator),
@@ -27,7 +29,7 @@ usersController
   )
 
   // Get all users
-  .get("/", async (req, res) => {
+  .get("/", authMiddleware, async (req, res) => {
     try {
       const users = await usersService.getAllUsers();
       res.json(users);
@@ -39,13 +41,12 @@ usersController
   })
 
   // Update user
-  .patch("/:id", async (req, res) => {
-    const user = req.body;
-
+  .patch("/:id", authMiddleware, async (req, res) => {
     try {
+      const user = req.body;
       await usersService.updateUser(user);
       const updatedUser = await usersService.getUserById(user.id);
-      res.status(200).send(updatedUser[0]);
+      res.status(200).send(updatedUser);
     } catch (error) {
       return res.status(400).json({
         error: error.message,
@@ -54,7 +55,7 @@ usersController
   })
 
   // Delete user
-  .delete("/:id", async (req, res) => {
+  .delete("/:id", authMiddleware, async (req, res) => {
     try {
       await usersData.deleteUser(req.params.id);
       res.end();
@@ -66,14 +67,13 @@ usersController
   })
 
   // Change user role
-  .put("/:id", async (req, res) => {
-    const userId = req.params.id;
-
+  .put("/:id", authMiddleware, async (req, res) => {
     try {
+      const userId = req.params.id;
       const user = await usersService.getUserById(userId);
-      await usersData.changeRole(user[0]);
+      await usersData.changeRole(user);
       const updatedUser = await usersService.getUserById(userId);
-      res.status(200).send(updatedUser[0]);
+      res.status(200).send(updatedUser);
     } catch (error) {
       return res.status(400).json({
         error: error.message,

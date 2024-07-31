@@ -51,7 +51,7 @@ const getUserById = async (id) => {
     WHERE u.id = ?
   `;
   const user = await pool.query(sql, [id]);
-  return user[0];
+  return user[0][0];
 };
 
 const deleteUser = async (id) => {
