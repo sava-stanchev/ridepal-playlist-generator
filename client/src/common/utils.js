@@ -14,3 +14,7 @@ export const convertHMS = (value) => {
 export const trackTimeFormat = (s) => {
   return (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + s;
 };
+
+export const joinClasses = (classesArr) => {
+  return classesArr.filter(Boolean).join(" ");
+};

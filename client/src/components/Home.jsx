@@ -1,71 +1,14 @@
 import { useEffect, useState, useContext } from "react";
 import ReactPaginate from "react-paginate";
 import { useHistory } from "react-router-dom";
-import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import AuthContext from "../providers/auth-context";
 import UpdatePlaylistModal from "./UpdatePlaylistModal";
-import { convertHMS } from "../common/utils";
+import { joinClasses } from "../common/utils";
 import * as playlistActions from "../store/actions/playlists";
 import { useDispatch, useSelector } from "react-redux";
 import Search from "./Search";
 import Loader from "./Loader";
-
-const Playlist = ({
-  playlist,
-  id,
-  title,
-  playtime,
-  rank,
-  created_by,
-  created_on,
-  user_id,
-  auth,
-  editPlaylist,
-  deletePlaylist,
-}) => {
-  return (
-    <article className="card">
-      <div className="card__cover">
-        <div className="card__cover-text">
-          <h1 className="card__cover-text--title">{title}</h1>
-          <h2 className="card__cover-text--subtitle">{convertHMS(playtime)}</h2>
-        </div>
-        <div className="btn-wrapper">
-          <button
-            className="btn-wrapper__view"
-            onClick={() => history.push(`/playlists/${id}`)}
-          >
-            Tracklist
-          </button>
-          {auth.isLoggedIn &&
-            (auth.user.role === 1 || auth.user.id === user_id) && (
-              <>
-                <button
-                  className="btn-wrapper__edit"
-                  onClick={() => editPlaylist(playlist)}
-                >
-                  <FaEdit />
-                </button>
-                <button
-                  className="btn-wrapper__delete"
-                  onClick={() => deletePlaylist(id)}
-                >
-                  <FaTrashAlt />
-                </button>
-              </>
-            )}
-        </div>
-      </div>
-      <>
-        <h1 className="card__name">Ranking: {rank}</h1>
-        <p className="card__about">
-          Created: {new Date(created_on).toLocaleDateString("en-US")} by{" "}
-          <b>{created_by}</b>
-        </p>
-      </>
-    </article>
-  );
-};
+import PlaylistCard from "./PlaylistCard";
 
 const Home = () => {
   const auth = useContext(AuthContext);
@@ -77,7 +20,7 @@ const Home = () => {
   const [duration, setDuration] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
-  const [showMyPlaylists, setShowMyPlaylists] = useState(false);
+  const [filterMyPlaylists, setFilterMyPlaylists] = useState(false);
   const [filterRap, setFilterRap] = useState(false);
   const [filterRock, setFilterRock] = useState(false);
   const [filterPop, setFilterPop] = useState(false);
@@ -105,7 +48,7 @@ const Home = () => {
       );
     }
 
-    if (showMyPlaylists && auth.user) {
+    if (filterMyPlaylists && auth.user) {
       result = result.filter((pl) => pl.user_id === auth.user.id);
     }
 
@@ -127,7 +70,7 @@ const Home = () => {
     auth.user,
     search,
     playlists,
-    showMyPlaylists,
+    filterMyPlaylists,
     filterRock,
     filterPop,
     filterRap,
@@ -148,6 +91,19 @@ const Home = () => {
     setPageNumber(selected);
   };
 
+  const setActiveFilter = (setFilter) => {
+    const filterOptions = [
+      setFilterPop,
+      setFilterRap,
+      setFilterRock,
+      setFilterMyPlaylists,
+    ];
+
+    filterOptions.forEach((currSetFilter) =>
+      currSetFilter === setFilter ? currSetFilter(true) : currSetFilter(false)
+    );
+  };
+
   return (
     <>
       <UpdatePlaylistModal
@@ -163,66 +119,55 @@ const Home = () => {
             onClick={() => {
               document.getElementById("dropdown").selectedIndex = 0;
               setDuration(null);
-              setShowMyPlaylists(false);
               setSearch("");
               setFilterRap(false);
               setFilterPop(false);
               setFilterRock(false);
+              setFilterMyPlaylists(false);
             }}
           >
             All
           </button>
           <button
-            className={["filters__btn", filterRap && "filters__btn--gradient"]
-              .filter(Boolean)
-              .join(" ")}
+            className={joinClasses([
+              "filters__btn",
+              filterRap && "filters__btn--gradient",
+            ])}
             onClick={() => {
-              setFilterRap(true);
-              setFilterPop(false);
-              setFilterRock(false);
-              setShowMyPlaylists(false);
+              setActiveFilter(setFilterRap);
             }}
           >
             Rap
           </button>
           <button
-            className={["filters__btn", filterPop && "filters__btn--gradient"]
-              .filter(Boolean)
-              .join(" ")}
+            className={joinClasses([
+              "filters__btn",
+              filterPop && "filters__btn--gradient",
+            ])}
             onClick={() => {
-              setFilterPop(true);
-              setFilterRap(false);
-              setFilterRock(false);
-              setShowMyPlaylists(false);
+              setActiveFilter(setFilterPop);
             }}
           >
             Pop
           </button>
           <button
-            className={["filters__btn", filterRock && "filters__btn--gradient"]
-              .filter(Boolean)
-              .join(" ")}
+            className={joinClasses([
+              "filters__btn",
+              filterRock && "filters__btn--gradient",
+            ])}
             onClick={() => {
-              setFilterRock(true);
-              setFilterRap(false);
-              setFilterPop(false);
-              setShowMyPlaylists(false);
+              setActiveFilter(setFilterRock);
             }}
           >
             Rock
           </button>
           <button
-            className={[
+            className={joinClasses([
               "filters__btn",
-              showMyPlaylists && "filters__btn--gradient",
-            ]
-              .filter(Boolean)
-              .join(" ")}
+              filterMyPlaylists && "filters__btn--gradient",
+            ])}
             onClick={() => {
-              setShowMyPlaylists(true);
-              setFilterRock(false);
-              setFilterRap(false);
-              setFilterPop(false);
+              setActiveFilter(setFilterMyPlaylists);
             }}
           >
             My playlists
@@ -236,7 +181,9 @@ const Home = () => {
           >
             <option>Duration</option>
             {[...Array(8)].map((e, i) => (
-              <option key={++i}>&#60; {++i} hours</option>
+              <option key={i}>
+                &#60; {++i} {i === 1 ? "hour" : "hours"}
+              </option>
             ))}
           </select>
           <Search setSearch={setSearch} />
@@ -249,7 +196,7 @@ const Home = () => {
             {returnedPlaylists
               .slice(pagesVisited, pagesVisited + playlistsPerPage)
               .map((playlist) => (
-                <Playlist
+                <PlaylistCard
                   key={playlist.id}
                   {...playlist}
                   playlist={playlist}

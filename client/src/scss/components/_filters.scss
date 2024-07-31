@@ -14,13 +14,6 @@
     padding: 0.4rem 0.8rem;
     font-size: inherit;
     cursor: pointer;
-    transition: background-color 150ms;
-
-    &:hover {
-      background-color: $dark-gray;
-      color: white;
-      border-color: $dark-gray;
-    }
 
     &--gradient {
       background-image: linear-gradient(
