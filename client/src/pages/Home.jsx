@@ -16,7 +16,7 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [returnedPlaylists, setReturnedPlaylists] = useState([]);
   const [duration, setDuration] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [modal, setModal] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
   const [filterMyPlaylists, setFilterMyPlaylists] = useState(false);
   const [filterRap, setFilterRap] = useState(false);
@@ -81,7 +81,7 @@ const Home = () => {
 
   const editPlaylist = (playlist) => {
     setCurrentPlaylist(playlist);
-    setIsOpen(true);
+    setModal(true);
   };
 
   const pageCount = Math.ceil(returnedPlaylists.length / playlistsPerPage);
@@ -105,8 +105,8 @@ const Home = () => {
   return (
     <>
       <UpdatePlaylistModal
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
+        openModal={modal}
+        closeModal={() => setModal(false)}
         playlist={currentPlaylist}
         playlists={playlists}
       />
