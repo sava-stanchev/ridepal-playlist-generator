@@ -22,7 +22,7 @@ export default function Modal({ playlist, openModal, closeModal }) {
     }
   }, [openModal]);
 
-  if (!playlist || !open) return null;
+  if (!playlist) return null;
 
   const updatePlaylistProperties = (prop, value) => {
     setUpdatedPlaylist({

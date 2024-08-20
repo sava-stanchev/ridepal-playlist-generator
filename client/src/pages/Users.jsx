@@ -55,7 +55,7 @@ const User = ({
 
 const Users = () => {
   const dispatch = useDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modal, setModal] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [search, setSearch] = useState("");
@@ -85,7 +85,7 @@ const Users = () => {
 
   const editUser = (user) => {
     setCurrentUser(user);
-    setIsModalOpen(true);
+    setModal(true);
   };
 
   return (
@@ -97,8 +97,8 @@ const Users = () => {
       {foundUsers.length > 0 && (
         <>
           <UpdateUserModal
-            open={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
+            openModal={modal}
+            closeModal={() => setModal(false)}
             user={currentUser}
             users={users}
           />

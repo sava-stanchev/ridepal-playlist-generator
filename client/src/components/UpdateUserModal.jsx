@@ -1,5 +1,4 @@
-import ReactDom from "react-dom";
-import { useEffect, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import * as userActions from "../store/actions/users";
 import { useDispatch } from "react-redux";
 
@@ -11,7 +10,8 @@ const emailVerificationError = {
   properEmail: true,
 };
 
-export default function Modal({ user, open, onClose, users }) {
+export default function Modal({ user, users, openModal, closeModal }) {
+  const ref = useRef();
   const [emailError, setEmailError] = useState(emailVerificationError);
   const [usernameError, setUsernameError] = useState(usernameVerificationError);
   const [updatedUser, setUpdatedUser] = useState(null);
@@ -21,7 +21,15 @@ export default function Modal({ user, open, onClose, users }) {
     setUpdatedUser(user);
   }, [user]);
 
-  if (!user || !open) return null;
+  useEffect(() => {
+    if (openModal) {
+      ref.current?.showModal();
+    } else {
+      ref.current?.close();
+    }
+  }, [openModal]);
+
+  if (!user) return null;
 
   const updateUserProperties = (prop, value) => {
     setUpdatedUser({
@@ -49,69 +57,63 @@ export default function Modal({ user, open, onClose, users }) {
 
   const closeFunction = () => {
     updateUser();
-    onClose();
+    closeModal();
   };
 
-  return ReactDom.createPortal(
-    <>
-      <div className="overlay" />
-      <div className="modal">
-        <button className="modal__close" onClick={onClose}>
-          &times;
-        </button>
-        <div className="input-group">
-          <label>New username:</label>
-          <input
-            type="text"
-            name="username"
-            value={
-              updatedUser
-                ? updatedUser.username
-                : users.filter((u) => u.id === user.id)[0].username
-            }
-            onChange={(e) => updateUserProperties("username", e.target.value)}
-          />
-          <p
-            className="validation-msg"
-            style={{ color: usernameError.properLength ? "white" : "red" }}
-          >
-            * Between 3 and 15 chars
-          </p>
-        </div>
-        <div className="input-group">
-          <label>New email:</label>
-          <input
-            type="text"
-            name="email"
-            value={
-              updatedUser
-                ? updatedUser.email
-                : users.filter((u) => u.id === user.id)[0].email
-            }
-            onChange={(e) => updateUserProperties("email", e.target.value)}
-          />
-          <p
-            className="validation-msg"
-            style={{ color: emailError.properEmail ? "white" : "red" }}
-          >
-            * Valid email address
-          </p>
-        </div>
-        <div className="input-group">
-          <button
-            className="btn"
-            disabled={
-              usernameError.properLength && emailError.properEmail
-                ? false
-                : true
-            }
-            onClick={closeFunction}
-          >
-            Update
-          </button>
-        </div>
+  return (
+    <dialog ref={ref} onCancel={closeModal} className="modal">
+      <button className="modal__close" onClick={closeModal}>
+        &times;
+      </button>
+      <div className="input-group">
+        <label>New username:</label>
+        <input
+          type="text"
+          name="username"
+          value={
+            updatedUser
+              ? updatedUser.username
+              : users.filter((u) => u.id === user.id)[0].username
+          }
+          onChange={(e) => updateUserProperties("username", e.target.value)}
+        />
+        <p
+          className="validation-msg"
+          style={{ color: usernameError.properLength ? "white" : "red" }}
+        >
+          * Between 3 and 15 chars
+        </p>
       </div>
-    </>,
-    document.getElementById("portal")
+      <div className="input-group">
+        <label>New email:</label>
+        <input
+          type="text"
+          name="email"
+          value={
+            updatedUser
+              ? updatedUser.email
+              : users.filter((u) => u.id === user.id)[0].email
+          }
+          onChange={(e) => updateUserProperties("email", e.target.value)}
+        />
+        <p
+          className="validation-msg"
+          style={{ color: emailError.properEmail ? "white" : "red" }}
+        >
+          * Valid email address
+        </p>
+      </div>
+      <div className="input-group">
+        <button
+          className="btn"
+          disabled={
+            usernameError.properLength && emailError.properEmail ? false : true
+          }
+          onClick={closeFunction}
+        >
+          Update
+        </button>
+      </div>
+    </dialog>
   );
 }
