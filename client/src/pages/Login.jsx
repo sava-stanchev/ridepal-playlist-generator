@@ -8,7 +8,7 @@ import AlertModal from "../components/AlertModal";
 const Login = () => {
   const history = useHistory();
   const auth = useContext(AuthContext);
-  const [isOpen, setIsOpen] = useState(false);
+  const [modal, setModal] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
   const [user, setUser] = useState({
     username: "",
@@ -29,7 +29,7 @@ const Login = () => {
 
       if (!response.ok) {
         setAlertMsg(result.message);
-        setIsOpen(true);
+        setModal(true);
         throw new Error(`Response status: ${response.status}`);
       } else {
         localStorage.clear();
@@ -54,8 +54,8 @@ const Login = () => {
   return (
     <section className="main">
       <AlertModal
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
+        openModal={modal}
+        closeModal={() => setModal(false)}
         alertMsg={alertMsg}
       />
       <h1 className="main__text">

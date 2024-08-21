@@ -28,7 +28,7 @@ const Register = () => {
   const [emailError, setEmailError] = useState(emailVerificationError);
   const [usernameError, setUsernameError] = useState(usernameVerificationError);
   const [showPassword, setShowPassword] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [modal, setModal] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
 
   const history = useHistory();
@@ -65,7 +65,7 @@ const Register = () => {
 
       if (!response.ok) {
         setAlertMsg(result.message);
-        setIsOpen(true);
+        setModal(true);
         throw new Error(`Response status: ${response.status}`);
       } else {
         history.push("/login");
@@ -94,8 +94,8 @@ const Register = () => {
   return (
     <section className="main">
       <AlertModal
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
+        openModal={modal}
+        closeModal={() => setModal(false)}
         alertMsg={alertMsg}
       />
       <h1 className="main__text">

@@ -14,7 +14,7 @@ const GenerateRoute = ({ setPoints }) => {
   const [cityNameTwoError, setCityNameTwoError] = useState(
     cityNameVerificationError
   );
-  const [isOpen, setIsOpen] = useState(false);
+  const [modal, setModal] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
   const [route, setRoute] = useState({
     from: "",
@@ -73,15 +73,15 @@ const GenerateRoute = ({ setPoints }) => {
     } catch (error) {
       console.error(error.message);
       setAlertMsg("Something went wrong!");
-      setIsOpen(true);
+      setModal(true);
     }
   }
 
   return (
     <section className="main">
       <AlertModal
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
+        openModal={modal}
+        closeModal={() => setModal(false)}
         alertMsg={alertMsg}
       />
       <h1 className="main__text">

@@ -8,16 +8,6 @@ button:disabled {
   cursor: not-allowed;
 }
 
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
-
 .btn {
   color: white;
   background-color: #1762a7;
@@ -28,12 +18,9 @@ button:disabled {
   outline: none;
   border: none;
   cursor: pointer;
+  width: 100%;
 
   &:hover {
     background-color: #2180d8;
-  }
-
-  &:focus {
-    background-color: #2796ff;
   }
 }

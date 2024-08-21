@@ -1,18 +1,22 @@
-import ReactDom from "react-dom";
+import { useRef, useEffect } from "react";
 
-export default function Modal({ alertMsg, open, onClose }) {
-  if (!open) return null;
+export default function Modal({ alertMsg, openModal, closeModal }) {
+  const ref = useRef();
 
-  return ReactDom.createPortal(
-    <>
-      <div className="overlay" />
-      <div className="modal">
-        <p className="modal__alert">{alertMsg}</p>
-        <button className="btn" onClick={onClose}>
-          OK
-        </button>
-      </div>
-    </>,
-    document.getElementById("portal")
+  useEffect(() => {
+    if (openModal) {
+      ref.current?.showModal();
+    } else {
+      ref.current?.close();
+    }
+  }, [openModal]);
+
+  return (
+    <dialog ref={ref} onCancel={closeModal} className="modal">
+      <p className="modal__alert">{alertMsg}</p>
+      <button className="btn" onClick={closeModal}>
+        OK
+      </button>
+    </dialog>
   );
 }
