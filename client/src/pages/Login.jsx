@@ -10,14 +10,14 @@ const Login = () => {
   const auth = useContext(AuthContext);
   const [modal, setModal] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
-  const [user, setUser] = useState({
+  const [userInput, setUserInput] = useState({
     username: "",
     password: "",
   });
 
-  const updateUser = (prop, value) => {
-    setUser({
-      ...user,
+  const updateUserInput = (prop, value) => {
+    setUserInput({
+      ...userInput,
       [prop]: value,
     });
   };
@@ -48,7 +48,7 @@ const Login = () => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(user),
+    body: JSON.stringify(userInput),
   });
 
   return (
@@ -67,14 +67,14 @@ const Login = () => {
           <label>Username:</label>
           <input
             type="text"
-            onChange={(e) => updateUser("username", e.target.value)}
+            onChange={(e) => updateUserInput("username", e.target.value)}
           />
         </div>
         <div className="input-group">
           <label>Password:</label>
           <input
             type="password"
-            onChange={(e) => updateUser("password", e.target.value)}
+            onChange={(e) => updateUserInput("password", e.target.value)}
           />
         </div>
         <div className="input-group">
