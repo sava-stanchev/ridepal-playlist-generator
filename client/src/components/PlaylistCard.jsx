@@ -11,7 +11,7 @@ const PlaylistCard = ({
   created_by,
   created_on,
   user_id,
-  auth,
+  user,
   editPlaylist,
   deletePlaylist,
 }) => {
@@ -31,23 +31,22 @@ const PlaylistCard = ({
           >
             Tracklist
           </button>
-          {auth.isLoggedIn &&
-            (auth.user.role === 1 || auth.user.id === user_id) && (
-              <>
-                <button
-                  className="btn-wrapper__edit"
-                  onClick={() => editPlaylist(playlist)}
-                >
-                  <FaEdit />
-                </button>
-                <button
-                  className="btn-wrapper__delete"
-                  onClick={() => deletePlaylist(id)}
-                >
-                  <FaTrashAlt />
-                </button>
-              </>
-            )}
+          {user && (user.role === 1 || user.id === user_id) && (
+            <>
+              <button
+                className="btn-wrapper__edit"
+                onClick={() => editPlaylist(playlist)}
+              >
+                <FaEdit />
+              </button>
+              <button
+                className="btn-wrapper__delete"
+                onClick={() => deletePlaylist(id)}
+              >
+                <FaTrashAlt />
+              </button>
+            </>
+          )}
         </div>
       </div>
       <>

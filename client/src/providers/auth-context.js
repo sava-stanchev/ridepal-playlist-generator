@@ -1,17 +1,32 @@
-import { createContext } from "react";
-import jwt_decode from "jwt-decode";
+import { createContext, useState } from "react";
+import jwtDecode from "jwt-decode";
 
-const AuthContext = createContext({
-  isLoggedIn: false,
+export const AuthContext = createContext({
   user: null,
-  setAuthState: () => {},
+  setUser: () => {},
 });
 
 export const getUser = () => {
   try {
-    return jwt_decode(localStorage.getItem("token") || "");
+    return jwtDecode(localStorage.getItem("token") || "");
   } catch (error) {
     return null;
   }
 };
-export default AuthContext;
+
+const AuthContextProvider = ({ children }) => {
+  const [user, setUser] = useState(getUser());
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export default AuthContextProvider;

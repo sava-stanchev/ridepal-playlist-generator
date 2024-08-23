@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import ReactPaginate from "react-paginate";
-import AuthContext from "../providers/auth-context";
+import { AuthContext } from "../providers/auth-context";
 import UpdatePlaylistModal from "../components/UpdatePlaylistModal";
 import { joinClasses } from "../common/utils";
 import * as playlistActions from "../store/actions/playlists";
@@ -10,7 +10,7 @@ import Loader from "../components/Loader";
 import PlaylistCard from "../components/PlaylistCard";
 
 const Home = () => {
-  const auth = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const dispatch = useDispatch();
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState("");
@@ -46,8 +46,8 @@ const Home = () => {
       );
     }
 
-    if (filterMyPlaylists && auth.user) {
-      result = result.filter((pl) => pl.user_id === auth.user.id);
+    if (filterMyPlaylists && user) {
+      result = result.filter((pl) => pl.user_id === user.id);
     }
 
     if (filterRap) {
@@ -65,7 +65,7 @@ const Home = () => {
     setPageNumber(0);
     setReturnedPlaylists(result);
   }, [
-    auth.user,
+    user,
     search,
     playlists,
     filterMyPlaylists,
@@ -195,7 +195,7 @@ const Home = () => {
                   key={playlist.id}
                   {...playlist}
                   playlist={playlist}
-                  auth={auth}
+                  user={user}
                   editPlaylist={editPlaylist}
                   deletePlaylist={deletePlaylist}
                 />

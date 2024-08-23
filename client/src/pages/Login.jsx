@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
 import decode from "jwt-decode";
-import AuthContext from "../providers/auth-context";
+import { AuthContext } from "../providers/auth-context";
 import AlertModal from "../components/AlertModal";
 
 const Login = () => {
@@ -35,7 +35,7 @@ const Login = () => {
         localStorage.clear();
         localStorage.setItem("token", result.token);
         const user = decode(result.token);
-        auth.setAuthState({ user, isLoggedIn: true });
+        auth.setUser(user);
         history.push("/home");
       }
     } catch (error) {

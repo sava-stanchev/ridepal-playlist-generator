@@ -1,7 +1,7 @@
 import "./scss/style.scss";
 import { useState } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import AuthContext, { getUser } from "./providers/auth-context";
+import AuthContextProvider from "./providers/auth-context";
 import GuardedRoute from "./providers/GuardedRoute";
 import NavBar from "./components/Navbar";
 import Login from "./pages/Login";
@@ -14,11 +14,6 @@ import GeneratePlaylist from "./pages/GeneratePlaylist";
 import PageNotFound from "./pages/PageNotFound";
 
 const App = () => {
-  const [authValue, setAuthValue] = useState({
-    user: getUser(),
-    isLoggedIn: Boolean(getUser()),
-  });
-
   const [points, setPoints] = useState({
     duration: 0,
     from: "",
@@ -28,9 +23,7 @@ const App = () => {
   return (
     <div className="App">
       <BrowserRouter>
-        <AuthContext.Provider
-          value={{ ...authValue, setAuthState: setAuthValue }}
-        >
+        <AuthContextProvider>
           <NavBar />
           <Switch>
             <Redirect path="/" exact to="/home" />
@@ -55,7 +48,7 @@ const App = () => {
             <Route exact path="/playlists/:id" component={SinglePlaylist} />
             <Route path="*" component={PageNotFound} />
           </Switch>
-        </AuthContext.Provider>
+        </AuthContextProvider>
       </BrowserRouter>
     </div>
   );

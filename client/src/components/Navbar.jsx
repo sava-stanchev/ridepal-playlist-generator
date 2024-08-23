@@ -1,5 +1,5 @@
 import { Link, useHistory } from "react-router-dom";
-import AuthContext from "../providers/auth-context";
+import { AuthContext } from "../providers/auth-context";
 import { useContext } from "react";
 import brandLogo from "../images/logo.png";
 import { CgProfile } from "react-icons/cg";
@@ -10,6 +10,7 @@ import { HOST } from "../common/constants";
 const NavBar = () => {
   const history = useHistory();
   const auth = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   async function signOut(request) {
     try {
@@ -18,10 +19,7 @@ const NavBar = () => {
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
       } else {
-        auth.setAuthState({
-          user: null,
-          isLoggedIn: false,
-        });
+        auth.setUser(null);
         localStorage.removeItem("token");
         history.push("/home");
       }
@@ -49,9 +47,9 @@ const NavBar = () => {
       </Link>
       <nav className="header__nav">
         <ul>
-          {auth.isLoggedIn ? (
+          {user ? (
             <>
-              {auth.user.role === 1 && (
+              {user.role === 1 && (
                 <Link to="/users">
                   <li>Users</li>
                 </Link>
@@ -69,7 +67,7 @@ const NavBar = () => {
                 </button>
               </li>
               <ReactTooltip id="userTip" place="bottom" effect="solid">
-                {auth.user.username}
+                {user.username}
               </ReactTooltip>
               <Link to="/home">
                 <li onClick={() => signOut(logoutRequest)}>
