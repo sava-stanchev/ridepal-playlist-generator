@@ -42,6 +42,7 @@ export default function Modal({ playlist, openModal, closeModal }) {
 
   const closeFunction = () => {
     updatePlaylist();
+    setUpdatedPlaylist(null);
     closeModal();
   };
 
