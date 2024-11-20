@@ -111,7 +111,7 @@ const Home = () => {
         playlists={playlists}
       />
       <div className="filters">
-        <section className="filters__container">
+        <div className="filters__container">
           <button
             className="filters__btn"
             onClick={() => {
@@ -167,6 +167,8 @@ const Home = () => {
           >
             My playlists
           </button>
+        </div>
+        <div className="filters__custom-select">
           <select
             className="filters__select"
             name="durations"
@@ -181,36 +183,41 @@ const Home = () => {
               </option>
             ))}
           </select>
+        </div>
+        <div className="filters__search-container">
           <Search setSearch={setSearch} />
-        </section>
-      </div>
-      {!playlists.length && !search.length && <Loader />}
-      {playlists.length > 0 && (
-        <>
-          <div className="cards-container">
-            {returnedPlaylists
-              .slice(pagesVisited, pagesVisited + playlistsPerPage)
-              .map((playlist) => (
-                <PlaylistCard
-                  key={playlist.id}
-                  {...playlist}
-                  playlist={playlist}
-                  user={user}
-                  editPlaylist={editPlaylist}
-                  deletePlaylist={deletePlaylist}
-                />
-              ))}
-          </div>
-          <ReactPaginate
-            previousLabel={"<"}
-            nextLabel={">"}
-            pageCount={pageCount}
-            onPageChange={changePage}
-            containerClassName={"pagination-btns"}
-            activeClassName={"pagination-active"}
-          />
-        </>
-      )}
+        </div>
+      </div >
+      {!playlists.length && !search.length && <Loader />
+      }
+      {
+        playlists.length > 0 && (
+          <>
+            <div className="cards-container">
+              {returnedPlaylists
+                .slice(pagesVisited, pagesVisited + playlistsPerPage)
+                .map((playlist) => (
+                  <PlaylistCard
+                    key={playlist.id}
+                    {...playlist}
+                    playlist={playlist}
+                    user={user}
+                    editPlaylist={editPlaylist}
+                    deletePlaylist={deletePlaylist}
+                  />
+                ))}
+            </div>
+            <ReactPaginate
+              previousLabel={"<"}
+              nextLabel={">"}
+              pageCount={pageCount}
+              onPageChange={changePage}
+              containerClassName={"pagination-btns"}
+              activeClassName={"pagination-active"}
+            />
+          </>
+        )
+      }
     </>
   );
 };

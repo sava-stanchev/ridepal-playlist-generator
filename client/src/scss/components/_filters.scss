@@ -1,39 +1,71 @@
 .filters {
-  padding-bottom: 1rem;
+  padding-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 
   &__container {
-    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
   }
 
   &__btn {
-    margin-right: 1rem;
-    margin-top: 1rem;
-    border: 1px solid $dark-gray;
+    border: none;
     border-radius: 900px;
     background-color: $light-gray;
-    padding: 0.4rem 0.8rem;
+    padding: 6px 13px;
     font-size: inherit;
     cursor: pointer;
 
     &--gradient {
-      background-image: linear-gradient(
-        to right,
-        $violet-pink 0%,
-        $medium-blue 51%,
-        $violet-pink 100%
-      );
+      background-image: linear-gradient(to right,
+          $violet-pink 0%,
+          $medium-blue 51%,
+          $violet-pink 100%);
       background-size: 200% auto;
       color: white;
     }
   }
 
+  &__custom-select {
+    min-width: 300px;
+    position: relative;
+
+    &::before,
+    &::after {
+      --size: 5px;
+      position: absolute;
+      content: "";
+      right: 16px;
+      pointer-events: none;
+    }
+
+    &::before {
+      border-left: var(--size) solid transparent;
+      border-right: var(--size) solid transparent;
+      border-bottom: var(--size) solid black;
+      top: 35%;
+    }
+
+    &::after {
+      border-left: var(--size) solid transparent;
+      border-right: var(--size) solid transparent;
+      border-top: var(--size) solid black;
+      top: 60%;
+    }
+  }
+
   &__select {
-    margin-right: 1rem;
-    border: 1px solid $dark-gray;
-    border-radius: 900px;
+    appearance: none;
+    width: 100%;
+    font-size: 18px;
+    padding: 8px 90px 8px 16px;
     background-color: $light-gray;
-    padding: 0.4rem 0.8rem;
-    font-size: inherit;
+    border-radius: 4px;
+    color: black;
     cursor: pointer;
 
     &:focus {
