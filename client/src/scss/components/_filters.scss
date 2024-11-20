@@ -41,18 +41,16 @@
       content: "";
       right: 16px;
       pointer-events: none;
+      border-left: var(--size) solid transparent;
+      border-right: var(--size) solid transparent;
     }
 
     &::before {
-      border-left: var(--size) solid transparent;
-      border-right: var(--size) solid transparent;
       border-bottom: var(--size) solid black;
       top: 35%;
     }
 
     &::after {
-      border-left: var(--size) solid transparent;
-      border-right: var(--size) solid transparent;
       border-top: var(--size) solid black;
       top: 60%;
     }
@@ -67,9 +65,5 @@
     border-radius: 4px;
     color: black;
     cursor: pointer;
-
-    &:focus {
-      outline: none;
-    }
   }
 }
