@@ -12,18 +12,15 @@ import PlaylistCard from "../components/PlaylistCard";
 const Home = () => {
   const { user } = useContext(AuthContext);
   const dispatch = useDispatch();
+  const playlists = useSelector((state) => state.playlists.allPlaylists);
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState("");
-  const [returnedPlaylists, setReturnedPlaylists] = useState([]);
-  const [duration, setDuration] = useState(null);
   const [modal, setModal] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
-  const [filterMyPlaylists, setFilterMyPlaylists] = useState(false);
-  const [filterRap, setFilterRap] = useState(false);
-  const [filterRock, setFilterRock] = useState(false);
-  const [filterPop, setFilterPop] = useState(false);
-  const playlists = useSelector((state) => state.playlists.allPlaylists);
 
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [filteredPlaylists, setFilteredPlaylists] = useState(playlists);
+  const filters = ["Rap/Hip Hop", "Rock", "Pop"];
   const playlistsPerPage = 6;
   const pagesVisited = pageNumber * playlistsPerPage;
 
@@ -32,48 +29,40 @@ const Home = () => {
   }, [history, dispatch]);
 
   useEffect(() => {
-    let result = [...playlists];
+    setFilteredPlaylists(playlists);
+  }, [playlists]);
 
-    if (search.length > 0) {
-      result = result.filter((playlist) => {
-        return playlist.title.toLowerCase().includes(search.toLowerCase());
+  const handleFilterButtonClick = (genre) => {
+    if (selectedGenres.includes(genre)) {
+      let filters = selectedGenres.filter((el) => el !== genre);
+      setSelectedGenres(filters);
+    } else {
+      setSelectedGenres([...selectedGenres, genre]);
+    }
+  };
+
+  useEffect(() => {
+    filterItems();
+  }, [selectedGenres]);
+
+  const filterItems = () => {
+    if (selectedGenres.length > 0) {
+      let tempPlaylists = playlists.filter((playlist) => {
+        let shouldInclude = false;
+
+        selectedGenres.forEach((genre) => {
+          if (playlist.genres.includes(genre)) {
+            shouldInclude = true;
+          }
+        });
+
+        return shouldInclude;
       });
+      setFilteredPlaylists(tempPlaylists);
+    } else {
+      setFilteredPlaylists(playlists);
     }
-
-    if (duration !== null && duration !== "Duration") {
-      result = result.filter(
-        (pl) => +pl.playtime <= Math.floor(duration.split(" ")[1] * 60 * 60)
-      );
-    }
-
-    if (filterMyPlaylists && user) {
-      result = result.filter((pl) => pl.user_id === user.id);
-    }
-
-    if (filterRap) {
-      result = result.filter((pl) => pl.genres.includes("Rap/Hip Hop"));
-    }
-
-    if (filterPop) {
-      result = result.filter((pl) => pl.genres.includes("Pop"));
-    }
-
-    if (filterRock) {
-      result = result.filter((pl) => pl.genres.includes("Rock"));
-    }
-
-    setPageNumber(0);
-    setReturnedPlaylists(result);
-  }, [
-    user,
-    search,
-    playlists,
-    filterMyPlaylists,
-    filterRock,
-    filterPop,
-    filterRap,
-    duration,
-  ]);
+  };
 
   const deletePlaylist = (id) => {
     dispatch(playlistActions.deletePlaylist(id));
@@ -84,22 +73,9 @@ const Home = () => {
     setModal(true);
   };
 
-  const pageCount = Math.ceil(returnedPlaylists.length / playlistsPerPage);
+  const pageCount = Math.ceil(filteredPlaylists.length / playlistsPerPage);
   const changePage = ({ selected }) => {
     setPageNumber(selected);
-  };
-
-  const setActiveFilter = (setFilter) => {
-    const filterOptions = [
-      setFilterPop,
-      setFilterRap,
-      setFilterRock,
-      setFilterMyPlaylists,
-    ];
-
-    filterOptions.forEach((currSetFilter) =>
-      currSetFilter === setFilter ? currSetFilter(true) : currSetFilter(false)
-    );
   };
 
   return (
@@ -112,63 +88,22 @@ const Home = () => {
       />
       <div className="filters">
         <div className="filters__container">
-          <button
-            className="filters__btn"
-            onClick={() => {
-              document.getElementById("dropdown").selectedIndex = 0;
-              setActiveFilter(null);
-              setDuration(null);
-              setSearch("");
-            }}
-          >
-            All
-          </button>
-          <button
-            className={joinClasses([
-              "filters__btn",
-              filterRap && "filters__btn--gradient",
-            ])}
-            onClick={() => {
-              setActiveFilter(setFilterRap);
-            }}
-          >
-            Rap
-          </button>
-          <button
-            className={joinClasses([
-              "filters__btn",
-              filterPop && "filters__btn--gradient",
-            ])}
-            onClick={() => {
-              setActiveFilter(setFilterPop);
-            }}
-          >
-            Pop
-          </button>
-          <button
-            className={joinClasses([
-              "filters__btn",
-              filterRock && "filters__btn--gradient",
-            ])}
-            onClick={() => {
-              setActiveFilter(setFilterRock);
-            }}
-          >
-            Rock
-          </button>
-          <button
-            className={joinClasses([
-              "filters__btn",
-              filterMyPlaylists && "filters__btn--gradient",
-            ])}
-            onClick={() => {
-              setActiveFilter(setFilterMyPlaylists);
-            }}
-          >
-            My playlists
-          </button>
+          {filters.map((genre, idx) => (
+            <button
+              className={joinClasses([
+                "filters__btn",
+                selectedGenres?.includes(genre) && "filters__btn--gradient",
+              ])}
+              onClick={() => {
+                handleFilterButtonClick(genre);
+              }}
+              key={`filters-${idx}`}
+            >
+              {genre}
+            </button>
+          ))}
         </div>
-        <div className="filters__custom-select">
+        {/* <div className="filters__custom-select">
           <select
             className="filters__select"
             name="durations"
@@ -183,41 +118,38 @@ const Home = () => {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
         <div className="filters__search-container">
           <Search setSearch={setSearch} />
         </div>
-      </div >
-      {!playlists.length && !search.length && <Loader />
-      }
-      {
-        playlists.length > 0 && (
-          <>
-            <div className="cards-container">
-              {returnedPlaylists
-                .slice(pagesVisited, pagesVisited + playlistsPerPage)
-                .map((playlist) => (
-                  <PlaylistCard
-                    key={playlist.id}
-                    {...playlist}
-                    playlist={playlist}
-                    user={user}
-                    editPlaylist={editPlaylist}
-                    deletePlaylist={deletePlaylist}
-                  />
-                ))}
-            </div>
-            <ReactPaginate
-              previousLabel={"<"}
-              nextLabel={">"}
-              pageCount={pageCount}
-              onPageChange={changePage}
-              containerClassName={"pagination-btns"}
-              activeClassName={"pagination-active"}
-            />
-          </>
-        )
-      }
+      </div>
+      {!playlists.length && !search.length && <Loader />}
+      {playlists.length > 0 && (
+        <>
+          <div className="cards-container">
+            {filteredPlaylists
+              .slice(pagesVisited, pagesVisited + playlistsPerPage)
+              .map((playlist) => (
+                <PlaylistCard
+                  key={playlist.id}
+                  {...playlist}
+                  playlist={playlist}
+                  user={user}
+                  editPlaylist={editPlaylist}
+                  deletePlaylist={deletePlaylist}
+                />
+              ))}
+          </div>
+          <ReactPaginate
+            previousLabel={"<"}
+            nextLabel={">"}
+            pageCount={pageCount}
+            onPageChange={changePage}
+            containerClassName={"pagination-btns"}
+            activeClassName={"pagination-active"}
+          />
+        </>
+      )}
     </>
   );
 };
