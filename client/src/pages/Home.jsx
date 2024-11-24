@@ -42,12 +42,14 @@ const Home = () => {
   };
 
   useEffect(() => {
-    filterItems();
-  }, [selectedGenres]);
+    filterPlaylists();
+  }, [search, selectedGenres]);
 
-  const filterItems = () => {
+  const filterPlaylists = () => {
+    let tempPlaylists = [...playlists];
+
     if (selectedGenres.length > 0) {
-      let tempPlaylists = playlists.filter((playlist) => {
+      tempPlaylists = tempPlaylists.filter((playlist) => {
         let shouldInclude = false;
 
         selectedGenres.forEach((genre) => {
@@ -58,10 +60,15 @@ const Home = () => {
 
         return shouldInclude;
       });
-      setFilteredPlaylists(tempPlaylists);
-    } else {
-      setFilteredPlaylists(playlists);
     }
+
+    if (search.length > 0) {
+      tempPlaylists = tempPlaylists.filter((playlist) => {
+        return playlist.title.toLowerCase().includes(search.toLowerCase());
+      });
+    }
+
+    setFilteredPlaylists(tempPlaylists);
   };
 
   const deletePlaylist = (id) => {
