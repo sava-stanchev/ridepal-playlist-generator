@@ -21,10 +21,12 @@
     cursor: pointer;
 
     &--gradient {
-      background-image: linear-gradient(to right,
-          $violet-pink 0%,
-          $medium-blue 51%,
-          $violet-pink 100%);
+      background-image: linear-gradient(
+        to right,
+        $violet-pink 0%,
+        $medium-blue 51%,
+        $violet-pink 100%
+      );
       background-size: 200% auto;
       color: white;
     }
@@ -33,25 +35,17 @@
   &__custom-select {
     position: relative;
 
-    &::before,
     &::after {
-      --size: 5px;
+      --size: 6px;
       position: absolute;
       content: "";
       right: 16px;
       pointer-events: none;
       border-left: var(--size) solid transparent;
       border-right: var(--size) solid transparent;
-    }
-
-    &::before {
-      border-bottom: var(--size) solid black;
-      top: 30%;
-    }
-
-    &::after {
       border-top: var(--size) solid black;
-      top: 60%;
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
 
