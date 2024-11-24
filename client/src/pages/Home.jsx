@@ -18,6 +18,7 @@ const Home = () => {
   const [modal, setModal] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
   const [selectedGenres, setSelectedGenres] = useState([]);
+  const [duration, setDuration] = useState(null);
   const [filteredPlaylists, setFilteredPlaylists] = useState(playlists);
 
   const filters = ["Rap/Hip Hop", "Rock", "Pop"];
@@ -26,7 +27,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(playlistActions.getPlaylists());
-  }, [history, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     setFilteredPlaylists(playlists);
@@ -43,7 +44,7 @@ const Home = () => {
 
   useEffect(() => {
     filterPlaylists();
-  }, [search, selectedGenres]);
+  }, [duration, search, selectedGenres]);
 
   const filterPlaylists = () => {
     let tempPlaylists = [...playlists];
@@ -58,6 +59,12 @@ const Home = () => {
       tempPlaylists = tempPlaylists.filter((playlist) => {
         return playlist.title.toLowerCase().includes(search.toLowerCase());
       });
+    }
+
+    if (duration !== null && duration !== "Duration") {
+      tempPlaylists = tempPlaylists.filter(
+        (pl) => +pl.playtime <= Math.floor(duration.split(" ")[1] * 60 * 60)
+      );
     }
 
     setFilteredPlaylists(tempPlaylists);
@@ -101,23 +108,23 @@ const Home = () => {
               {genre}
             </button>
           ))}
+          <div className="filters__custom-select">
+            <select
+              className="filters__select"
+              name="durations"
+              defaultValue="Duration"
+              id="dropdown"
+              onChange={(e) => setDuration(e.target.value)}
+            >
+              <option>Duration</option>
+              {[...Array(8)].map((e, i) => (
+                <option key={i}>
+                  &#60; {++i} {i === 1 ? "hour" : "hours"}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        {/* <div className="filters__custom-select">
-          <select
-            className="filters__select"
-            name="durations"
-            defaultValue="Duration"
-            id="dropdown"
-            onChange={(e) => setDuration(e.target.value)}
-          >
-            <option>Duration</option>
-            {[...Array(8)].map((e, i) => (
-              <option key={i}>
-                &#60; {++i} {i === 1 ? "hour" : "hours"}
-              </option>
-            ))}
-          </select>
-        </div> */}
         <div className="filters__search-container">
           <Search setSearch={setSearch} />
         </div>

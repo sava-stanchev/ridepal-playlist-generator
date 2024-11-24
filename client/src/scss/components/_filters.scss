@@ -31,7 +31,6 @@
   }
 
   &__custom-select {
-    min-width: 250px;
     position: relative;
 
     &::before,
@@ -47,7 +46,7 @@
 
     &::before {
       border-bottom: var(--size) solid black;
-      top: 35%;
+      top: 30%;
     }
 
     &::after {
@@ -62,7 +61,7 @@
     font-size: 18px;
     padding: 8px 90px 8px 16px;
     background-color: $light-gray;
-    border-radius: 4px;
+    border-radius: 900px;
     color: black;
     cursor: pointer;
   }
