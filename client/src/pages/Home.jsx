@@ -17,9 +17,9 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [modal, setModal] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
-
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [filteredPlaylists, setFilteredPlaylists] = useState(playlists);
+
   const filters = ["Rap/Hip Hop", "Rock", "Pop"];
   const playlistsPerPage = 6;
   const pagesVisited = pageNumber * playlistsPerPage;
@@ -50,15 +50,7 @@ const Home = () => {
 
     if (selectedGenres.length > 0) {
       tempPlaylists = tempPlaylists.filter((playlist) => {
-        let shouldInclude = false;
-
-        selectedGenres.forEach((genre) => {
-          if (playlist.genres.includes(genre)) {
-            shouldInclude = true;
-          }
-        });
-
-        return shouldInclude;
+        return selectedGenres.some((genre) => playlist.genres.includes(genre));
       });
     }
 
