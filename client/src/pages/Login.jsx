@@ -64,16 +64,20 @@ const Login = () => {
       </h1>
       <form className="main__form">
         <div className="input-group">
-          <label>Username:</label>
+          <label htmlFor="username">Username:</label>
           <input
+            id="username"
             type="text"
+            aria-required="true"
             onChange={(e) => updateUserInput("username", e.target.value)}
           />
         </div>
         <div className="input-group">
-          <label>Password:</label>
+          <label htmlFor="password">Password:</label>
           <input
+            id="password"
             type="password"
+            aria-required="true"
             onChange={(e) => updateUserInput("password", e.target.value)}
           />
         </div>

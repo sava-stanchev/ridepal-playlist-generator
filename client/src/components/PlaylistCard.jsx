@@ -36,12 +36,14 @@ const PlaylistCard = ({
               <button
                 className="btn-wrapper__edit"
                 onClick={() => editPlaylist(playlist)}
+                aria-label="Edit playlist"
               >
                 <FaEdit />
               </button>
               <button
                 className="btn-wrapper__delete"
                 onClick={() => deletePlaylist(id)}
+                aria-label="Delete playlist"
               >
                 <FaTrashAlt />
               </button>

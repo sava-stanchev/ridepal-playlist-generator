@@ -109,11 +109,14 @@ const Home = () => {
             </button>
           ))}
           <div className="filters__custom-select">
+            <label htmlFor="duration-select" className="visually-hidden">
+              Playlist duration
+            </label>
             <select
               className="filters__select"
               name="durations"
               defaultValue="Duration"
-              id="dropdown"
+              id="duration-select"
               onChange={(e) => setDuration(e.target.value)}
             >
               <option>Duration</option>

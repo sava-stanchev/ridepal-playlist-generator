@@ -50,18 +50,19 @@ const NavBar = () => {
           {user ? (
             <>
               {user.role === 1 && (
-                <Link to="/users">
-                  <li>Users</li>
-                </Link>
+                <li>
+                  <Link to="/users">Users</Link>
+                </li>
               )}
-              <Link to="/generate-route">
-                <li>Generate</li>
-              </Link>
+              <li>
+                <Link to="/generate-route">Generate</Link>
+              </li>
               <li>
                 <button
                   className="tooltip-icon-user"
                   data-tip
                   data-for="userTip"
+                  aria-label="User"
                 >
                   <CgProfile size={27} />
                 </button>
@@ -69,29 +70,31 @@ const NavBar = () => {
               <ReactTooltip id="userTip" place="bottom" effect="solid">
                 {user.username}
               </ReactTooltip>
-              <Link to="/home">
-                <li onClick={() => signOut(logoutRequest)}>
+              <li onClick={() => signOut(logoutRequest)}>
+                <Link to="/home">
                   <button
                     className="tooltip-icon-logout"
                     data-tip
                     data-for="log-out"
+                    aria-label="Log out"
                   >
                     <FiLogOut size={27} />
                   </button>
-                </li>
-                <ReactTooltip id="log-out" place="bottom" effect="solid">
-                  Log out
-                </ReactTooltip>
-              </Link>
+
+                  <ReactTooltip id="log-out" place="bottom" effect="solid">
+                    Log out
+                  </ReactTooltip>
+                </Link>
+              </li>
             </>
           ) : (
             <>
-              <Link to="/login">
-                <li>Login</li>
-              </Link>
-              <Link to="/register">
-                <li>Register</li>
-              </Link>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+              <li>
+                <Link to="/register">Register</Link>
+              </li>
             </>
           )}
         </ul>

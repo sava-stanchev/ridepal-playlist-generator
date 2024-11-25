@@ -29,19 +29,16 @@ const GenerateRoute = ({ setPoints }) => {
       [prop]: value,
     });
 
+    const properCityName =
+      /^([a-zA-Z\u0080-\u024F]+(?:(\. )|-| |'))*[a-zA-Z\u0080-\u024F]*$/.test(
+        value
+      );
+
     if (prop === "from") {
-      const properCityName =
-        /^([a-zA-Z\u0080-\u024F]+(?:(\. )|-| |'))*[a-zA-Z\u0080-\u024F]*$/.test(
-          value
-        );
       setCityNameOneError({ ...cityNameOneError, properCityName });
     }
 
     if (prop === "to") {
-      const properCityName =
-        /^([a-zA-Z\u0080-\u024F]+(?:(\. )|-| |'))*[a-zA-Z\u0080-\u024F]*$/.test(
-          value
-        );
       setCityNameTwoError({ ...cityNameTwoError, properCityName });
     }
   };
@@ -90,8 +87,9 @@ const GenerateRoute = ({ setPoints }) => {
       </h1>
       <form className="main__form">
         <div className="input-group">
-          <label>From:</label>
+          <label htmlFor="route-from">From:</label>
           <input
+            id="route-from"
             type="text"
             name="from"
             value={route.from}
@@ -99,8 +97,9 @@ const GenerateRoute = ({ setPoints }) => {
           />
         </div>
         <div className="input-group">
-          <label>To:</label>
+          <label htmlFor="route-to">To:</label>
           <input
+            id="route-to"
             type="text"
             name="to"
             value={route.to}
@@ -110,13 +109,11 @@ const GenerateRoute = ({ setPoints }) => {
         <div className="input-group">
           <p
             className="city-reminder-msg"
-            style={{
-              color:
-                cityNameOneError.properCityName &&
-                cityNameTwoError.properCityName
-                  ? "white"
-                  : "red",
-            }}
+            style={
+              cityNameOneError.properCityName && cityNameTwoError.properCityName
+                ? { color: "white" }
+                : {}
+            }
           >
             * Travel locations should be valid city names
           </p>

@@ -39,11 +39,13 @@
     font-size: 0.85rem;
     margin-bottom: 0.3rem;
     margin-top: 0;
+    color: $validation-red;
   }
 
   .validation-msg {
     font-size: 0.8em;
     margin-top: rem(5);
+    color: $validation-red;
   }
 
   .password-eye {
@@ -54,11 +56,14 @@
       margin-bottom: 0;
       color: white;
       background-color: transparent;
-      outline: none;
       border: none;
       cursor: pointer;
       text-decoration: none;
       font-size: 1.4rem;
+
+      svg {
+        display: block;
+      }
     }
   }
 

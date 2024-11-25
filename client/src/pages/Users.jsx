@@ -26,6 +26,7 @@ const User = ({
           <button
             className="users__table-buttons--role"
             onClick={() => switchRole(id)}
+            aria-label="Role"
           >
             <FaCrown
               style={{ color: role === "admin" ? "#FFD700" : "white" }}
@@ -38,12 +39,14 @@ const User = ({
           <button
             className="users__table-buttons--edit"
             onClick={() => editUser(user)}
+            aria-label="Edit user"
           >
             <FaEdit />
           </button>
           <button
             className="users__table-buttons--delete"
             onClick={() => deleteUser(id)}
+            aria-label="Delete user"
           >
             <FaTrashAlt />
           </button>

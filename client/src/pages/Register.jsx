@@ -109,13 +109,11 @@ const Register = () => {
           value={newUser.username}
           onChange={(e) => createUser("username", e.target.value)}
         >
-          <label>Username:</label>
-          <input type="text" />
+          <label htmlFor="username">Username:</label>
+          <input type="text" id="username" aria-required="true" />
           <p
             className="validation-msg"
-            style={
-              usernameError.properLength ? { color: "white" } : { color: "red" }
-            }
+            style={usernameError.properLength ? { color: "white" } : {}}
           >
             * Between 3 and 15 chars
           </p>
@@ -126,13 +124,11 @@ const Register = () => {
           value={newUser.email}
           onChange={(e) => createUser("email", e.target.value)}
         >
-          <label>Email:</label>
-          <input type="email" />
+          <label htmlFor="email">Email:</label>
+          <input type="email" id="email" aria-required="true" />
           <p
             className="validation-msg"
-            style={
-              emailError.properEmail ? { color: "white" } : { color: "red" }
-            }
+            style={emailError.properEmail ? { color: "white" } : {}}
           >
             * Valid email address
           </p>
@@ -144,22 +140,24 @@ const Register = () => {
           onChange={(e) => createUser("password", e.target.value)}
         >
           <div className="password-eye">
-            <label>Password:</label>
+            <label htmlFor="password">Password:</label>
             <button
               type="button"
               className="show-password"
               onClick={() => showThePassword()}
-              tabIndex="-1"
+              aria-label="Toggle password visibility"
             >
               {showPassword === false ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
-          <input type={showPassword === false ? "password" : "text"} />
+          <input
+            type={showPassword === false ? "password" : "text"}
+            id="password"
+            aria-required="true"
+          />
           <p
             className="validation-msg"
-            style={
-              passwordError.properLength ? { color: "white" } : { color: "red" }
-            }
+            style={passwordError.properLength ? { color: "white" } : {}}
           >
             * Between 4 and 30 chars
           </p>

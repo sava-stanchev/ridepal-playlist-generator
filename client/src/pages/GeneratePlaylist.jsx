@@ -103,18 +103,15 @@ const GeneratePlaylist = ({ points }) => {
           <p className="travel-duration">
             Travel duration: {Math.round(points.duration / 60)} min.
           </p>
-          <label>Playlist name:</label>
+          <label htmlFor="playlist-name">Playlist name:</label>
           <input
+            id="playlist-name"
             type="text"
             onChange={(e) => updatePlaylistName("playlistName", e.target.value)}
           />
           <p
             className="validation-msg"
-            style={
-              playlistNameError.properLength
-                ? { color: "white" }
-                : { color: "red" }
-            }
+            style={playlistNameError.properLength ? { color: "white" } : {}}
           >
             * Between 3 and 20 chars
           </p>
