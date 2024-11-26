@@ -6,17 +6,49 @@ const playlistNameVerificationError = {
   properLength: false,
 };
 
+const Slider = ({ title, value, onChange }) => {
+  return (
+    <tr className="genres__row">
+      <td className="genres__col">{title}</td>
+      <td className="slider">
+        <input
+          type="range"
+          className="slider__input"
+          min={0}
+          max={100}
+          step="10"
+          value={value}
+          onChange={onChange}
+        />
+      </td>
+      <td className="genres__percent">{value}%</td>
+    </tr>
+  );
+};
+
+const sliders = ["Rap/Hip Hop", "Pop", "Rock"];
+
 const GeneratePlaylist = ({ points }) => {
   const history = useHistory();
-  const [sliderPop, setSliderPop] = useState(0);
-  const [sliderRock, setSliderRock] = useState(0);
-  const [sliderRap, setSliderRap] = useState(0);
   const [playlistName, setPlaylistName] = useState("");
   const [repeatArtists, setRepeatArtists] = useState(false);
-  const [totalDuration, setTotalDuration] = useState(0);
   const [playlistNameError, setPlaylistNameError] = useState(
     playlistNameVerificationError
   );
+  const [values, setValues] = useState([50, 35, 15]);
+
+  function handleChange(index, value) {
+    let maxValue = 100;
+    const remaining = maxValue - parseInt(value, 10);
+    setValues((vs) =>
+      vs.map((v, i) => {
+        if (i === index) return parseInt(value, 10);
+        const oldRemaining = maxValue - parseInt(vs[index], 10);
+        if (oldRemaining) return (remaining * v) / oldRemaining;
+        return remaining / (sliders.length - 1);
+      })
+    );
+  }
 
   const updatePlaylistName = (prop, value) => {
     setPlaylistName({
@@ -30,40 +62,12 @@ const GeneratePlaylist = ({ points }) => {
     }
   };
 
-  const updateGenres = (prop, value) => {
-    const sumOfSliders =
-      Number(sliderRock) +
-      Number(sliderPop) +
-      Number(sliderRap) +
-      Number(value) -
-      playlistData.genres.filter((g) => g.name === prop.toLowerCase())[0]
-        .duration;
-    if (sumOfSliders > 100) {
-      return;
-    }
-    setTotalDuration(sumOfSliders);
-
-    switch (prop) {
-      case "Rock":
-        setSliderRock(value);
-        break;
-      case "Pop":
-        setSliderPop(value);
-        break;
-      case "Rap/Hip Hop":
-        setSliderRap(value);
-        break;
-      default:
-        break;
-    }
-  };
-
   const playlistData = {
     playlistName: playlistName.playlistName,
     genres: [
-      { name: "rock", duration: sliderRock },
-      { name: "pop", duration: sliderPop },
-      { name: "rap/hip hop", duration: sliderRap },
+      { name: "rap/hip hop", duration: values[0] },
+      { name: "pop", duration: values[1] },
+      { name: "rock", duration: values[2] },
     ],
     points: points,
     repeatArtist: repeatArtists,
@@ -118,48 +122,15 @@ const GeneratePlaylist = ({ points }) => {
         </div>
         <table className="genres">
           <tbody>
-            <tr className="genres__row">
-              <td className="genres__col">Rock:</td>
-              <td className="slider">
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  value={sliderRock}
-                  className="slider__input"
-                  onChange={(e) => updateGenres("Rock", e.target.value)}
-                />
-              </td>
-              <td className="genres__percent">{sliderRock}%</td>
-            </tr>
-            <tr className="genres__row">
-              <td className="genres__col">Pop:</td>
-              <td className="slider">
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  value={sliderPop}
-                  className="slider__input"
-                  onChange={(e) => updateGenres("Pop", e.target.value)}
-                />
-              </td>
-              <td className="genres__percent">{sliderPop}%</td>
-            </tr>
-            <tr className="genres__row">
-              <td className="genres__col">Rap:</td>
-              <td className="slider">
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  value={sliderRap}
-                  className="slider__input"
-                  onChange={(e) => updateGenres("Rap/Hip Hop", e.target.value)}
-                />
-              </td>
-              <td className="genres__percent">{sliderRap}%</td>
-            </tr>
+            {sliders.map((item, index) => (
+              <Slider
+                key={index}
+                index={index}
+                value={Math.round(values[index])}
+                title={item}
+                onChange={(e) => handleChange(index, e.target.value)}
+              />
+            ))}
           </tbody>
         </table>
         <div className="input-group">
@@ -185,18 +156,11 @@ const GeneratePlaylist = ({ points }) => {
             >
               * Allow same artist's tracks if travel duration over 150 min.
             </p>
-            <p
-              className="reminder-msg"
-              style={{ color: totalDuration < 100 ? "red" : "white" }}
-            >
-              * Total of percentages must equal 100
-            </p>
             <button
               type="button"
               className="btn"
               disabled={
-                totalDuration < 100 ||
-                (points.duration > 150 * 60 && repeatArtists === false)
+                points.duration > 150 * 60 && repeatArtists === false
                   ? true
                   : false
               }
