@@ -67,7 +67,12 @@ const NavBar = () => {
                   <CgProfile size={27} />
                 </button>
               </li>
-              <ReactTooltip id="userTip" place="bottom" effect="solid">
+              <ReactTooltip
+                id="userTip"
+                place="bottom"
+                effect="solid"
+                className="react-tooltip-padding"
+              >
                 {user.username}
               </ReactTooltip>
               <li onClick={() => signOut(logoutRequest)}>
@@ -81,7 +86,12 @@ const NavBar = () => {
                     <FiLogOut size={27} />
                   </button>
 
-                  <ReactTooltip id="log-out" place="bottom" effect="solid">
+                  <ReactTooltip
+                    id="log-out"
+                    place="bottom"
+                    effect="solid"
+                    className="react-tooltip-padding"
+                  >
                     Log out
                   </ReactTooltip>
                 </Link>
