@@ -3,17 +3,7 @@ import { useHistory } from "react-router-dom";
 import { BING_KEY } from "../common/constants";
 import AlertModal from "../components/AlertModal";
 
-const cityNameVerificationError = {
-  properCityName: false,
-};
-
 const GenerateRoute = ({ setPoints }) => {
-  const [cityNameOneError, setCityNameOneError] = useState(
-    cityNameVerificationError
-  );
-  const [cityNameTwoError, setCityNameTwoError] = useState(
-    cityNameVerificationError
-  );
   const [modal, setModal] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
   const [route, setRoute] = useState({
@@ -28,19 +18,6 @@ const GenerateRoute = ({ setPoints }) => {
       ...route,
       [prop]: value,
     });
-
-    const properCityName =
-      /^([a-zA-Z\u0080-\u024F]+(?:(\. )|-| |'))*[a-zA-Z\u0080-\u024F]*$/.test(
-        value
-      );
-
-    if (prop === "from") {
-      setCityNameOneError({ ...cityNameOneError, properCityName });
-    }
-
-    if (prop === "to") {
-      setCityNameTwoError({ ...cityNameTwoError, properCityName });
-    }
   };
 
   async function getDurationRequest() {
@@ -69,7 +46,9 @@ const GenerateRoute = ({ setPoints }) => {
       }
     } catch (error) {
       console.error(error.message);
-      setAlertMsg("Something went wrong!");
+      setAlertMsg(
+        "Something went wrong! Make sure you enter valid city names."
+      );
       setModal(true);
     }
   }
@@ -107,24 +86,13 @@ const GenerateRoute = ({ setPoints }) => {
           />
         </div>
         <div className="input-group">
-          <p
-            className="city-reminder-msg"
-            style={
-              cityNameOneError.properCityName && cityNameTwoError.properCityName
-                ? { color: "white" }
-                : {}
-            }
-          >
+          <p className="city-reminder-msg">
             * Travel locations should be valid city names
           </p>
           <button
             type="button"
             className="btn"
-            disabled={
-              cityNameOneError.properCityName && cityNameTwoError.properCityName
-                ? false
-                : true
-            }
+            disabled={route.from && route.to ? false : true}
             onClick={() => getDurationRequest()}
           >
             Next
