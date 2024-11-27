@@ -1,32 +1,13 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
+import { Slider } from "../components/Slider";
 
 const playlistNameVerificationError = {
   properLength: false,
 };
 
-const Slider = ({ title, value, onChange }) => {
-  return (
-    <tr className="genres__row">
-      <td className="genres__col">{title}</td>
-      <td className="slider">
-        <input
-          type="range"
-          className="slider__input"
-          min={0}
-          max={100}
-          step="10"
-          value={value}
-          onChange={onChange}
-        />
-      </td>
-      <td className="genres__percent">{value}%</td>
-    </tr>
-  );
-};
-
-const sliders = ["Rap/Hip Hop", "Pop", "Rock"];
+const sliders = ["Rap", "Pop", "Rock"];
 
 const GeneratePlaylist = ({ points }) => {
   const history = useHistory();
@@ -102,9 +83,9 @@ const GeneratePlaylist = ({ points }) => {
         Generate your
         <span className="main__text--accent"> playlist!</span>
       </h1>
-      <form className="main__form">
+      <form className="main__form generate-playlist">
         <div className="input-group">
-          <p className="travel-duration">
+          <p className="generate-playlist__travel-duration">
             Travel duration: {Math.round(points.duration / 60)} min.
           </p>
           <label htmlFor="playlist-name">Playlist name:</label>
@@ -120,28 +101,26 @@ const GeneratePlaylist = ({ points }) => {
             * Between 3 and 20 chars
           </p>
         </div>
-        <table className="genres">
-          <tbody>
-            {sliders.map((item, index) => (
-              <Slider
-                key={index}
-                index={index}
-                value={Math.round(values[index])}
-                title={item}
-                onChange={(e) => handleChange(index, e.target.value)}
-              />
-            ))}
-          </tbody>
-        </table>
-        <div className="input-group">
-          <div className="checkbox">
+        <div className="generate-playlist__genre-sliders-container">
+          {sliders.map((item, index) => (
+            <Slider
+              key={index}
+              index={index}
+              value={Math.round(values[index])}
+              title={item}
+              onChange={(e) => handleChange(index, e.target.value)}
+            />
+          ))}
+        </div>
+        <div>
+          <div className="generate-playlist__checkbox">
             <input
               type="checkbox"
-              className="checkbox__input"
+              className="generate-playlist__checkbox-input"
               checked={repeatArtists}
               onChange={() => setRepeatArtists(!repeatArtists)}
             />
-            <label className="checkbox__label">
+            <label className="generate-playlist__checkbox-label">
               Allow tracks from the same artist
             </label>
           </div>

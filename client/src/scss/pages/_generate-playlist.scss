@@ -1,0 +1,28 @@
+.generate-playlist {
+  &__travel-duration {
+    margin-bottom: 15px;
+  }
+
+  &__genre-sliders-container {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    gap: 15px;
+  }
+
+  &__checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__checkbox-input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+
+  &__checkbox-label {
+    font-size: 16px;
+  }
+}
