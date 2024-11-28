@@ -1,14 +1,14 @@
 .input-group {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
 
-  > label {
+  label {
     font-weight: bold;
     margin-bottom: 0.5rem;
   }
 
-  > input {
+  input {
     outline: none;
     background: none;
     border: rem(1) solid #374669;

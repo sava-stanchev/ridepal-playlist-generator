@@ -3,59 +3,52 @@ import { useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import AlertModal from "../components/AlertModal";
-import { joinClasses } from "../common/utils";
-
-const initialState = {
-  username: "",
-  password: "",
-  email: "",
-};
-
-const passVerificationError = {
-  properLength: false,
-};
-
-const emailVerificationError = {
-  properEmail: false,
-};
-
-const usernameVerificationError = {
-  properLength: false,
-};
+import { isValidEmail, joinClasses } from "../common/utils";
 
 const Register = () => {
-  const [newUser, setNewUser] = useState(initialState);
-  const [passwordError, setPasswordError] = useState(passVerificationError);
-  const [emailError, setEmailError] = useState(emailVerificationError);
-  const [usernameError, setUsernameError] = useState(usernameVerificationError);
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [formErrors, setFormErrors] = useState({
+    username: true,
+    email: true,
+    password: true,
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [modal, setModal] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
 
   const history = useHistory();
 
-  const createUser = (name, value) => {
-    setNewUser({
-      ...newUser,
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
       [name]: value,
-    });
+    }));
 
-    if (name === "password") {
-      const properLength = value.length >= 4 && value.length <= 30;
-      setPasswordError({ ...passwordError, properLength });
-    }
-
-    if (name === "email") {
-      const properEmail =
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-          value
-        );
-      setEmailError({ ...emailError, properEmail });
-    }
-
-    if (name === "username") {
-      const properLength = value.length >= 3 && value.length <= 15;
-      setUsernameError({ ...usernameError, properLength });
+    if (name === "username" && value.length > 2) {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        username: false,
+      }));
+    } else if (name === "email" && isValidEmail(value)) {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        email: false,
+      }));
+    } else if (name === "password" && value.length > 3) {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        password: false,
+      }));
+    } else {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        [name]: true,
+      }));
     }
   };
 
@@ -81,7 +74,7 @@ const Register = () => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(newUser),
+    body: JSON.stringify(formData),
   });
 
   const showThePassword = () => {
@@ -104,46 +97,45 @@ const Register = () => {
         <span className="main__text--accent"> generate!</span>
       </h1>
       <form className="main__form">
-        <div
-          className="input-group"
-          name="username"
-          value={newUser.username}
-          onChange={(e) => createUser("username", e.target.value)}
-        >
+        <div className="input-group">
           <label htmlFor="username">Username:</label>
-          <input type="text" id="username" aria-required="true" />
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value={formData.username}
+            onChange={handleInputChange}
+            aria-required="true"
+          />
           <p
             className={joinClasses([
               "validation-msg",
-              usernameError.properLength && "validation-msg--valid",
+              !formErrors.username && "validation-msg--valid",
             ])}
           >
-            * Between 3 and 15 chars
+            Username must be at least 3 characters long.
           </p>
         </div>
-        <div
-          className="input-group"
-          name="email"
-          value={newUser.email}
-          onChange={(e) => createUser("email", e.target.value)}
-        >
+        <div className="input-group">
           <label htmlFor="email">Email:</label>
-          <input type="email" id="email" aria-required="true" />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            aria-required="true"
+          />
           <p
             className={joinClasses([
               "validation-msg",
-              emailError.properEmail && "validation-msg--valid",
+              !formErrors.email && "validation-msg--valid",
             ])}
           >
-            * Valid email address
+            Please enter a valid email address.
           </p>
         </div>
-        <div
-          className="input-group"
-          name="password"
-          value={newUser.password}
-          onChange={(e) => createUser("password", e.target.value)}
-        >
+        <div className="input-group">
           <div className="password-eye">
             <label htmlFor="password">Password:</label>
             <button
@@ -158,27 +150,26 @@ const Register = () => {
           <input
             type={showPassword === false ? "password" : "text"}
             id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
             aria-required="true"
           />
           <p
             className={joinClasses([
               "validation-msg",
-              passwordError.properLength && "validation-msg--valid",
+              !formErrors.password && "validation-msg--valid",
             ])}
           >
-            * Between 4 and 30 chars
+            Password must be at least 4 characters long.
           </p>
         </div>
         <div className="input-group">
           <button
             type="button"
             className="btn"
-            disabled={
-              !usernameError.properLength ||
-              !emailError.properEmail ||
-              !passwordError.properLength
-            }
             onClick={() => signUp(registerRequest)}
+            disabled={!Object.values(formErrors).every((val) => val === false)}
           >
             Join Now
           </button>
