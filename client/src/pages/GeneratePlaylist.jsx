@@ -112,43 +112,45 @@ const GeneratePlaylist = ({ points }) => {
             />
           ))}
         </div>
-        <div>
+        <>
           <div className="generate-playlist__checkbox">
             <input
               type="checkbox"
+              id="allow-same-artist"
               className="generate-playlist__checkbox-input"
               checked={repeatArtists}
               onChange={() => setRepeatArtists(!repeatArtists)}
             />
-            <label className="generate-playlist__checkbox-label">
+            <label
+              htmlFor="allow-same-artist"
+              className="generate-playlist__checkbox-label"
+            >
               Allow tracks from the same artist
             </label>
           </div>
-          <>
-            <p
-              className="reminder-msg"
-              style={
-                points.duration > 150 * 60 && repeatArtists === false
-                  ? { color: "red" }
-                  : { color: "white" }
-              }
-            >
-              * Allow same artist's tracks if travel duration over 150 min.
-            </p>
-            <button
-              type="button"
-              className="btn"
-              disabled={
-                points.duration > 150 * 60 && repeatArtists === false
-                  ? true
-                  : false
-              }
-              onClick={() => generatePlaylistRequest(playlistData)}
-            >
-              Generate Playlist
-            </button>
-          </>
-        </div>
+          <p
+            className="reminder-msg"
+            style={
+              points.duration > 150 * 60 && repeatArtists === false
+                ? { color: "red" }
+                : { color: "white" }
+            }
+          >
+            * Allow same artist's tracks if travel duration over 150 min.
+          </p>
+          <button
+            type="button"
+            className="btn"
+            disabled={
+              points.duration > 150 * 60 && repeatArtists === false
+                ? true
+                : false
+            }
+            onClick={() => generatePlaylistRequest(playlistData)}
+          >
+            Generate Playlist
+          </button>
+        </>
       </form>
     </section>
   );

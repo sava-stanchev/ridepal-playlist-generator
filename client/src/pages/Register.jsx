@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import AlertModal from "../components/AlertModal";
+import { joinClasses } from "../common/utils";
 
 const initialState = {
   username: "",
@@ -112,8 +113,10 @@ const Register = () => {
           <label htmlFor="username">Username:</label>
           <input type="text" id="username" aria-required="true" />
           <p
-            className="validation-msg"
-            style={usernameError.properLength ? { color: "white" } : {}}
+            className={joinClasses([
+              "validation-msg",
+              usernameError.properLength && "validation-msg--valid",
+            ])}
           >
             * Between 3 and 15 chars
           </p>
@@ -127,8 +130,10 @@ const Register = () => {
           <label htmlFor="email">Email:</label>
           <input type="email" id="email" aria-required="true" />
           <p
-            className="validation-msg"
-            style={emailError.properEmail ? { color: "white" } : {}}
+            className={joinClasses([
+              "validation-msg",
+              emailError.properEmail && "validation-msg--valid",
+            ])}
           >
             * Valid email address
           </p>
@@ -156,8 +161,10 @@ const Register = () => {
             aria-required="true"
           />
           <p
-            className="validation-msg"
-            style={passwordError.properLength ? { color: "white" } : {}}
+            className={joinClasses([
+              "validation-msg",
+              passwordError.properLength && "validation-msg--valid",
+            ])}
           >
             * Between 4 and 30 chars
           </p>

@@ -24,5 +24,7 @@
 
   &__checkbox-label {
     font-size: 16px;
+    cursor: pointer;
+    user-select: none;
   }
 }
