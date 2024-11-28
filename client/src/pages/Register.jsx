@@ -136,25 +136,24 @@ const Register = () => {
           </p>
         </div>
         <div className="input-group">
-          <div className="password-eye">
-            <label htmlFor="password">Password:</label>
-            <button
-              type="button"
-              className="show-password"
-              onClick={() => showThePassword()}
-              aria-label="Toggle password visibility"
-            >
-              {showPassword === false ? <FaEyeSlash /> : <FaEye />}
-            </button>
-          </div>
+          <label htmlFor="password">Password:</label>
           <input
             type={showPassword === false ? "password" : "text"}
             id="password"
             name="password"
             value={formData.password}
             onChange={handleInputChange}
+            maxLength="64"
             aria-required="true"
           />
+          <button
+            type="button"
+            className="password-visibility-toggle"
+            onClick={() => showThePassword()}
+            aria-label="Toggle password visibility"
+          >
+            {showPassword === false ? <FaEyeSlash /> : <FaEye />}
+          </button>
           <p
             className={joinClasses([
               "validation-msg",
