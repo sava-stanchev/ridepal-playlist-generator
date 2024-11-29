@@ -54,17 +54,17 @@ const GenerateRoute = ({ setPoints }) => {
   }
 
   return (
-    <section className="main">
+    <section className="input-page">
       <AlertModal
         openModal={modal}
         closeModal={() => setModal(false)}
         alertMsg={alertMsg}
       />
-      <h1 className="main__text">
+      <h1 className="input-page__text">
         Choose your
-        <span className="main__text--accent"> route!</span>
+        <span className="input-page__text--accent"> route!</span>
       </h1>
-      <form className="main__form">
+      <form className="input-page__form">
         <div className="input-group">
           <label htmlFor="route-from">From:</label>
           <input

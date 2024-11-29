@@ -1,4 +1,4 @@
-.main {
+.input-page {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -16,10 +16,13 @@
 
   &__form {
     background-color: $dark-blue-magenta;
-    width: 50vw;
-    max-width: 50%;
+    width: 50%;
     padding: 2rem 4rem;
     border-radius: 20px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     @include breakpoint-down(large) {
       max-width: inherit;

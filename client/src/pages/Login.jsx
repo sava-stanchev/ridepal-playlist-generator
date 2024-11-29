@@ -52,17 +52,17 @@ const Login = () => {
   });
 
   return (
-    <section className="main">
+    <section className="input-page">
       <AlertModal
         openModal={modal}
         closeModal={() => setModal(false)}
         alertMsg={alertMsg}
       />
-      <h1 className="main__text">
+      <h1 className="input-page__text">
         Welcome
-        <span className="main__text--accent">!</span>
+        <span className="input-page__text--accent">!</span>
       </h1>
-      <form className="main__form">
+      <form className="input-page__form">
         <div className="input-group">
           <label htmlFor="username">Username:</label>
           <input

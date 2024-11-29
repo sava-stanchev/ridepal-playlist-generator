@@ -78,12 +78,12 @@ const GeneratePlaylist = ({ points }) => {
   }
 
   return (
-    <section className="main">
-      <h1 className="main__text">
+    <section className="input-page">
+      <h1 className="input-page__text">
         Generate your
-        <span className="main__text--accent"> playlist!</span>
+        <span className="input-page__text--accent"> playlist!</span>
       </h1>
-      <form className="main__form generate-playlist">
+      <form className="input-page__form">
         <div className="input-group">
           <p className="generate-playlist__travel-duration">
             Travel duration: {Math.round(points.duration / 60)} min.

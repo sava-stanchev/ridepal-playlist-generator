@@ -25,29 +25,31 @@ const App = () => {
       <BrowserRouter>
         <AuthContextProvider>
           <NavBar />
-          <Switch>
-            <Redirect path="/" exact to="/home" />
-            <Route exact path="/home" component={Home} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <GuardedRoute exact admin path="/users" component={Users} />
-            <GuardedRoute
-              exact
-              path="/generate-route"
-              component={(props) => (
-                <GenerateRoute {...props} setPoints={setPoints} />
-              )}
-            />
-            <GuardedRoute
-              exact
-              path="/generate-playlist"
-              component={(props) => (
-                <GeneratePlaylist {...props} points={points} />
-              )}
-            />
-            <Route exact path="/playlists/:id" component={SinglePlaylist} />
-            <Route path="*" component={PageNotFound} />
-          </Switch>
+          <main>
+            <Switch>
+              <Redirect path="/" exact to="/home" />
+              <Route exact path="/home" component={Home} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+              <GuardedRoute exact admin path="/users" component={Users} />
+              <GuardedRoute
+                exact
+                path="/generate-route"
+                component={(props) => (
+                  <GenerateRoute {...props} setPoints={setPoints} />
+                )}
+              />
+              <GuardedRoute
+                exact
+                path="/generate-playlist"
+                component={(props) => (
+                  <GeneratePlaylist {...props} points={points} />
+                )}
+              />
+              <Route exact path="/playlists/:id" component={SinglePlaylist} />
+              <Route path="*" component={PageNotFound} />
+            </Switch>
+          </main>
         </AuthContextProvider>
       </BrowserRouter>
     </div>

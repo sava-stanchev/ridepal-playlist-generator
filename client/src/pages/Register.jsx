@@ -86,17 +86,17 @@ const Register = () => {
   };
 
   return (
-    <section className="main">
+    <section className="input-page">
       <AlertModal
         openModal={modal}
         closeModal={() => setModal(false)}
         alertMsg={alertMsg}
       />
-      <h1 className="main__text">
+      <h1 className="input-page__text">
         Join and
-        <span className="main__text--accent"> generate!</span>
+        <span className="input-page__text--accent"> generate!</span>
       </h1>
-      <form className="main__form">
+      <form className="input-page__form">
         <div className="input-group">
           <label htmlFor="username">Username:</label>
           <input
