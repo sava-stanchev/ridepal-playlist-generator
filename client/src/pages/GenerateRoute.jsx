@@ -4,6 +4,7 @@ import { BING_KEY } from "../common/constants";
 import AlertModal from "../components/AlertModal";
 
 const GenerateRoute = ({ setPoints }) => {
+  const history = useHistory();
   const [modal, setModal] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
   const [route, setRoute] = useState({
@@ -11,13 +12,12 @@ const GenerateRoute = ({ setPoints }) => {
     to: "",
   });
 
-  const history = useHistory();
-
-  const createRoute = (prop, value) => {
-    setRoute({
-      ...route,
-      [prop]: value,
-    });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setRoute((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   async function getDurationRequest() {
@@ -72,7 +72,8 @@ const GenerateRoute = ({ setPoints }) => {
             type="text"
             name="from"
             value={route.from}
-            onChange={(e) => createRoute("from", e.target.value)}
+            onChange={handleInputChange}
+            aria-required="true"
           />
         </div>
         <div className="input-group">
@@ -82,7 +83,8 @@ const GenerateRoute = ({ setPoints }) => {
             type="text"
             name="to"
             value={route.to}
-            onChange={(e) => createRoute("to", e.target.value)}
+            onChange={handleInputChange}
+            aria-required="true"
           />
         </div>
         <div className="input-group">

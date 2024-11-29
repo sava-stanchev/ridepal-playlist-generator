@@ -2,23 +2,18 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
 import { Slider } from "../components/Slider";
-
-const playlistNameVerificationError = {
-  properLength: false,
-};
+import { joinClasses } from "../common/utils";
 
 const sliders = ["Rap", "Pop", "Rock"];
 
 const GeneratePlaylist = ({ points }) => {
   const history = useHistory();
   const [playlistName, setPlaylistName] = useState("");
+  const [playlistNameError, setPlaylistNameError] = useState(true);
   const [repeatArtists, setRepeatArtists] = useState(false);
-  const [playlistNameError, setPlaylistNameError] = useState(
-    playlistNameVerificationError
-  );
   const [values, setValues] = useState([50, 35, 15]);
 
-  function handleChange(index, value) {
+  const handleSliderChange = (index, value) => {
     let maxValue = 100;
     const remaining = maxValue - parseInt(value, 10);
     setValues((vs) =>
@@ -29,17 +24,16 @@ const GeneratePlaylist = ({ points }) => {
         return remaining / (sliders.length - 1);
       })
     );
-  }
+  };
 
-  const updatePlaylistName = (prop, value) => {
-    setPlaylistName({
-      ...playlistName,
-      [prop]: value,
-    });
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    setPlaylistName(value);
 
-    if (prop === "playlistName") {
-      const properLength = value.length >= 3 && value.length <= 20;
-      setPlaylistNameError({ ...playlistNameError, properLength });
+    if (value.length >= 3 && value.length <= 20) {
+      setPlaylistNameError(false);
+    } else {
+      setPlaylistNameError(true);
     }
   };
 
@@ -91,12 +85,15 @@ const GeneratePlaylist = ({ points }) => {
           <label htmlFor="playlist-name">Playlist name:</label>
           <input
             id="playlist-name"
+            name="playlist-name"
             type="text"
-            onChange={(e) => updatePlaylistName("playlistName", e.target.value)}
+            onChange={handleInputChange}
           />
           <p
-            className="validation-msg"
-            style={playlistNameError.properLength ? { color: "white" } : {}}
+            className={joinClasses([
+              "validation-msg",
+              !playlistNameError && "validation-msg--valid",
+            ])}
           >
             * Between 3 and 20 chars
           </p>
@@ -108,7 +105,7 @@ const GeneratePlaylist = ({ points }) => {
               index={index}
               value={Math.round(values[index])}
               title={item}
-              onChange={(e) => handleChange(index, e.target.value)}
+              onChange={(e) => handleSliderChange(index, e.target.value)}
             />
           ))}
         </div>
@@ -131,7 +128,7 @@ const GeneratePlaylist = ({ points }) => {
           <p
             className="reminder-msg"
             style={
-              points.duration > 150 * 60 && repeatArtists === false
+              points.duration > 150 * 60 && !repeatArtists
                 ? { color: "red" }
                 : { color: "white" }
             }
@@ -142,9 +139,8 @@ const GeneratePlaylist = ({ points }) => {
             type="button"
             className="btn"
             disabled={
-              points.duration > 150 * 60 && repeatArtists === false
-                ? true
-                : false
+              (points.duration > 150 * 60 && !repeatArtists) ||
+              playlistNameError
             }
             onClick={() => generatePlaylistRequest(playlistData)}
           >
