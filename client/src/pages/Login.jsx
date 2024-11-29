@@ -10,16 +10,17 @@ const Login = () => {
   const auth = useContext(AuthContext);
   const [modal, setModal] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
-  const [userInput, setUserInput] = useState({
+  const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
 
-  const updateUserInput = (prop, value) => {
-    setUserInput({
-      ...userInput,
-      [prop]: value,
-    });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   async function signIn(request) {
@@ -48,7 +49,7 @@ const Login = () => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(userInput),
+    body: JSON.stringify(formData),
   });
 
   return (
@@ -66,19 +67,23 @@ const Login = () => {
         <div className="input-group">
           <label htmlFor="username">Username:</label>
           <input
-            id="username"
             type="text"
+            id="username"
+            name="username"
+            value={formData.username}
+            onChange={handleInputChange}
             aria-required="true"
-            onChange={(e) => updateUserInput("username", e.target.value)}
           />
         </div>
         <div className="input-group">
           <label htmlFor="password">Password:</label>
           <input
-            id="password"
             type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
             aria-required="true"
-            onChange={(e) => updateUserInput("password", e.target.value)}
           />
         </div>
         <div className="input-group">
