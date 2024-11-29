@@ -77,12 +77,8 @@ const Register = () => {
     body: JSON.stringify(formData),
   });
 
-  const showThePassword = () => {
-    if (showPassword === false) {
-      setShowPassword(true);
-    } else {
-      setShowPassword(false);
-    }
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -138,7 +134,7 @@ const Register = () => {
         <div className="input-group">
           <label htmlFor="password">Password:</label>
           <input
-            type={showPassword === false ? "password" : "text"}
+            type={showPassword ? "text" : "password"}
             id="password"
             name="password"
             value={formData.password}
@@ -149,7 +145,7 @@ const Register = () => {
           <button
             type="button"
             className="password-visibility-toggle"
-            onClick={() => showThePassword()}
+            onClick={togglePasswordVisibility}
             aria-label="Toggle password visibility"
           >
             {showPassword === false ? <FaEyeSlash /> : <FaEye />}

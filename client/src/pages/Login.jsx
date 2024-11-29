@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 import decode from "jwt-decode";
 import { AuthContext } from "../providers/auth-context";
 import AlertModal from "../components/AlertModal";
@@ -14,6 +15,7 @@ const Login = () => {
     username: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -52,6 +54,10 @@ const Login = () => {
     body: JSON.stringify(formData),
   });
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <section className="input-page">
       <AlertModal
@@ -78,13 +84,21 @@ const Login = () => {
         <div className="input-group">
           <label htmlFor="password">Password:</label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             name="password"
             value={formData.password}
             onChange={handleInputChange}
             aria-required="true"
           />
+          <button
+            type="button"
+            className="password-visibility-toggle"
+            onClick={togglePasswordVisibility}
+            aria-label="Toggle password visibility"
+          >
+            {showPassword === false ? <FaEyeSlash /> : <FaEye />}
+          </button>
         </div>
         <div className="input-group">
           <button
