@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import decode from "jwt-decode";
@@ -109,6 +109,9 @@ const Login = () => {
             Sign in
           </button>
         </div>
+        <Link className="input-page__link" to="/forgotten-password">
+          Forgot your password?
+        </Link>
       </form>
     </section>
   );

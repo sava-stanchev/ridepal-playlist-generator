@@ -12,6 +12,7 @@ import SinglePlaylist from "./pages/SinglePlaylist";
 import GenerateRoute from "./pages/GenerateRoute";
 import GeneratePlaylist from "./pages/GeneratePlaylist";
 import PageNotFound from "./pages/PageNotFound";
+import ForgottenPassword from "./pages/ForgottenPassword";
 
 const App = () => {
   const [points, setPoints] = useState({
@@ -31,6 +32,11 @@ const App = () => {
               <Route exact path="/home" component={Home} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
+              <Route
+                exact
+                path="/forgotten-password"
+                component={ForgottenPassword}
+              />
               <GuardedRoute exact admin path="/users" component={Users} />
               <GuardedRoute
                 exact
