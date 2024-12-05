@@ -1,26 +1,26 @@
-@import "./abstracts/colors";
-@import "./abstracts/breakpoints";
-@import "./abstracts/functions";
+@use "./abstracts/colors";
+@use "./abstracts/breakpoints";
+@use "./abstracts/functions";
 
-@import "./base/reset";
-@import "./base/global";
+@use "./base/reset";
+@use "./base/global";
 
-@import "./utilities/container";
-@import "./utilities/classes";
+@use "./utilities/container";
+@use "./utilities/classes";
 
-@import "./layout/header";
+@use "./layout/header";
 
-@import "./pages/input-page";
-@import "./pages/error";
-@import "./pages/users";
-@import "./pages/playlist";
-@import "./pages/generate-playlist";
+@use "./pages/input-page";
+@use "./pages/error";
+@use "./pages/users";
+@use "./pages/playlist";
+@use "./pages/generate-playlist";
 
-@import "./components/input-group";
-@import "./components/filters";
-@import "./components/search";
-@import "./components/playlist-card";
-@import "./components/modal";
-@import "./components/genres";
-@import "./components/pagination";
-@import "./components/loader";
+@use "./components/input-group";
+@use "./components/filters";
+@use "./components/search";
+@use "./components/playlist-card";
+@use "./components/modal";
+@use "./components/genres";
+@use "./components/pagination";
+@use "./components/loader";

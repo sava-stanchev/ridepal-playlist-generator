@@ -1,3 +1,5 @@
+@use "../abstracts" as *;
+
 .users {
   &__container {
     padding: 20px 5%;
