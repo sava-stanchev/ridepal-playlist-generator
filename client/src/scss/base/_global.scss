@@ -1,9 +1,11 @@
 @use "../abstracts" as *;
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,700");
 
 body {
-  line-height: 1.3;
-  min-height: 100vh;
-  overflow-x: hidden;
+  font-family: Poppins, sans-serif;
+  font-size: 1.2rem;
+  background-color: $dark-grayish-blue;
+  color: white;
 }
 
 button:disabled {
@@ -29,4 +31,19 @@ button:disabled {
 .reminder-msg {
   font-size: 0.85rem;
   margin: 10px 0;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  background: $dark-blue-magenta;
+  border-radius: calc(12px / 2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: $medium-gray;
+  border-radius: calc(12px / 2);
+}
+
+::placeholder {
+  color: $medium-gray;
 }
