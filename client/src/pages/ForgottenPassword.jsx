@@ -1,14 +1,33 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { isValidEmail, joinClasses } from "../common/utils";
 
 const ForgottenPassword = () => {
   const [formData, setFormData] = useState({
     email: "",
   });
+  const [formErrors, setFormErrors] = useState({
+    email: true,
+  });
 
   const handleInputChange = (e) => {
-    const { value } = e.target;
-    setFormData(value);
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+
+    if (name === "email" && isValidEmail(value)) {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        email: false,
+      }));
+    } else {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        [name]: true,
+      }));
+    }
   };
 
   return (
@@ -28,6 +47,14 @@ const ForgottenPassword = () => {
             onChange={handleInputChange}
             aria-required="true"
           />
+          <p
+            className={joinClasses([
+              "validation-msg",
+              !formErrors.email && "validation-msg--valid",
+            ])}
+          >
+            Please enter a valid email address.
+          </p>
         </div>
         <div className="input-group">
           <button type="button" className="btn">
