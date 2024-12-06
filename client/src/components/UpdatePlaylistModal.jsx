@@ -1,17 +1,24 @@
 import { useState, useRef, useEffect } from "react";
 import * as playlistActions from "../store/actions/playlists";
 import { useDispatch } from "react-redux";
+import { joinClasses } from "../common/utils";
 
-const playlistNameVerificationError = {
-  properLength: true,
-};
+export default function UpdatePlaylistModal({
+  playlist,
+  openModal,
+  closeModal,
+}) {
+  if (!playlist) return null;
 
-export default function Modal({ playlist, openModal, closeModal }) {
-  const ref = useRef();
-  const [updatedPlaylist, setUpdatedPlaylist] = useState(null);
-  const [playlistNameError, setPlaylistNameError] = useState(
-    playlistNameVerificationError
+  return (
+    <Modal openModal={openModal} closeModal={closeModal} playlist={playlist} />
   );
+}
+
+const Modal = ({ playlist, openModal, closeModal }) => {
+  const ref = useRef();
+  const [playlistName, setPlaylistName] = useState(playlist.title);
+  const [playlistNameError, setPlaylistNameError] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,27 +29,24 @@ export default function Modal({ playlist, openModal, closeModal }) {
     }
   }, [openModal]);
 
-  if (!playlist) return null;
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    setPlaylistName(value);
 
-  const updatePlaylistProperties = (prop, value) => {
-    setUpdatedPlaylist({
-      ...updatedPlaylist,
-      [prop]: value,
-    });
-
-    if (prop === "title") {
-      const properLength = value.length >= 3 && value.length <= 20;
-      setPlaylistNameError({ ...playlistNameError, properLength });
+    if (value.length >= 3 && value.length <= 20) {
+      setPlaylistNameError(false);
+    } else {
+      setPlaylistNameError(true);
     }
   };
 
   const updatePlaylist = () => {
-    dispatch(playlistActions.updatePlaylist(playlist.id, updatedPlaylist));
+    dispatch(playlistActions.updatePlaylist(playlist.id, playlistName));
   };
 
   const closeFunction = () => {
     updatePlaylist();
-    setUpdatedPlaylist(null);
+    setPlaylistName("");
     closeModal();
   };
 
@@ -52,16 +56,19 @@ export default function Modal({ playlist, openModal, closeModal }) {
         &times;
       </button>
       <div className="input-group">
-        <label>New playlist name:</label>
+        <label htmlFor="new-playlist-name">New playlist name:</label>
         <input
           type="text"
-          name="title"
-          value={updatedPlaylist ? updatedPlaylist.title : playlist.title}
-          onChange={(e) => updatePlaylistProperties("title", e.target.value)}
+          id="new-playlist-name"
+          name="new-playlist-name"
+          value={playlistName || playlist.title}
+          onChange={handleInputChange}
         />
         <p
-          className="input-group__validation-msg"
-          style={{ color: playlistNameError.properLength ? "white" : "red" }}
+          className={joinClasses([
+            "input-group__validation-msg",
+            !playlistNameError && "input-group__validation-msg--valid",
+          ])}
         >
           * Between 3 and 20 chars
         </p>
@@ -69,7 +76,7 @@ export default function Modal({ playlist, openModal, closeModal }) {
       <div className="input-group">
         <button
           className="btn"
-          disabled={playlistNameError.properLength ? false : true}
+          disabled={playlistNameError}
           onClick={closeFunction}
         >
           Update
@@ -77,4 +84,4 @@ export default function Modal({ playlist, openModal, closeModal }) {
       </div>
     </dialog>
   );
-}
+};

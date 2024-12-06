@@ -38,13 +38,13 @@ const GeneratePlaylist = ({ points }) => {
   };
 
   const playlistData = {
-    playlistName: playlistName.playlistName,
+    playlistName,
     genres: [
       { name: "rap/hip hop", duration: values[0] },
       { name: "pop", duration: values[1] },
       { name: "rock", duration: values[2] },
     ],
-    points: points,
+    points,
     repeatArtist: repeatArtists,
   };
 
