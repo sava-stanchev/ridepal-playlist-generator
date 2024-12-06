@@ -105,8 +105,8 @@ const Register = () => {
           />
           <p
             className={joinClasses([
-              "validation-msg",
-              !formErrors.username && "validation-msg--valid",
+              "input-group__validation-msg",
+              !formErrors.username && "input-group__validation-msg--valid",
             ])}
           >
             Username must be at least 3 characters long.
@@ -124,8 +124,8 @@ const Register = () => {
           />
           <p
             className={joinClasses([
-              "validation-msg",
-              !formErrors.email && "validation-msg--valid",
+              "input-group__validation-msg",
+              !formErrors.email && "input-group__validation-msg--valid",
             ])}
           >
             Please enter a valid email address.
@@ -152,8 +152,8 @@ const Register = () => {
           </button>
           <p
             className={joinClasses([
-              "validation-msg",
-              !formErrors.password && "validation-msg--valid",
+              "input-group__validation-msg",
+              !formErrors.password && "input-group__validation-msg--valid",
             ])}
           >
             Password must be at least 4 characters long.

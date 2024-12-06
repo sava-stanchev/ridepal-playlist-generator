@@ -51,6 +51,17 @@
     }
   }
 
+  &__reminder-msg {
+    font-size: 0.85rem;
+    margin: 10px 0;
+  }
+
+  &__city-reminder-msg {
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+    margin-top: 0;
+  }
+
   @include breakpoint-down(large) {
     flex-direction: column;
     justify-content: center;

@@ -78,7 +78,7 @@ export default function Modal({ user, users, openModal, closeModal }) {
           onChange={(e) => updateUserProperties("username", e.target.value)}
         />
         <p
-          className="validation-msg"
+          className="input-group__validation-msg"
           style={{ color: usernameError.properLength ? "white" : "red" }}
         >
           * Between 3 and 15 chars
@@ -97,7 +97,7 @@ export default function Modal({ user, users, openModal, closeModal }) {
           onChange={(e) => updateUserProperties("email", e.target.value)}
         />
         <p
-          className="validation-msg"
+          className="input-group__validation-msg"
           style={{ color: emailError.properEmail ? "white" : "red" }}
         >
           * Valid email address

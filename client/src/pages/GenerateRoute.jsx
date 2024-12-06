@@ -88,7 +88,7 @@ const GenerateRoute = ({ setPoints }) => {
           />
         </div>
         <div className="input-group">
-          <p className="city-reminder-msg">
+          <p className="input-page__city-reminder-msg">
             * Travel locations should be valid city names
           </p>
           <button

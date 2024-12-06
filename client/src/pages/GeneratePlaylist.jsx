@@ -91,8 +91,8 @@ const GeneratePlaylist = ({ points }) => {
           />
           <p
             className={joinClasses([
-              "validation-msg",
-              !playlistNameError && "validation-msg--valid",
+              "input-group__validation-msg",
+              !playlistNameError && "input-group__validation-msg--valid",
             ])}
           >
             * Between 3 and 20 chars
@@ -126,7 +126,7 @@ const GeneratePlaylist = ({ points }) => {
             </label>
           </div>
           <p
-            className="reminder-msg"
+            className="input-page__reminder-msg"
             style={
               points.duration > 150 * 60 && !repeatArtists
                 ? { color: "red" }

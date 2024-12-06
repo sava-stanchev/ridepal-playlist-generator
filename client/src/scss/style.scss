@@ -5,17 +5,7 @@
 @use "./base/reset";
 @use "./base/global";
 
-@use "./utilities/container";
-@use "./utilities/classes";
-
-@use "./layout/header";
-
-@use "./pages/input-page";
-@use "./pages/error";
-@use "./pages/users";
-@use "./pages/playlist";
-@use "./pages/generate-playlist";
-
+@use "./components/header";
 @use "./components/input-group";
 @use "./components/filters";
 @use "./components/search";
@@ -24,3 +14,12 @@
 @use "./components/genres";
 @use "./components/pagination";
 @use "./components/loader";
+
+@use "./layout/input-page";
+@use "./layout/error";
+@use "./layout/users";
+@use "./layout/playlist";
+@use "./layout/generate-playlist";
+
+@use "./utilities/container";
+@use "./utilities/classes";

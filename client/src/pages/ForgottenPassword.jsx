@@ -49,8 +49,8 @@ const ForgottenPassword = () => {
           />
           <p
             className={joinClasses([
-              "validation-msg",
-              !formErrors.email && "validation-msg--valid",
+              "input-group__validation-msg",
+              !formErrors.email && "input-group__validation-msg--valid",
             ])}
           >
             Please enter a valid email address.

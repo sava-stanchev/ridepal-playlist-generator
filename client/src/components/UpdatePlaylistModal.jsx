@@ -60,7 +60,7 @@ export default function Modal({ playlist, openModal, closeModal }) {
           onChange={(e) => updatePlaylistProperties("title", e.target.value)}
         />
         <p
-          className="validation-msg"
+          className="input-group__validation-msg"
           style={{ color: playlistNameError.properLength ? "white" : "red" }}
         >
           * Between 3 and 20 chars
