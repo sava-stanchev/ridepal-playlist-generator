@@ -53,6 +53,7 @@
       letter-spacing: 1px;
       text-align: center;
       font-size: 1rem;
+      margin: 0;
     }
   }
 
@@ -99,12 +100,9 @@
     background-color: #88a73e;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
-    text-decoration: none;
     font-size: 1rem;
-    outline: none;
     border: none;
     cursor: pointer;
-    bottom: 1rem;
 
     &:hover {
       background-color: #7b8d51;
@@ -121,14 +119,12 @@
     display: inline-block;
     color: white;
     background-color: transparent;
-    margin-left: 1rem;
+    margin-left: 15px;
+    padding: 0;
     border-radius: 0.5rem;
-    text-decoration: none;
     font-size: 0.9rem;
-    outline: none;
     border: none;
     cursor: pointer;
-    bottom: 1rem;
 
     &:hover svg {
       transform: scale(1.2);

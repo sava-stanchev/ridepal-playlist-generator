@@ -16,10 +16,10 @@ const Track = ({ cover, artist_name, track_title, duration, preview }) => {
           {artist_name} - {track_title}
         </h5>
       </td>
-      <td className="song__length">
+      <td>
         <h5>{trackTimeFormat(duration)}</h5>
       </td>
-      <td className="song__preview">
+      <td>
         <audio controls className="song__audio" controlsList="nodownload">
           <source src={preview} type="audio/mp3" />
         </audio>

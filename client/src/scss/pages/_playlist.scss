@@ -3,7 +3,6 @@
 .playlist {
   display: flex;
   align-items: center;
-  flex-grow: 1;
   justify-content: center;
 
   &__container {
@@ -32,12 +31,14 @@
         background: $medium-blue-magenta;
       }
     }
+
+    td {
+      padding: 5px 10px;
+    }
   }
 
   &__header {
     padding: 0.8rem;
-    text-align: center;
-    font-size: 1.5rem;
     background: $dark-blue-magenta;
   }
 
@@ -48,8 +49,6 @@
 
 .song {
   &__cover {
-    padding: 0 1rem;
-
     @include breakpoint-down(small) {
       display: none;
     }
@@ -62,25 +61,12 @@
     img {
       width: 60px;
       height: 60px;
-      margin: 6px 6px;
-      padding: 1px;
     }
   }
 
   &__title {
     width: 100%;
     text-align: left;
-    padding-right: 1rem;
-    padding-left: 1rem;
-    transition: all 0.3s ease-in;
-  }
-
-  &__length {
-    padding: 1rem;
-  }
-
-  &__preview {
-    padding: 1rem 0;
   }
 
   &__audio {

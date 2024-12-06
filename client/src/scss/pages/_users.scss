@@ -11,10 +11,6 @@
     border-collapse: collapse;
 
     tbody tr td {
-      font-size: rem(18);
-      letter-spacing: rem(0.35);
-      font-weight: normal;
-      color: #f1f1f1;
       padding: rem(12) rem(32);
       text-align: center;
       background: $medium-blue-magenta;
@@ -22,13 +18,7 @@
   }
 
   &__table-header {
-    font-size: rem(18);
-    font-weight: 600;
-    letter-spacing: rem(0.35);
-    color: white;
-    opacity: 1;
     padding: rem(12);
-    vertical-align: top;
     border-collapse: collapse;
     background: $dark-blue-magenta;
   }
@@ -44,11 +34,8 @@
     &--delete {
       color: white;
       background-color: transparent;
-      outline: none;
       border: none;
       cursor: pointer;
-      text-decoration: none;
-      font-size: 1rem;
 
       &:hover svg {
         transform: scale(1.2);
