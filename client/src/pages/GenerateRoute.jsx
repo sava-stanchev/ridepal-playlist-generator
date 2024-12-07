@@ -1,70 +1,78 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { BING_KEY } from "../common/constants";
 import AlertModal from "../components/AlertModal";
 
 const GenerateRoute = ({ setPoints }) => {
   const history = useHistory();
-  const [modal, setModal] = useState(false);
-  const [alertMsg, setAlertMsg] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState(null);
   const [route, setRoute] = useState({
     from: "",
     to: "",
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setRoute((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  const handleInputChange = useCallback((event) => {
+    const { name, value } = event.target;
+    setRoute((prevRoute) => ({ ...prevRoute, [name]: value }));
+  }, []);
 
-  async function getDurationRequest() {
+  const fetchRouteDuration = useCallback(async () => {
+    const { from, to } = route;
+
     try {
       const response = await fetch(
-        `http://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0=${route.from}&wp.1=${route.to}&routeAttributes=excludeItinerary&key=${BING_KEY}`,
-        {
-          method: "GET",
-        }
+        `https://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0=${encodeURIComponent(
+          from
+        )}&wp.1=${encodeURIComponent(
+          to
+        )}&routeAttributes=excludeItinerary&key=${BING_KEY}`
       );
 
       if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      } else {
-        const result = await response.json();
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      const travelData = result.resourceSets[0]?.resources[0];
+
+      if (travelData?.travelDuration) {
         setPoints({
-          duration: result.resourceSets[0].resources[0].travelDuration,
-          from: route.from,
-          to: route.to,
+          duration: travelData.travelDuration,
+          from,
+          to,
         });
 
-        if (result.resourceSets[0].resources[0].travelDuration) {
-          const path = `/generate-playlist`;
-          history.push(path);
-        }
+        history.push("/generate-playlist");
       }
     } catch (error) {
-      console.error(error.message);
-      setAlertMsg(
-        "Something went wrong! Make sure you enter valid city names."
+      console.error("Error fetching route duration:", error);
+      setAlertMessage(
+        "Failed to generate route. Please enter valid city names."
       );
-      setModal(true);
+      setModalOpen(true);
     }
-  }
+  }, [route, setPoints, history]);
+
+  const closeModal = useCallback(() => {
+    setModalOpen(false);
+    setAlertMessage(null);
+  }, []);
+
+  const isFormValid = route.from.trim() !== "" && route.to.trim() !== "";
 
   return (
     <section className="input-page">
       <AlertModal
-        openModal={modal}
-        closeModal={() => setModal(false)}
-        alertMsg={alertMsg}
+        openModal={isModalOpen}
+        closeModal={closeModal}
+        alertMsg={alertMessage}
       />
       <h1 className="input-page__text">
         Choose your
         <span className="input-page__text--accent"> route!</span>
       </h1>
-      <form className="input-page__form">
+      <form className="input-page__form" onSubmit={(e) => e.preventDefault()}>
         <div className="input-group">
           <label htmlFor="route-from">From:</label>
           <input
@@ -74,6 +82,7 @@ const GenerateRoute = ({ setPoints }) => {
             value={route.from}
             onChange={handleInputChange}
             aria-required="true"
+            placeholder="Enter starting location"
           />
         </div>
         <div className="input-group">
@@ -85,6 +94,7 @@ const GenerateRoute = ({ setPoints }) => {
             value={route.to}
             onChange={handleInputChange}
             aria-required="true"
+            placeholder="Enter destination"
           />
         </div>
         <div className="input-group">
@@ -94,8 +104,8 @@ const GenerateRoute = ({ setPoints }) => {
           <button
             type="button"
             className="btn"
-            disabled={route.from && route.to ? false : true}
-            onClick={() => getDurationRequest()}
+            disabled={!isFormValid}
+            onClick={fetchRouteDuration}
           >
             Next
           </button>
