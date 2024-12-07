@@ -132,7 +132,10 @@ const Home = () => {
           </div>
         </div>
         <div className="filters__search-container">
-          <Search setSearch={setSearch} />
+          <Search
+            search={search}
+            onSearchChange={(value) => setSearch(value)}
+          />
         </div>
       </div>
       {!playlists.length && !search.length && <Loader />}

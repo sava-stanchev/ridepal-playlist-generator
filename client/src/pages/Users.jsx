@@ -94,7 +94,7 @@ const Users = () => {
   return (
     <>
       <section className="filters__container">
-        <Search setSearch={setSearch} />
+        <Search search={search} onSearchChange={(value) => setSearch(value)} />
       </section>
       {!foundUsers.length && !search.length && <Loader />}
       {foundUsers.length > 0 && (
