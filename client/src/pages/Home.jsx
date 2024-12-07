@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import ReactPaginate from "react-paginate";
 import { AuthContext } from "../providers/auth-context";
 import UpdatePlaylistModal from "../components/UpdatePlaylistModal";
@@ -70,14 +70,17 @@ const Home = () => {
     setFilteredPlaylists(tempPlaylists);
   };
 
-  const deletePlaylist = (id) => {
-    dispatch(playlistActions.deletePlaylist(id));
-  };
-
-  const editPlaylist = (playlist) => {
+  const handleRenamePlaylist = useCallback((playlist) => {
     setCurrentPlaylist(playlist);
     setModal(true);
-  };
+  }, []);
+
+  const handleDeletePlaylist = useCallback(
+    (id) => {
+      dispatch(playlistActions.deletePlaylist(id));
+    },
+    [dispatch]
+  );
 
   const pageCount = Math.ceil(filteredPlaylists.length / playlistsPerPage);
   const changePage = ({ selected }) => {
@@ -144,8 +147,8 @@ const Home = () => {
                   {...playlist}
                   playlist={playlist}
                   user={user}
-                  editPlaylist={editPlaylist}
-                  deletePlaylist={deletePlaylist}
+                  editPlaylist={handleRenamePlaylist}
+                  deletePlaylist={handleDeletePlaylist}
                 />
               ))}
           </div>
