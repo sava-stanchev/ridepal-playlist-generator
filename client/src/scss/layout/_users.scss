@@ -59,6 +59,16 @@
       }
     }
   }
+
+  &__crown-icon {
+    &--user {
+      color: white;
+    }
+
+    &--admin {
+      color: #ffd700;
+    }
+  }
 }
 
 @include breakpoint-down(large) {
