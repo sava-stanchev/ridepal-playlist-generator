@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-const SearchBar = ({ search, onSearchChange }) => {
+const Search = ({ search, onSearchChange }) => {
   const [searchInput, setSearchInput] = useState(search);
 
   useEffect(() => {
@@ -28,4 +28,4 @@ const SearchBar = ({ search, onSearchChange }) => {
   );
 };
 
-export default SearchBar;
+export default Search;
