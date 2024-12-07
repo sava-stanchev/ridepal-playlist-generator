@@ -1,63 +1,47 @@
 import { HOST } from "../common/constants";
-import { useEffect, useState } from "react";
-import { convertHMS, trackTimeFormat } from "../common/utils";
+import { useCallback, useEffect, useState } from "react";
+import { convertHMS } from "../common/utils";
 import Loader from "../components/Loader";
+import Track from "../components/Track";
 
-const Track = ({ cover, artist_name, track_title, duration, preview }) => {
-  return (
-    <tr className="song">
-      <td className="song__cover">
-        <div className="song__cover-img">
-          <img src={cover} alt="cover" />
-        </div>
-      </td>
-      <td className="song__title">
-        <h5>
-          {artist_name} - {track_title}
-        </h5>
-      </td>
-      <td>
-        <h5>{trackTimeFormat(duration)}</h5>
-      </td>
-      <td>
-        <audio controls className="song__audio" controlsList="nodownload">
-          <source src={preview} type="audio/mp3" />
-        </audio>
-      </td>
-    </tr>
-  );
-};
-
-const SinglePlaylist = (props) => {
-  const { id } = props.match.params;
+const SinglePlaylist = ({
+  match: {
+    params: { id },
+  },
+}) => {
   const [playlistData, setPlaylistData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function getPlaylistRequest() {
-      try {
-        const response = await fetch(`${HOST}/playlists/${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+  const getPlaylist = useCallback(async () => {
+    try {
+      const response = await fetch(`${HOST}/playlists/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-        if (!response.ok) {
-          throw new Error(`Response status: ${response.status}`);
-        } else {
-          const result = await response.json();
-          setPlaylistData(result);
-        }
-      } catch (error) {
-        console.error(error.message);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch playlist. Status: ${response.status}`);
       }
-    }
 
-    getPlaylistRequest();
+      const result = await response.json();
+      setPlaylistData(result);
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   }, [id]);
+
+  useEffect(() => {
+    getPlaylist();
+  }, [getPlaylist]);
+
+  const playlistTitle = playlistData?.[0]?.title ?? "Unknown Playlist";
+  const playlistPlaytime = playlistData?.[0]?.playtime
+    ? convertHMS(playlistData[0].playtime)
+    : "N/A";
 
   return (
     <div className="playlist">
@@ -69,8 +53,7 @@ const SinglePlaylist = (props) => {
               <tr>
                 <th className="playlist__header" colSpan="4">
                   <h1 className="playlist__title">
-                    Tracklist for "{playlistData[0].title}" (
-                    {convertHMS(playlistData[0].playtime)})
+                    Tracklist for "{playlistTitle}" ({playlistPlaytime})
                   </h1>
                 </th>
               </tr>
