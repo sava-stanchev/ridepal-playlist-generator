@@ -107,7 +107,7 @@ const deletePlaylist = async (id) => {
 };
 
 const updatePlaylistName = async (playlist) => {
-  const { title } = playlist;
+  const { newPlaylistName } = playlist;
   const playlistId = playlist[0].id;
 
   const sql = `
@@ -116,7 +116,7 @@ const updatePlaylistName = async (playlist) => {
     WHERE p.id = ?
   `;
 
-  return await pool.query(sql, [title, playlistId]);
+  return await pool.query(sql, [newPlaylistName, playlistId]);
 };
 
 export default {

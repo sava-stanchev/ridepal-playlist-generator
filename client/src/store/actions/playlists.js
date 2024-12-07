@@ -48,14 +48,13 @@ export const deletePlaylist = (id) => {
 export const updatePlaylist = (id, newPlaylistName) => {
   return async (dispatch, getState) => {
     try {
-      console.log(newPlaylistName);
       const response = await fetch(`${HOST}/playlists/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           authorization: `bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(newPlaylistName),
+        body: JSON.stringify({ newPlaylistName }),
       });
 
       if (!response.ok) {
