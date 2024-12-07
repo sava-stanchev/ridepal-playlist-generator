@@ -1,13 +1,18 @@
 import pool from "./pool.js";
 
 const getUserBy = async (column, value) => {
+  const allowedColumns = ["id", "username", "email"];
+  if (!allowedColumns.includes(column)) throw new Error("Invalid column name");
+
   const sql = `
-    SELECT u.id, u.username, u.password, u.email, u.role_id FROM users AS u
-    WHERE u.${column} = ?
+    SELECT u.id, u.username, u.password, u.email, u.role_id 
+    FROM users AS u
+    WHERE u.${column} = ? 
     AND u.is_deleted = 0
   `;
-  const result = await pool.query(sql, [value]);
-  return result[0][0];
+
+  const [result] = await pool.query(sql, [value]);
+  return result[0] || null;
 };
 
 const createUser = async (user) => {
@@ -15,79 +20,79 @@ const createUser = async (user) => {
     INSERT INTO users (username, password, email)
     VALUES (?, ?, ?)
   `;
-  const result = await pool.query(sqlNewUser, [
+
+  const [result] = await pool.query(sqlNewUser, [
     user.username,
     user.password,
     user.email,
   ]);
 
   const sql = `
-    SELECT u.username, u.email
-    FROM users AS u
+    SELECT u.username, u.email 
+    FROM users AS u 
     WHERE u.id = ?
   `;
-  const createdUser = (await pool.query(sql, [result.insertId]))[0];
-  return createdUser;
+
+  const [createdUser] = await pool.query(sql, [result.insertId]);
+  return createdUser[0] || null;
 };
 
 const getAllUsers = async () => {
   const sql = `
-    SELECT u.id, u.username, u.password, u.email, r.role, u.is_deleted
-    FROM users AS u
-    JOIN roles AS r
-    ON u.role_id = r.id
+    SELECT u.id, u.username, u.email, r.role, u.is_deleted 
+    FROM users AS u 
+    JOIN roles AS r ON u.role_id = r.id 
     WHERE u.is_deleted = 0
   `;
-  const result = await pool.query(sql);
-  return result[0];
+
+  const [result] = await pool.query(sql);
+  return result;
 };
 
 const getUserById = async (id) => {
   const sql = `
-    SELECT u.id, u.username, u.password, u.email, r.role, u.is_deleted, u.role_id
-    FROM users AS u
-    JOIN roles AS r
-    ON u.role_id = r.id
+    SELECT u.id, u.username, u.email, r.role, u.is_deleted, u.role_id 
+    FROM users AS u 
+    JOIN roles AS r ON u.role_id = r.id 
     WHERE u.id = ?
   `;
-  const user = await pool.query(sql, [id]);
-  return user[0][0];
+
+  const [user] = await pool.query(sql, [id]);
+  return user[0] || null;
 };
 
 const deleteUser = async (id) => {
   const sql = `
-    UPDATE users SET users.is_deleted = 1
-    WHERE users.id = ?
+    UPDATE users 
+    SET is_deleted = 1 
+    WHERE id = ?
   `;
-  return await pool.query(sql, [id]);
+
+  const [result] = await pool.query(sql, [id]);
+  return result.affectedRows > 0;
 };
 
 const updateUser = async (user) => {
   const sql = `
-    UPDATE users AS u
+    UPDATE users 
     SET username = ?, email = ? 
-    WHERE u.id = ?
+    WHERE id = ?
   `;
 
-  await pool.query(sql, [user.username, user.email, user.id]);
+  const [result] = await pool.query(sql, [user.username, user.email, user.id]);
+  return result.affectedRows > 0;
 };
 
 const changeRole = async (user) => {
-  let sql;
-
-  if (user.role_id === 2) {
-    sql = `
-    UPDATE users SET users.role_id = 1
-    WHERE users.id = ?
+  const newRoleId = user.role_id === 2 ? 1 : 2;
+  const sql = `
+    UPDATE users 
+    SET role_id = ? 
+    WHERE id = ?
   `;
-  } else {
-    sql = `
-    UPDATE users SET users.role_id = 2
-    WHERE users.id = ?
-  `;
-  }
 
-  await pool.query(sql, [user.id]);
+  const [result] = await pool.query(sql, [newRoleId, user.id]);
+  return result.affectedRows > 0;
 };
 
 export default {
