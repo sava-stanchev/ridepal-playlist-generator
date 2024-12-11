@@ -1,18 +1,23 @@
 export const convertHMS = (value) => {
   const sec = parseInt(value, 10);
-  let hours = Math.floor(sec / 3600);
-  let minutes = Math.floor((sec - hours * 3600) / 60);
-  let seconds = sec - hours * 3600 - minutes * 60;
-  if (seconds >= 30) minutes++;
-  if (minutes < 10) minutes = "0" + minutes;
-  if (hours < 1) {
-    return minutes + "min.";
+  const hours = Math.floor(sec / 3600);
+  const minutes = Math.floor((sec % 3600) / 60);
+  const seconds = sec % 60;
+
+  const adjustedMinutes = seconds >= 30 ? minutes + 1 : minutes;
+  const formattedMinutes = String(adjustedMinutes).padStart(2, "0");
+
+  if (hours === 0) {
+    return `${formattedMinutes}min.`;
   }
-  return hours + "h " + minutes + "min.";
+
+  return `${hours}h ${formattedMinutes}min.`;
 };
 
 export const trackTimeFormat = (s) => {
-  return (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + s;
+  const minutes = Math.floor(s / 60);
+  const seconds = s % 60;
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 };
 
 export const joinClasses = (classesArr) => {
