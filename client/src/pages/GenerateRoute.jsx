@@ -3,9 +3,12 @@ import { useHistory } from "react-router-dom";
 import { BING_KEY } from "../common/constants";
 import AlertModal from "../components/AlertModal";
 
+const BASE_URL = "https://dev.virtualearth.net/REST/V1";
+const API_ENDPOINT = `${BASE_URL}/Routes/Driving`;
+
 const GenerateRoute = ({ setPoints }) => {
   const history = useHistory();
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
   const [route, setRoute] = useState({
     from: "",
@@ -22,7 +25,7 @@ const GenerateRoute = ({ setPoints }) => {
 
     try {
       const response = await fetch(
-        `https://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0=${encodeURIComponent(
+        `${API_ENDPOINT}?wp.0=${encodeURIComponent(
           from
         )}&wp.1=${encodeURIComponent(
           to
@@ -50,12 +53,12 @@ const GenerateRoute = ({ setPoints }) => {
       setAlertMessage(
         "Failed to generate route. Please enter valid city names."
       );
-      setModalOpen(true);
+      setIsModalOpen(true);
     }
   }, [route, setPoints, history]);
 
   const closeModal = useCallback(() => {
-    setModalOpen(false);
+    setIsModalOpen(false);
     setAlertMessage(null);
   }, []);
 
