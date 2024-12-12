@@ -17,7 +17,6 @@ const GuardedRoute = ({ component: Component, admin, ...rest }) => {
     if (user && isTokenExpired(user)) {
       setUser(null);
       localStorage.removeItem("token");
-      localStorage.setItem("exp", true);
     }
   }, [user, setUser]);
 
