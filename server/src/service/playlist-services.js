@@ -3,7 +3,8 @@ import playlistData from "../data/playlists.js";
 import genresData from "../data/genres.js";
 
 export const playlistGenerator = async (req) => {
-  const { duration, playlistName, genres, repeatArtist } = req.body;
+  const { playlistName, genres, repeatArtist } = req.body;
+  const duration = req.body.points.duration;
   const userId = req.user.id;
 
   const getGenresDuration = () => {
@@ -44,7 +45,7 @@ export const playlistGenerator = async (req) => {
 
   const generateTracksList = (tracks, genresDuration) => {
     return genresDuration.map((genre) => {
-      const tracksFiltered = tracks.filter(
+      let tracksFiltered = tracks.filter(
         (track) => track.genre.toLowerCase() === genre.name
       );
       let totalDuration = 0;
