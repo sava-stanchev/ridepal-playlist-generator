@@ -2,11 +2,18 @@ import pool from "./pool.js";
 
 const getGenreByName = async (name) => {
   const sql = `
-    SELECT * FROM genres
+    SELECT * 
+    FROM genres 
     WHERE name = ?
   `;
-  const result = await pool.query(sql, [name]);
-  return result[0][0];
+
+  try {
+    const [result] = await pool.query(sql, [name]);
+    return result.length > 0 ? result[0] : null;
+  } catch (error) {
+    console.error("Error fetching genre by name:", error);
+    throw new Error("Database query failed");
+  }
 };
 
 export default {
