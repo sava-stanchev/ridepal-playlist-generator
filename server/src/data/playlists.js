@@ -38,30 +38,27 @@ const addPlaylistToGenre = async (genreId, genreDeezerId, playlistId) => {
 };
 
 const getAllPlaylists = async () => {
-  const result = await pool.query(`
-    SELECT p.id, p.title, p.created_on, p.playtime, p.user_id,
-      u.username AS created_by, p.rank, p.is_deleted,
-      GROUP_CONCAT(g.name) as genres,
-      (SELECT COUNT(*) 
-        FROM (SELECT p.id, p.title, p.playtime, p.rank, p.created_on, p.user_id, p.is_deleted, u.username,
-        GROUP_CONCAT(g.name) as genres
-        FROM playlists p
-        JOIN genres_has_playlists as gp ON p.id = gp.playlist_id
-        JOIN genres g ON gp.genre_id = g.id
-        JOIN users u ON p.user_id = u.id
-        GROUP BY p.title
-        HAVING p.is_deleted = 0
-      ) as temp) as total
+  const [rows] = await pool.query(`
+    SELECT 
+      p.id, 
+      p.title, 
+      p.created_on, 
+      p.playtime, 
+      p.user_id,
+      u.username AS created_by, 
+      p.rank, 
+      p.is_deleted,
+      GROUP_CONCAT(DISTINCT g.name) AS genres
     FROM playlists p
-    JOIN genres_has_playlists as gp ON p.id = gp.playlist_id
+    JOIN genres_has_playlists gp ON p.id = gp.playlist_id
     JOIN genres g ON gp.genre_id = g.id
     JOIN users u ON p.user_id = u.id
-    GROUP BY p.title
-    HAVING p.is_deleted = 0
+    WHERE p.is_deleted = 0
+    GROUP BY p.id
     ORDER BY p.rank
   `);
 
-  return result[0];
+  return rows;
 };
 
 const getPlaylistById = async (id) => {
