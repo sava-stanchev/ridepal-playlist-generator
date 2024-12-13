@@ -1,22 +1,24 @@
 import pool from "./pool.js";
 
 const setPlaylist = async (data) => {
-  const sql = [
-    "INSERT INTO playlists (title, playtime, `rank`, user_id, created_on)",
-    "VALUES (?, ?, ?, ?, NOW())",
-  ].join("\n");
+  const { name, duration, rank, user } = data;
 
-  const result = await pool.query(sql, [
-    data.name,
-    data.duration,
-    data.rank,
-    data.user,
+  const insertSql = `
+    INSERT INTO playlists (title, playtime, \`rank\`, user_id, created_on)
+    VALUES (?, ?, ?, ?, NOW())
+  `;
+
+  const [insertResult] = await pool.query(insertSql, [
+    name,
+    duration,
+    rank,
+    user,
   ]);
 
-  const resultObject = JSON.parse(JSON.stringify(result));
-  const newSql = `SELECT * FROM playlists WHERE id = ?`;
-  const newPlaylist = await pool.query(newSql, [resultObject[0].insertId]);
-  return newPlaylist[0][0];
+  const playlistId = insertResult.insertId;
+  const selectSql = `SELECT * FROM playlists WHERE id = ?`;
+  const [result] = await pool.query(selectSql, [playlistId]);
+  return result[0];
 };
 
 const addTrackToPlaylist = async (playlistId, trackId, trackDeezerId) => {
@@ -63,24 +65,41 @@ const getAllPlaylists = async () => {
 
 const getPlaylistById = async (id) => {
   const sql = `
-    SELECT p.id, p.title, p.created_on, p.playtime, p.user_id,
-      u.username AS created_by, p.rank, p.is_deleted,
-      GROUP_CONCAT(g.name) as genres
+    SELECT 
+      p.id, 
+      p.title, 
+      p.created_on, 
+      p.playtime, 
+      p.user_id,
+      u.username AS created_by, 
+      p.rank, 
+      p.is_deleted,
+      COALESCE(GROUP_CONCAT(g.name), '') AS genres
     FROM playlists p
-    JOIN genres_has_playlists as gp ON p.id = gp.playlist_id
-    JOIN genres g ON gp.genre_id = g.id
+    LEFT JOIN genres_has_playlists gp ON p.id = gp.playlist_id
+    LEFT JOIN genres g ON gp.genre_id = g.id
     JOIN users u ON p.user_id = u.id
     WHERE p.id = ?
+    GROUP BY p.id
   `;
 
-  const result = await pool.query(sql, [id]);
-  return result[0];
+  const [result] = await pool.query(sql, [id]);
+  return result;
 };
 
-const getTracksForPlaylistById = async (id) => {
+const getTracksForPlaylistById = async (playlistId) => {
   const sql = `
-    SELECT t.id AS track_id, t.title as track_title, t.deezer_id, p.playtime,
-    t.duration, a.name AS artist_name, al.cover, p.rank, p.title, t.preview
+    SELECT 
+      t.id AS track_id, 
+      t.title AS track_title,
+      t.deezer_id, 
+      p.playtime, 
+      t.duration, 
+      a.name AS artist_name, 
+      al.cover, 
+      p.rank, 
+      p.title, 
+      t.preview 
     FROM playlists_has_tracks pht
     JOIN playlists p ON pht.playlist_id = p.id
     JOIN tracks t ON pht.track_id = t.id
@@ -90,8 +109,8 @@ const getTracksForPlaylistById = async (id) => {
     WHERE p.id = ?
   `;
 
-  const result = await pool.query(sql, [id]);
-  return result[0];
+  const [rows] = await pool.query(sql, [playlistId]);
+  return rows;
 };
 
 const deletePlaylist = async (id) => {
