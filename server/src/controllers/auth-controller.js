@@ -43,11 +43,13 @@ authController
   .delete(
     "/logout",
     asyncHandler(async (req, res) => {
-      await tokensData.blacklistToken(
+      const isDeleted = await tokensData.blacklistToken(
         req.headers.authorization.replace("bearer ", "")
       );
 
-      res.json({ message: "Successfully logged out!" });
+      if (isDeleted) {
+        return res.status(204).end();
+      }
     })
   );
 

@@ -10,12 +10,9 @@ const tokenExists = async (token) => {
 };
 
 const blacklistToken = async (token) => {
-  const sql = `
-    INSERT  
-    INTO tokens (token) VALUES (?)
-  `;
-
-  return await pool.query(sql, [token]);
+  const sql = `INSERT INTO tokens (token) VALUES (?)`;
+  const [result] = await pool.query(sql, [token]);
+  return result.affectedRows > 0;
 };
 
 export default {

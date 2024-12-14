@@ -115,11 +115,13 @@ const getTracksForPlaylistById = async (playlistId) => {
 
 const deletePlaylist = async (id) => {
   const sql = `
-    UPDATE playlists SET playlists.is_deleted = 1
-    WHERE playlists.id = ?
+    UPDATE playlists
+    SET is_deleted = 1
+    WHERE id = ?
   `;
 
-  return await pool.query(sql, [id]);
+  const [result] = await pool.query(sql, [id]);
+  return result.affectedRows > 0;
 };
 
 const updatePlaylistName = async (playlist) => {

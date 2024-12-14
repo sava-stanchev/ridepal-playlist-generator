@@ -11,7 +11,6 @@ import { authMiddleware } from "../auth/auth-middleware.js";
 const usersController = express.Router();
 
 usersController
-
   // Register user
   .post(
     "/",
@@ -21,64 +20,69 @@ usersController
       const result = await usersService.createUser(usersData)(req.body);
 
       if (result.error === serviceErrors.DUPLICATE_RECORD) {
-        res.status(409).json({ message: "Username or email already exists!" });
-      } else {
-        res.status(201).json(result.data);
+        return res
+          .status(409)
+          .json({ message: "Username or email already exists!" });
       }
+
+      res.status(201).json(result.data);
     })
   )
 
   // Get all users
-  .get("/", authMiddleware, async (req, res) => {
-    try {
+  .get(
+    "/",
+    authMiddleware,
+    asyncHandler(async (req, res) => {
       const users = await usersService.getAllUsers();
       res.json(users);
-    } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
-    }
-  })
+    })
+  )
 
   // Update user
-  .patch("/:id", authMiddleware, async (req, res) => {
-    try {
-      const user = req.body;
-      await usersService.updateUser(user);
-      const updatedUser = await usersService.getUserById(user.id);
-      res.status(200).send(updatedUser);
-    } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
-    }
-  })
+  .patch(
+    "/:id",
+    authMiddleware,
+    asyncHandler(async (req, res) => {
+      const { id } = req.params;
+      const updatedData = req.body;
+
+      await usersService.updateUser(updatedData);
+      const updatedUser = await usersService.getUserById(id);
+
+      res.status(200).json(updatedUser);
+    })
+  )
 
   // Delete user
-  .delete("/:id", authMiddleware, async (req, res) => {
-    try {
-      await usersData.deleteUser(req.params.id);
-      res.end();
-    } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
-    }
-  })
+  .delete(
+    "/:id",
+    authMiddleware,
+    asyncHandler(async (req, res) => {
+      const { id } = req.params;
+      const isDeleted = await usersData.deleteUser(id);
+
+      if (!isDeleted) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.status(204).end();
+    })
+  )
 
   // Change user role
-  .put("/:id", authMiddleware, async (req, res) => {
-    try {
-      const userId = req.params.id;
-      const user = await usersService.getUserById(userId);
+  .put(
+    "/:id",
+    authMiddleware,
+    asyncHandler(async (req, res) => {
+      const { id } = req.params;
+
+      const user = await usersService.getUserById(id);
       await usersData.changeRole(user);
-      const updatedUser = await usersService.getUserById(userId);
-      res.status(200).send(updatedUser);
-    } catch (error) {
-      return res.status(400).json({
-        error: error.message,
-      });
-    }
-  });
+      const updatedUser = await usersService.getUserById(id);
+
+      res.status(200).json(updatedUser);
+    })
+  );
 
 export default usersController;

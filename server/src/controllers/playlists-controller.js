@@ -13,7 +13,7 @@ playlistsController
       const thePlaylists = await playlistsData.getAllPlaylists();
       res.json(thePlaylists);
     } catch (error) {
-      return res.status(400).json({
+      return res.status(500).json({
         error: error.message,
       });
     }
@@ -25,7 +25,7 @@ playlistsController
       const playlist = await playlistServices.playlistGenerator(req);
       res.status(200).send(playlist);
     } catch (error) {
-      return res.status(400).json({
+      return res.status(500).json({
         error: error.message,
       });
     }
@@ -41,7 +41,7 @@ playlistsController
       );
       res.json(filteredPlaylist);
     } catch (error) {
-      return res.status(404).json({
+      return res.status(500).json({
         error: error.message,
       });
     }
@@ -50,10 +50,12 @@ playlistsController
   // Delete playlist
   .delete("/:id", async (req, res) => {
     try {
-      await playlistsData.deletePlaylist(req.params.id);
-      res.end();
+      const isDeleted = await playlistsData.deletePlaylist(req.params.id);
+      if (isDeleted) {
+        return res.status(204).end();
+      }
     } catch (error) {
-      return res.status(400).json({
+      return res.status(500).json({
         error: error.message,
       });
     }
@@ -74,7 +76,7 @@ playlistsController
         res.status(200).send(newPlaylist[0]);
       }
     } catch (error) {
-      return res.status(400).json({
+      return res.status(500).json({
         error: error.message,
       });
     }
