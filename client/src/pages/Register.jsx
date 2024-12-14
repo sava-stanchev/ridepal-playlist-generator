@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
@@ -6,6 +6,7 @@ import AlertModal from "../components/AlertModal";
 import { isValidEmail, joinClasses } from "../common/utils";
 
 const Register = () => {
+  const history = useHistory();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -20,41 +21,46 @@ const Register = () => {
   const [modal, setModal] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
 
-  const history = useHistory();
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
+    validateField(name, value);
+  };
 
-    if (name === "username" && value.length > 2) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        username: false,
-      }));
-    } else if (name === "email" && isValidEmail(value)) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        email: false,
-      }));
-    } else if (name === "password" && value.length > 3) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        password: false,
-      }));
-    } else {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        [name]: true,
-      }));
+  const validateField = (name, value) => {
+    switch (name) {
+      case "username":
+        setFormErrors((prevState) => ({
+          ...prevState,
+          username: value.length < 3,
+        }));
+        break;
+      case "email":
+        setFormErrors((prevState) => ({
+          ...prevState,
+          email: !isValidEmail(value),
+        }));
+        break;
+      case "password":
+        setFormErrors((prevState) => ({
+          ...prevState,
+          password: value.length < 4,
+        }));
+        break;
+      default:
+        break;
     }
   };
 
-  async function signUp(request) {
+  const signUp = async () => {
     try {
-      const response = await fetch(request);
+      const response = await fetch(`${HOST}/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
       const result = await response.json();
 
       if (!response.ok) {
@@ -67,19 +73,13 @@ const Register = () => {
     } catch (error) {
       console.error(error.message);
     }
-  }
-
-  const registerRequest = new Request(`${HOST}/users`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  });
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const isFormValid = !Object.values(formErrors).some((val) => val);
 
   return (
     <section className="input-page">
@@ -148,7 +148,7 @@ const Register = () => {
             onClick={togglePasswordVisibility}
             aria-label="Toggle password visibility"
           >
-            {showPassword === false ? <FaEyeSlash /> : <FaEye />}
+            {showPassword ? <FaEye /> : <FaEyeSlash />}
           </button>
           <p
             className={joinClasses([
@@ -163,8 +163,8 @@ const Register = () => {
           <button
             type="button"
             className="btn"
-            onClick={() => signUp(registerRequest)}
-            disabled={!Object.values(formErrors).every((val) => val === false)}
+            onClick={signUp}
+            disabled={!isFormValid}
           >
             Join Now
           </button>
