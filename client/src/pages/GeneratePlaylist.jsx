@@ -5,6 +5,7 @@ import { Slider } from "../components/Slider";
 import { joinClasses } from "../common/utils";
 
 const GENRES = ["Rap/Hip Hop", "Pop", "Rock"];
+const DISPLAY_GENRES = ["Rap", "Pop", "Rock"];
 const MAX_DURATION = 100;
 
 const GeneratePlaylist = ({ points }) => {
@@ -18,13 +19,15 @@ const GeneratePlaylist = ({ points }) => {
     const newDurations = [...genreDurations];
     newDurations[index] = parseInt(value, 10);
     const remaining = MAX_DURATION - newDurations[index];
-    newDurations.forEach((duration, i) => {
-      if (i !== index) {
-        newDurations[i] =
-          (remaining * duration) / (MAX_DURATION - genreDurations[index]);
-      }
-    });
-    setGenreDurations(newDurations);
+
+    setGenreDurations((durations) =>
+      durations.map((duration, i) => {
+        if (i === index) return newDurations[index];
+        const oldRemaining = MAX_DURATION - genreDurations[index];
+        if (oldRemaining) return (remaining * duration) / oldRemaining;
+        return remaining / (GENRES.length - 1);
+      })
+    );
   };
 
   const handleInputChange = (e) => {
@@ -110,7 +113,7 @@ const GeneratePlaylist = ({ points }) => {
               key={index}
               index={index}
               value={Math.round(genreDurations[index])}
-              title={genre}
+              title={DISPLAY_GENRES[index]}
               onChange={(e) => handleSliderChange(index, e.target.value)}
             />
           ))}
