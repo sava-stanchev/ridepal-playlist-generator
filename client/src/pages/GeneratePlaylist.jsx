@@ -4,51 +4,52 @@ import { HOST } from "../common/constants";
 import { Slider } from "../components/Slider";
 import { joinClasses } from "../common/utils";
 
-const sliders = ["Rap", "Pop", "Rock"];
+const GENRES = ["Rap/Hip Hop", "Pop", "Rock"];
+const MAX_DURATION = 100;
 
 const GeneratePlaylist = ({ points }) => {
   const history = useHistory();
   const [playlistName, setPlaylistName] = useState("");
   const [playlistNameError, setPlaylistNameError] = useState(true);
   const [repeatArtists, setRepeatArtists] = useState(false);
-  const [values, setValues] = useState([50, 35, 15]);
+  const [genreDurations, setGenreDurations] = useState([50, 35, 15]);
 
   const handleSliderChange = (index, value) => {
-    let maxValue = 100;
-    const remaining = maxValue - parseInt(value, 10);
-    setValues((vs) =>
-      vs.map((v, i) => {
-        if (i === index) return parseInt(value, 10);
-        const oldRemaining = maxValue - parseInt(vs[index], 10);
-        if (oldRemaining) return (remaining * v) / oldRemaining;
-        return remaining / (sliders.length - 1);
-      })
-    );
+    const newDurations = [...genreDurations];
+    newDurations[index] = parseInt(value, 10);
+    const remaining = MAX_DURATION - newDurations[index];
+    newDurations.forEach((duration, i) => {
+      if (i !== index) {
+        newDurations[i] =
+          (remaining * duration) / (MAX_DURATION - genreDurations[index]);
+      }
+    });
+    setGenreDurations(newDurations);
   };
 
   const handleInputChange = (e) => {
     const { value } = e.target;
     setPlaylistName(value);
-
-    if (value.length >= 3 && value.length <= 20) {
-      setPlaylistNameError(false);
-    } else {
-      setPlaylistNameError(true);
-    }
+    setPlaylistNameError(!(value.length >= 3 && value.length <= 20));
   };
 
-  const playlistData = {
-    playlistName,
-    genres: [
-      { name: "rap/hip hop", duration: values[0] },
-      { name: "pop", duration: values[1] },
-      { name: "rock", duration: values[2] },
-    ],
-    points,
-    repeatArtist: repeatArtists,
+  const handleCheckboxChange = () => {
+    setRepeatArtists(!repeatArtists);
   };
 
-  async function generatePlaylistRequest(data) {
+  const generatePlaylistData = () => {
+    return {
+      playlistName,
+      genres: GENRES.map((genre, index) => ({
+        name: genre.toLowerCase(),
+        duration: genreDurations[index],
+      })),
+      points,
+      repeatArtist: repeatArtists,
+    };
+  };
+
+  const generatePlaylistRequest = async (data) => {
     try {
       const response = await fetch(`${HOST}/playlists`, {
         method: "POST",
@@ -69,7 +70,11 @@ const GeneratePlaylist = ({ points }) => {
     } catch (error) {
       console.error(error.message);
     }
-  }
+  };
+
+  const isGenerateButtonDisabled = () => {
+    return (points.duration > 150 * 60 && !repeatArtists) || playlistNameError;
+  };
 
   return (
     <section className="input-page">
@@ -87,6 +92,7 @@ const GeneratePlaylist = ({ points }) => {
             id="playlist-name"
             name="playlist-name"
             type="text"
+            value={playlistName}
             onChange={handleInputChange}
           />
           <p
@@ -99,54 +105,49 @@ const GeneratePlaylist = ({ points }) => {
           </p>
         </div>
         <div className="generate-playlist__genre-sliders-container">
-          {sliders.map((item, index) => (
+          {GENRES.map((genre, index) => (
             <Slider
               key={index}
               index={index}
-              value={Math.round(values[index])}
-              title={item}
+              value={Math.round(genreDurations[index])}
+              title={genre}
               onChange={(e) => handleSliderChange(index, e.target.value)}
             />
           ))}
         </div>
-        <>
-          <div className="generate-playlist__checkbox">
-            <input
-              type="checkbox"
-              id="allow-same-artist"
-              className="generate-playlist__checkbox-input"
-              checked={repeatArtists}
-              onChange={() => setRepeatArtists(!repeatArtists)}
-            />
-            <label
-              htmlFor="allow-same-artist"
-              className="generate-playlist__checkbox-label"
-            >
-              Allow tracks from the same artist
-            </label>
-          </div>
-          <p
-            className="input-page__reminder-msg"
-            style={
-              points.duration > 150 * 60 && !repeatArtists
-                ? { color: "red" }
-                : { color: "white" }
-            }
+        <div className="generate-playlist__checkbox">
+          <input
+            type="checkbox"
+            id="allow-same-artist"
+            className="generate-playlist__checkbox-input"
+            checked={repeatArtists}
+            onChange={handleCheckboxChange}
+          />
+          <label
+            htmlFor="allow-same-artist"
+            className="generate-playlist__checkbox-label"
           >
-            * Allow same artist's tracks if travel duration over 150 min.
-          </p>
-          <button
-            type="button"
-            className="btn"
-            disabled={
-              (points.duration > 150 * 60 && !repeatArtists) ||
-              playlistNameError
-            }
-            onClick={() => generatePlaylistRequest(playlistData)}
-          >
-            Generate Playlist
-          </button>
-        </>
+            Allow tracks from the same artist
+          </label>
+        </div>
+        <p
+          className="input-page__reminder-msg"
+          style={
+            points.duration > 150 * 60 && !repeatArtists
+              ? { color: "red" }
+              : { color: "white" }
+          }
+        >
+          * Allow same artist's tracks if travel duration over 150 min.
+        </p>
+        <button
+          type="button"
+          className="btn"
+          disabled={isGenerateButtonDisabled()}
+          onClick={() => generatePlaylistRequest(generatePlaylistData())}
+        >
+          Generate Playlist
+        </button>
       </form>
     </section>
   );
