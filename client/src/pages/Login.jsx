@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import decode from "jwt-decode";
-import { AuthContext } from "../providers/auth-context";
+import { AuthContext } from "../providers/AuthContext";
 import AlertModal from "../components/AlertModal";
 
 const Login = () => {

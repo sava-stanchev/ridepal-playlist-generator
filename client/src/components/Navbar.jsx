@@ -1,5 +1,5 @@
 import { Link, useHistory } from "react-router-dom";
-import { AuthContext } from "../providers/auth-context";
+import { AuthContext } from "../providers/AuthContext";
 import { useContext } from "react";
 import brandLogo from "../images/logo.png";
 import { CgProfile } from "react-icons/cg";

@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AuthContext } from "../providers/auth-context";
+import { AuthContext } from "../providers/AuthContext";
 import { getPlaylists, deletePlaylist } from "../store/actions/playlists";
 import ReactPaginate from "react-paginate";
 import UpdatePlaylistModal from "../components/UpdatePlaylistModal";

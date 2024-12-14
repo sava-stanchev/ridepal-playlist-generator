@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { DateTime } from "luxon";
-import { AuthContext } from "./auth-context";
+import { AuthContext } from "./AuthContext";
 
 const GuardedRoute = ({ component: Component, admin, ...rest }) => {
   const { user, setUser } = useContext(AuthContext);
