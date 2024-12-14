@@ -12,7 +12,7 @@ const GeneratePlaylist = ({ points }) => {
   const history = useHistory();
   const [playlistName, setPlaylistName] = useState("");
   const [playlistNameError, setPlaylistNameError] = useState(true);
-  const [repeatArtists, setRepeatArtists] = useState(false);
+  const [repeatArtist, setRepeatArtist] = useState(false);
   const [genreDurations, setGenreDurations] = useState([50, 35, 15]);
 
   const handleSliderChange = (index, value) => {
@@ -37,7 +37,7 @@ const GeneratePlaylist = ({ points }) => {
   };
 
   const handleCheckboxChange = () => {
-    setRepeatArtists(!repeatArtists);
+    setRepeatArtist(!repeatArtist);
   };
 
   const generatePlaylistData = () => {
@@ -48,7 +48,7 @@ const GeneratePlaylist = ({ points }) => {
         duration: genreDurations[index],
       })),
       points,
-      repeatArtist: repeatArtists,
+      repeatArtist,
     };
   };
 
@@ -76,7 +76,7 @@ const GeneratePlaylist = ({ points }) => {
   };
 
   const isGenerateButtonDisabled = () => {
-    return (points.duration > 150 * 60 && !repeatArtists) || playlistNameError;
+    return (points.duration > 150 * 60 && !repeatArtist) || playlistNameError;
   };
 
   return (
@@ -108,7 +108,7 @@ const GeneratePlaylist = ({ points }) => {
           </p>
         </div>
         <div className="generate-playlist__genre-sliders-container">
-          {GENRES.map((genre, index) => (
+          {GENRES.map((_, index) => (
             <Slider
               key={index}
               index={index}
@@ -123,7 +123,7 @@ const GeneratePlaylist = ({ points }) => {
             type="checkbox"
             id="allow-same-artist"
             className="generate-playlist__checkbox-input"
-            checked={repeatArtists}
+            checked={repeatArtist}
             onChange={handleCheckboxChange}
           />
           <label
@@ -136,7 +136,7 @@ const GeneratePlaylist = ({ points }) => {
         <p
           className="input-page__reminder-msg"
           style={
-            points.duration > 150 * 60 && !repeatArtists
+            points.duration > 150 * 60 && !repeatArtist
               ? { color: "red" }
               : { color: "white" }
           }
