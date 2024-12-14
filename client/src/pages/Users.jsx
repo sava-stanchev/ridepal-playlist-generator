@@ -44,46 +44,55 @@ const Users = () => {
     [dispatch]
   );
 
+  const handleSearchChange = useCallback((value) => {
+    setSearch(value);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setModal(false);
+  }, []);
+
   return (
     <>
       <section className="filters__container">
-        <Search search={search} onSearchChange={(value) => setSearch(value)} />
+        <Search search={search} onSearchChange={handleSearchChange} />
       </section>
-      {!filteredUsers.length && !search.length && <Loader />}
-      {filteredUsers.length > 0 && (
-        <>
-          <UpdateUserModal
-            openModal={modal}
-            closeModal={() => setModal(false)}
-            user={currentUser}
-            users={users}
-          />
-          <div className="users">
-            <div className="users__container">
-              <table className="users__table">
-                <thead>
-                  <tr>
-                    <th className="users__table-header" colSpan="4">
-                      List of Users
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.map((user) => (
-                    <User
-                      key={user.id}
-                      {...user}
-                      user={user}
-                      onSwitchRole={handleSwitchRole}
-                      onEditUser={handleEditUser}
-                      onDeleteUser={handleDeleteUser}
-                    />
-                  ))}
-                </tbody>
-              </table>
-            </div>
+      {users.length === 0 && !search.length ? (
+        <Loader />
+      ) : (
+        <div className="users">
+          <div className="users__container">
+            <table className="users__table">
+              <thead>
+                <tr>
+                  <th className="users__table-header" colSpan="4">
+                    List of Users
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredUsers.map((user) => (
+                  <User
+                    key={user.id}
+                    {...user}
+                    user={user}
+                    onSwitchRole={handleSwitchRole}
+                    onEditUser={handleEditUser}
+                    onDeleteUser={handleDeleteUser}
+                  />
+                ))}
+              </tbody>
+            </table>
           </div>
-        </>
+        </div>
+      )}
+      {modal && (
+        <UpdateUserModal
+          openModal={modal}
+          closeModal={handleCloseModal}
+          user={currentUser}
+          users={users}
+        />
       )}
     </>
   );
