@@ -11,7 +11,7 @@ export default function UpdatePlaylistModal({
   if (!playlist) return null;
 
   return (
-    <Modal openModal={openModal} closeModal={closeModal} playlist={playlist} />
+    <Modal playlist={playlist} openModal={openModal} closeModal={closeModal} />
   );
 }
 
@@ -33,11 +33,8 @@ const Modal = ({ playlist, openModal, closeModal }) => {
     const { value } = e.target;
     setPlaylistName(value);
 
-    if (value.length >= 3 && value.length <= 20) {
-      setPlaylistNameError(false);
-    } else {
-      setPlaylistNameError(true);
-    }
+    const isValid = value.length >= 3 && value.length <= 20;
+    setPlaylistNameError(!isValid);
   };
 
   const updatePlaylist = () => {
