@@ -1,4 +1,5 @@
 import express from "express";
+import asyncHandler from "express-async-handler";
 import playlistsData from "../data/playlists.js";
 import playlistServices from "../service/playlist-services.js";
 import { authMiddleware } from "../auth/auth-middleware.js";
@@ -6,80 +7,69 @@ import { authMiddleware } from "../auth/auth-middleware.js";
 const playlistsController = express.Router();
 
 playlistsController
-
   // Get all playlists
-  .get("/", async (req, res) => {
-    try {
+  .get(
+    "/",
+    asyncHandler(async (req, res) => {
       const thePlaylists = await playlistsData.getAllPlaylists();
       res.json(thePlaylists);
-    } catch (error) {
-      return res.status(500).json({
-        error: error.message,
-      });
-    }
-  })
+    })
+  )
 
   // Generate playlist
-  .post("/", authMiddleware, async (req, res) => {
-    try {
+  .post(
+    "/",
+    authMiddleware,
+    asyncHandler(async (req, res) => {
       const playlist = await playlistServices.playlistGenerator(req);
-      res.status(200).send(playlist);
-    } catch (error) {
-      return res.status(500).json({
-        error: error.message,
-      });
-    }
-  })
+      res.status(201).json(playlist);
+    })
+  )
 
   // Get a playlist
-  .get("/:id", async (req, res) => {
-    try {
-      const playlistId = req.params.id;
-      const playlist = await playlistsData.getTracksForPlaylistById(playlistId);
+  .get(
+    "/:id",
+    asyncHandler(async (req, res) => {
+      const { id } = req.params;
+      const playlist = await playlistsData.getTracksForPlaylistById(id);
       const filteredPlaylist = playlist.filter((t) =>
         t.hasOwnProperty("track_id")
       );
       res.json(filteredPlaylist);
-    } catch (error) {
-      return res.status(500).json({
-        error: error.message,
-      });
-    }
-  })
+    })
+  )
 
   // Delete playlist
-  .delete("/:id", async (req, res) => {
-    try {
-      const isDeleted = await playlistsData.deletePlaylist(req.params.id);
+  .delete(
+    "/:id",
+    asyncHandler(async (req, res) => {
+      const { id } = req.params;
+      const isDeleted = await playlistsData.deletePlaylist(id);
       if (isDeleted) {
         return res.status(204).end();
       }
-    } catch (error) {
-      return res.status(500).json({
-        error: error.message,
-      });
-    }
-  })
+      res.status(404).json({ error: "Playlist deletion failed" });
+    })
+  )
 
   // Update playlist
-  .patch("/:id", async (req, res) => {
-    try {
-      const playlistId = req.params.id;
+  .patch(
+    "/:id",
+    asyncHandler(async (req, res) => {
+      const { id } = req.params;
       const updateData = req.body;
 
       const playlistUpdated = await playlistServices.updatePlaylist(
-        playlistId,
+        id,
         updateData
       );
-      const newPlaylist = await playlistsData.getPlaylistById(playlistId);
       if (playlistUpdated) {
-        res.status(200).send(newPlaylist[0]);
+        const newPlaylist = await playlistsData.getPlaylistById(id);
+        res.status(200).json(newPlaylist[0]);
+      } else {
+        res.status(404).json({ error: "Playlist update failed" });
       }
-    } catch (error) {
-      return res.status(500).json({
-        error: error.message,
-      });
-    }
-  });
+    })
+  );
 
 export default playlistsController;
