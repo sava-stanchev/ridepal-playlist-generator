@@ -1,10 +1,8 @@
 export default {
-  username: (value) =>
-    typeof value === "string" && value.length >= 3 && value.length <= 15,
-  password: (value) =>
-    typeof value === "string" && value.length >= 4 && value.length <= 30,
+  username: (value) => typeof value === "string" && value.length >= 3,
   email: (value) =>
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(
       value
     ),
+  password: (value) => typeof value === "string" && value.length >= 4,
 };

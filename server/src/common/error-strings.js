@@ -1,7 +1,7 @@
 export default {
   user: {
-    username: `Expected string with length [3 - 20]`,
-    password: `Expected string with length [4 - 30]`,
+    username: `Expected string with length of at least 3`,
     email: `Expected valid email address`,
+    password: `Expected string with length of at least 4`,
   },
 };
