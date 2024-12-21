@@ -26,14 +26,14 @@ DROP TABLE IF EXISTS `albums`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `albums` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `deezer_id` int NOT NULL,
+  `deezer_id` bigint NOT NULL,
   `title` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `cover` varchar(255) NOT NULL,
   `tracklist` varchar(255) NOT NULL,
   `artist_id` int NOT NULL,
-  `artist_deezer_id` int NOT NULL,
+  `artist_deezer_id` bigint NOT NULL,
   `genre_id` int NOT NULL,
-  `genre_deezer_id` int NOT NULL,
+  `genre_deezer_id` bigint NOT NULL,
   PRIMARY KEY (`id`,`deezer_id`),
   UNIQUE KEY `name_UNIQUE` (`title`),
   KEY `fk_albums_artists1_idx` (`artist_id`,`artist_deezer_id`),
@@ -61,11 +61,11 @@ DROP TABLE IF EXISTS `artists`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `artists` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `deezer_id` int NOT NULL,
+  `deezer_id` bigint NOT NULL,
   `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `tracklist` varchar(255) NOT NULL,
   `genre_id` int NOT NULL,
-  `genre_deezer_id` int NOT NULL,
+  `genre_deezer_id` bigint NOT NULL,
   PRIMARY KEY (`id`,`deezer_id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `fk_artists_genres_idx` (`genre_id`,`genre_deezer_id`),
@@ -91,7 +91,7 @@ DROP TABLE IF EXISTS `genres`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `genres` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `deezer_id` int NOT NULL,
+  `deezer_id` bigint NOT NULL,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`,`deezer_id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
@@ -116,7 +116,7 @@ DROP TABLE IF EXISTS `genres_has_playlists`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `genres_has_playlists` (
   `genre_id` int NOT NULL,
-  `genre_deezer_id` int NOT NULL,
+  `genre_deezer_id` bigint NOT NULL,
   `playlist_id` int NOT NULL,
   PRIMARY KEY (`genre_id`,`genre_deezer_id`,`playlist_id`),
   KEY `fk_genres_has_playlists_playlists1_idx` (`playlist_id`),
@@ -176,7 +176,7 @@ DROP TABLE IF EXISTS `playlists_has_tracks`;
 CREATE TABLE `playlists_has_tracks` (
   `playlist_id` int NOT NULL,
   `track_id` int NOT NULL,
-  `track_deezer_id` int NOT NULL,
+  `track_deezer_id` bigint NOT NULL,
   PRIMARY KEY (`playlist_id`,`track_id`,`track_deezer_id`),
   KEY `fk_playlists_has_tracks_tracks1_idx` (`track_id`,`track_deezer_id`),
   KEY `fk_playlists_has_tracks_playlists1_idx` (`playlist_id`),
@@ -250,17 +250,17 @@ DROP TABLE IF EXISTS `tracks`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tracks` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `deezer_id` int NOT NULL,
+  `deezer_id` bigint NOT NULL,
   `title` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `duration` int NOT NULL,
   `rank` int NOT NULL,
   `preview` varchar(1000) NOT NULL,
   `album_id` int NOT NULL,
-  `album_deezer_id` int NOT NULL,
+  `album_deezer_id` bigint NOT NULL,
   `artist_id` int NOT NULL,
-  `artist_deezer_id` int NOT NULL,
+  `artist_deezer_id` bigint NOT NULL,
   `genre_id` int NOT NULL,
-  `genre_deezer_id` int NOT NULL,
+  `genre_deezer_id` bigint NOT NULL,
   PRIMARY KEY (`id`,`deezer_id`),
   UNIQUE KEY `name_UNIQUE` (`title`),
   KEY `fk_tracks_albums1_idx` (`album_id`,`album_deezer_id`),

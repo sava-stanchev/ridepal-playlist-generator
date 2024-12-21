@@ -141,26 +141,27 @@ const users = [
           );
 
           await Promise.all(
-            albumTracks.map(async ({ id, title, duration, rank, preview }) =>
-              pool.query(
-                `INSERT INTO tracks (deezer_id, title, duration, \`rank\`, preview, album_id, album_deezer_id, artist_id, artist_deezer_id, genre_id, genre_deezer_id)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ON DUPLICATE KEY UPDATE title = ?`,
-                [
-                  id,
-                  title,
-                  duration,
-                  rank,
-                  preview,
-                  album.id,
-                  album.deezer_id,
-                  album.artist_id,
-                  album.artist_deezer_id,
-                  album.genre_id,
-                  album.genre_deezer_id,
-                  title,
-                ]
-              )
+            albumTracks.map(
+              async ({ id, title, duration, rank, preview }) =>
+                await pool.query(
+                  `INSERT INTO tracks (deezer_id, title, duration, \`rank\`, preview, album_id, album_deezer_id, artist_id, artist_deezer_id, genre_id, genre_deezer_id)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  ON DUPLICATE KEY UPDATE title = ?`,
+                  [
+                    id,
+                    title,
+                    duration,
+                    rank,
+                    preview,
+                    album.id,
+                    album.deezer_id,
+                    album.artist_id,
+                    album.artist_deezer_id,
+                    album.genre_id,
+                    album.genre_deezer_id,
+                    title,
+                  ]
+                )
             )
           );
         })
@@ -173,17 +174,18 @@ const users = [
       console.log("Creating admins...");
 
       await Promise.all(
-        users.map(async ({ username, password, email }) =>
-          pool.query(
-            `INSERT INTO users (username, password, email, role_id)
-            VALUES (?, ?, ?, ?)`,
-            [
-              username,
-              await bcrypt.hash(password, 10),
-              email,
-              roles.indexOf("admin") + 1,
-            ]
-          )
+        users.map(
+          async ({ username, password, email }) =>
+            await pool.query(
+              `INSERT INTO users (username, password, email, role_id)
+              VALUES (?, ?, ?, ?)`,
+              [
+                username,
+                await bcrypt.hash(password, 10),
+                email,
+                roles.indexOf("admin") + 1,
+              ]
+            )
         )
       );
     }
