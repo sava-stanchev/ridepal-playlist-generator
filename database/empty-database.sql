@@ -254,7 +254,7 @@ CREATE TABLE `tracks` (
   `title` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `duration` int NOT NULL,
   `rank` int NOT NULL,
-  `preview` varchar(255) NOT NULL,
+  `preview` varchar(1000) NOT NULL,
   `album_id` int NOT NULL,
   `album_deezer_id` int NOT NULL,
   `artist_id` int NOT NULL,
@@ -320,4 +320,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-21 16:54:29
+-- Dump completed on 2024-12-21 18:32:09
