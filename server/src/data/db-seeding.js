@@ -29,7 +29,7 @@ const users = [
 
 (async () => {
   try {
-    const genresDB = await pool.query("SELECT * FROM genres");
+    const [genresDB] = await pool.query("SELECT * FROM genres");
 
     if (!genresDB || genresDB.length === 0) {
       console.log("Seeding genres...");
@@ -52,12 +52,12 @@ const users = [
       );
     }
 
-    const artistsDB = await pool.query("SELECT * FROM artists");
+    const [artistsDB] = await pool.query("SELECT * FROM artists");
 
     if (!artistsDB || artistsDB.length === 0) {
       console.log("Seeding artists...");
 
-      const genres = await pool.query("SELECT * FROM genres");
+      const [genres] = await pool.query("SELECT * FROM genres");
 
       await Promise.all(
         genres.map(async (genre) => {
@@ -83,18 +83,18 @@ const users = [
       );
     }
 
-    const albumsDB = await pool.query("SELECT * FROM albums");
+    const [albumsDB] = await pool.query("SELECT * FROM albums");
 
     if (!albumsDB || albumsDB.length === 0) {
       console.log("Seeding albums...");
 
-      const genres = await pool.query("SELECT * FROM genres");
+      const [genres] = await pool.query("SELECT * FROM genres");
 
       genres.forEach((genre) =>
         selectedGenresMap.set(genre.deezer_id, genre.id)
       );
 
-      const artists = await pool.query("SELECT * FROM artists");
+      const [artists] = await pool.query("SELECT * FROM artists");
 
       await Promise.all(
         artists.map(async (artist) => {
@@ -132,12 +132,12 @@ const users = [
       );
     }
 
-    const tracksDB = await pool.query("SELECT * FROM tracks");
+    const [tracksDB] = await pool.query("SELECT * FROM tracks");
 
     if (!tracksDB || tracksDB.length === 0) {
       console.log("Seeding tracks...");
 
-      const albums = await pool.query("SELECT * FROM albums");
+      const [albums] = await pool.query("SELECT * FROM albums");
 
       await Promise.all(
         albums.map(async (album) => {
@@ -150,7 +150,7 @@ const users = [
             albumTracks.map(({ id, title, duration, rank, preview }) =>
               pool.query(
                 `
-                INSERT INTO tracks (deezer_id, title, duration, rank, preview, album_id, album_deezer_id, artist_id, artist_deezer_id, genre_id, genre_deezer_id)
+                INSERT INTO tracks (deezer_id, title, duration, \`rank\`, preview, album_id, album_deezer_id, artist_id, artist_deezer_id, genre_id, genre_deezer_id)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON DUPLICATE KEY UPDATE
                 title = ?
@@ -176,7 +176,7 @@ const users = [
       );
     }
 
-    const usersDB = await pool.query("SELECT * FROM users");
+    const [usersDB] = await pool.query("SELECT * FROM users");
 
     if (!usersDB || usersDB.length === 0) {
       console.log("Creating admins...");
