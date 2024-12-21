@@ -1,15 +1,15 @@
-CREATE DATABASE  IF NOT EXISTS `ridepal` /*!40100 DEFAULT CHARACTER SET latin1 */;
+CREATE DATABASE  IF NOT EXISTS `ridepal` /*!40100 DEFAULT CHARACTER SET latin1 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `ridepal`;
--- MariaDB dump 10.19  Distrib 10.5.9-MariaDB, for Win64 (AMD64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: ridepal
 -- ------------------------------------------------------
--- Server version	10.5.9-MariaDB
+-- Server version	8.0.40
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -23,23 +23,23 @@ USE `ridepal`;
 
 DROP TABLE IF EXISTS `albums`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `albums` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `deezer_id` int(11) NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `deezer_id` int NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `cover` varchar(255) NOT NULL,
   `tracklist` varchar(255) NOT NULL,
-  `artist_id` int(11) NOT NULL,
-  `artist_deezer_id` int(11) NOT NULL,
-  `genre_id` int(11) NOT NULL,
-  `genre_deezer_id` int(11) NOT NULL,
+  `artist_id` int NOT NULL,
+  `artist_deezer_id` int NOT NULL,
+  `genre_id` int NOT NULL,
+  `genre_deezer_id` int NOT NULL,
   PRIMARY KEY (`id`,`deezer_id`),
   UNIQUE KEY `name_UNIQUE` (`title`),
   KEY `fk_albums_artists1_idx` (`artist_id`,`artist_deezer_id`),
   KEY `fk_albums_genres1_idx` (`genre_id`,`genre_deezer_id`),
-  CONSTRAINT `fk_albums_artists1` FOREIGN KEY (`artist_id`, `artist_deezer_id`) REFERENCES `artists` (`id`, `deezer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_albums_genres1` FOREIGN KEY (`genre_id`, `genre_deezer_id`) REFERENCES `genres` (`id`, `deezer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_albums_artists1` FOREIGN KEY (`artist_id`, `artist_deezer_id`) REFERENCES `artists` (`id`, `deezer_id`),
+  CONSTRAINT `fk_albums_genres1` FOREIGN KEY (`genre_id`, `genre_deezer_id`) REFERENCES `genres` (`id`, `deezer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -58,18 +58,18 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `artists`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `artists` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `deezer_id` int(11) NOT NULL,
-  `name` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `deezer_id` int NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `tracklist` varchar(255) NOT NULL,
-  `genre_id` int(11) NOT NULL,
-  `genre_deezer_id` int(11) NOT NULL,
+  `genre_id` int NOT NULL,
+  `genre_deezer_id` int NOT NULL,
   PRIMARY KEY (`id`,`deezer_id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `fk_artists_genres_idx` (`genre_id`,`genre_deezer_id`),
-  CONSTRAINT `fk_artists_genres` FOREIGN KEY (`genre_id`, `genre_deezer_id`) REFERENCES `genres` (`id`, `deezer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_artists_genres` FOREIGN KEY (`genre_id`, `genre_deezer_id`) REFERENCES `genres` (`id`, `deezer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -88,10 +88,10 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `genres`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `genres` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `deezer_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `deezer_id` int NOT NULL,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`,`deezer_id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
@@ -113,16 +113,16 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `genres_has_playlists`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `genres_has_playlists` (
-  `genre_id` int(11) NOT NULL,
-  `genre_deezer_id` int(11) NOT NULL,
-  `playlist_id` int(11) NOT NULL,
+  `genre_id` int NOT NULL,
+  `genre_deezer_id` int NOT NULL,
+  `playlist_id` int NOT NULL,
   PRIMARY KEY (`genre_id`,`genre_deezer_id`,`playlist_id`),
   KEY `fk_genres_has_playlists_playlists1_idx` (`playlist_id`),
   KEY `fk_genres_has_playlists_genres1_idx` (`genre_id`,`genre_deezer_id`),
-  CONSTRAINT `fk_genres_has_playlists_genres1` FOREIGN KEY (`genre_id`, `genre_deezer_id`) REFERENCES `genres` (`id`, `deezer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_genres_has_playlists_playlists1` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_genres_has_playlists_genres1` FOREIGN KEY (`genre_id`, `genre_deezer_id`) REFERENCES `genres` (`id`, `deezer_id`),
+  CONSTRAINT `fk_genres_has_playlists_playlists1` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -141,18 +141,19 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `playlists`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `playlists` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
-  `playtime` int(11) DEFAULT NULL,
+  `playtime` int DEFAULT NULL,
   `rank` float DEFAULT NULL,
-  `created_on` datetime NOT NULL DEFAULT current_timestamp(),
-  `user_id` int(11) NOT NULL,
-  `is_deleted` tinyint(4) NOT NULL DEFAULT 0,
+  `created_on` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_id` int NOT NULL,
+  `is_deleted` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`,`user_id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_playlists_users1_idx` (`user_id`),
-  CONSTRAINT `fk_playlists_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_playlists_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -171,16 +172,16 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `playlists_has_tracks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `playlists_has_tracks` (
-  `playlist_id` int(11) NOT NULL,
-  `track_id` int(11) NOT NULL,
-  `track_deezer_id` int(11) NOT NULL,
+  `playlist_id` int NOT NULL,
+  `track_id` int NOT NULL,
+  `track_deezer_id` int NOT NULL,
   PRIMARY KEY (`playlist_id`,`track_id`,`track_deezer_id`),
   KEY `fk_playlists_has_tracks_tracks1_idx` (`track_id`,`track_deezer_id`),
   KEY `fk_playlists_has_tracks_playlists1_idx` (`playlist_id`),
-  CONSTRAINT `fk_playlists_has_tracks_playlists1` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_playlists_has_tracks_tracks1` FOREIGN KEY (`track_id`, `track_deezer_id`) REFERENCES `tracks` (`id`, `deezer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_playlists_has_tracks_playlists1` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`),
+  CONSTRAINT `fk_playlists_has_tracks_tracks1` FOREIGN KEY (`track_id`, `track_deezer_id`) REFERENCES `tracks` (`id`, `deezer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -199,9 +200,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `role` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
@@ -223,9 +224,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tokens` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `token` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -246,28 +247,28 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tracks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tracks` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `deezer_id` int(11) NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `duration` int(11) NOT NULL,
-  `rank` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `deezer_id` int NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `duration` int NOT NULL,
+  `rank` int NOT NULL,
   `preview` varchar(255) NOT NULL,
-  `album_id` int(11) NOT NULL,
-  `album_deezer_id` int(11) NOT NULL,
-  `artist_id` int(11) NOT NULL,
-  `artist_deezer_id` int(11) NOT NULL,
-  `genre_id` int(11) NOT NULL,
-  `genre_deezer_id` int(11) NOT NULL,
+  `album_id` int NOT NULL,
+  `album_deezer_id` int NOT NULL,
+  `artist_id` int NOT NULL,
+  `artist_deezer_id` int NOT NULL,
+  `genre_id` int NOT NULL,
+  `genre_deezer_id` int NOT NULL,
   PRIMARY KEY (`id`,`deezer_id`),
   UNIQUE KEY `name_UNIQUE` (`title`),
   KEY `fk_tracks_albums1_idx` (`album_id`,`album_deezer_id`),
   KEY `fk_tracks_artists1_idx` (`artist_id`,`artist_deezer_id`),
   KEY `fk_tracks_genres1_idx` (`genre_id`,`genre_deezer_id`),
-  CONSTRAINT `fk_tracks_albums1` FOREIGN KEY (`album_id`, `album_deezer_id`) REFERENCES `albums` (`id`, `deezer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tracks_artists1` FOREIGN KEY (`artist_id`, `artist_deezer_id`) REFERENCES `artists` (`id`, `deezer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tracks_genres1` FOREIGN KEY (`genre_id`, `genre_deezer_id`) REFERENCES `genres` (`id`, `deezer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_tracks_albums1` FOREIGN KEY (`album_id`, `album_deezer_id`) REFERENCES `albums` (`id`, `deezer_id`),
+  CONSTRAINT `fk_tracks_artists1` FOREIGN KEY (`artist_id`, `artist_deezer_id`) REFERENCES `artists` (`id`, `deezer_id`),
+  CONSTRAINT `fk_tracks_genres1` FOREIGN KEY (`genre_id`, `genre_deezer_id`) REFERENCES `genres` (`id`, `deezer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -286,14 +287,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(20) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `role_id` int(11) DEFAULT 2,
-  `is_deleted` tinyint(4) NOT NULL DEFAULT 0,
+  `role_id` int DEFAULT '2',
+  `is_deleted` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`),
   UNIQUE KEY `email_UNIQUE` (`email`),
@@ -309,14 +310,6 @@ LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'ridepal'
---
-
---
--- Dumping routines for database 'ridepal'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -327,4 +320,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-17 19:11:28
+-- Dump completed on 2024-12-21 16:54:29
