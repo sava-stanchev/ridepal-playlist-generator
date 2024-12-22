@@ -31,3 +31,9 @@ export const isValidEmail = (email) => {
     );
   return isEmailValid;
 };
+
+export const isValidPassword = (password) => {
+  const isPasswordValid =
+    /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,}$/.test(password);
+  return isPasswordValid;
+};

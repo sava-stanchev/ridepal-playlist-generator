@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { HOST } from "../common/constants";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import AlertModal from "../components/AlertModal";
-import { isValidEmail, joinClasses } from "../common/utils";
+import { isValidEmail, isValidPassword, joinClasses } from "../common/utils";
 
 const Register = () => {
   const history = useHistory();
@@ -44,7 +44,7 @@ const Register = () => {
       case "password":
         setFormErrors((prevState) => ({
           ...prevState,
-          password: value.length < 4,
+          password: !isValidPassword(value),
         }));
         break;
       default:
@@ -156,7 +156,8 @@ const Register = () => {
               !formErrors.password && "input-group__validation-msg--valid",
             ])}
           >
-            Password must be at least 4 characters long.
+            Password must be at least 8 characters long and include a digit, a
+            lowercase letter, an uppercase letter, and a special character.
           </p>
         </div>
         <div className="input-group">

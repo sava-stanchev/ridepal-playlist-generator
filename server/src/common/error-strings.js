@@ -1,7 +1,8 @@
 export default {
   user: {
-    username: `Expected string with length of at least 3`,
-    email: `Expected valid email address`,
-    password: `Expected string with length of at least 4`,
+    username: "Username must be at least 3 characters long.",
+    email: "Email address must be valid.",
+    password:
+      "Password must be at least 8 characters long and include a digit, a lowercase letter, an uppercase letter, and a special character.",
   },
 };
