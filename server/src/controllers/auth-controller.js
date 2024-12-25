@@ -36,6 +36,7 @@ authController
       };
 
       const token = createToken(payload);
+      await tokensData.addToken(token);
       res.status(200).json({ token });
     })
   )
@@ -43,7 +44,7 @@ authController
   .delete(
     "/logout",
     asyncHandler(async (req, res) => {
-      const isDeleted = await tokensData.blacklistToken(
+      const isDeleted = await tokensData.removeToken(
         req.headers.authorization.replace("bearer ", "")
       );
 

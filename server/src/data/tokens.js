@@ -1,21 +1,25 @@
 import pool from "./pool.js";
 
-const tokenExists = async (token) => {
-  const result = await pool.query(
-    "SELECT * FROM tokens AS t WHERE t.token = ?",
-    [token]
-  );
-
-  return result && result.length > 0;
-};
-
-const blacklistToken = async (token) => {
+const addToken = async (token) => {
   const sql = `INSERT INTO tokens (token) VALUES (?)`;
   const [result] = await pool.query(sql, [token]);
   return result.affectedRows > 0;
 };
 
+const getToken = async (token) => {
+  const sql = `SELECT * FROM tokens WHERE token = ?`;
+  const [result] = await pool.query(sql, [token]);
+  return result[0];
+};
+
+const removeToken = async (token) => {
+  const sql = `DELETE FROM tokens WHERE token = ?`;
+  const [result] = await pool.query(sql, [token]);
+  return result.affectedRows > 0;
+};
+
 export default {
-  tokenExists,
-  blacklistToken,
+  addToken,
+  getToken,
+  removeToken,
 };
