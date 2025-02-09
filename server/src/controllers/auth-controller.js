@@ -9,7 +9,6 @@ import createToken from "../auth/create-token.js";
 const authController = express.Router();
 
 authController
-
   .post(
     "/login",
     asyncHandler(async (req, res) => {
@@ -40,17 +39,15 @@ authController
       res.status(200).json({ token });
     })
   )
-
   .delete(
     "/logout",
     asyncHandler(async (req, res) => {
-      const isDeleted = await tokensData.removeToken(
-        req.headers.authorization.replace("bearer ", "")
-      );
-
-      if (isDeleted) {
-        return res.status(204).end();
+      const authHeader = req.headers.authorization;
+      if (authHeader) {
+        const token = authHeader.replace(/^bearer\s/i, "");
+        await tokensData.removeToken(token);
       }
+      res.status(204).end();
     })
   );
 
