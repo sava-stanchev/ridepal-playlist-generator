@@ -60,12 +60,7 @@ usersController
     authMiddleware,
     asyncHandler(async (req, res) => {
       const { id } = req.params;
-      const isDeleted = await usersData.deleteUser(id);
-
-      if (!isDeleted) {
-        return res.status(404).json({ message: "User not found" });
-      }
-
+      await usersData.deleteUser(id);
       res.status(204).end();
     })
   )

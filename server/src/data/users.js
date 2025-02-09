@@ -62,25 +62,19 @@ const getUserById = async (id) => {
 };
 
 const deleteUser = async (id) => {
-  const sql = `
-    UPDATE users 
-    SET is_deleted = 1 
-    WHERE id = ?
-  `;
-
+  const sql = `UPDATE users SET is_deleted = 1 WHERE id = ?`;
   const [result] = await pool.query(sql, [id]);
-  return result.affectedRows > 0;
+  if (result.affectedRows === 0) {
+    throw new Error("Something went wrong trying to delete user");
+  }
 };
 
 const updateUser = async (user) => {
-  const sql = `
-    UPDATE users 
-    SET username = ?, email = ? 
-    WHERE id = ?
-  `;
-
+  const sql = `UPDATE users SET username = ?, email = ? WHERE id = ?`;
   const [result] = await pool.query(sql, [user.username, user.email, user.id]);
-  return result.affectedRows > 0;
+  if (result.affectedRows === 0) {
+    throw new Error("Something went wrong trying to update user");
+  }
 };
 
 const changeRole = async (user) => {
