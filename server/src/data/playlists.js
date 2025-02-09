@@ -114,27 +114,21 @@ const getTracksForPlaylistById = async (playlistId) => {
 };
 
 const deletePlaylist = async (id) => {
-  const sql = `
-    UPDATE playlists
-    SET is_deleted = 1
-    WHERE id = ?
-  `;
-
+  const sql = `UPDATE playlists SET is_deleted = 1 WHERE id = ?`;
   const [result] = await pool.query(sql, [id]);
-  return result.affectedRows > 0;
+  if (result.affectedRows === 0) {
+    throw new Error("Something went wrong trying to delete playlist");
+  }
 };
 
 const updatePlaylistName = async (playlist) => {
   const { newPlaylistName } = playlist;
   const playlistId = playlist[0].id;
-
-  const sql = `
-    UPDATE playlists AS p SET
-    p.title = ?
-    WHERE p.id = ?
-  `;
-
-  return await pool.query(sql, [newPlaylistName, playlistId]);
+  const sql = `UPDATE playlists SET title = ? WHERE id = ?`;
+  const [result] = await pool.query(sql, [newPlaylistName, playlistId]);
+  if (result.affectedRows === 0) {
+    throw new Error("Something went wrong trying to update playlist");
+  }
 };
 
 export default {

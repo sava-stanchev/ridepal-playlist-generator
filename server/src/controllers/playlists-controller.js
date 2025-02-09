@@ -12,7 +12,7 @@ playlistsController
     "/",
     asyncHandler(async (req, res) => {
       const thePlaylists = await playlistsData.getAllPlaylists();
-      res.json(thePlaylists);
+      return res.json(thePlaylists);
     })
   )
 
@@ -22,7 +22,7 @@ playlistsController
     authMiddleware,
     asyncHandler(async (req, res) => {
       const playlist = await playlistServices.playlistGenerator(req);
-      res.status(201).json(playlist);
+      return res.status(201).json(playlist);
     })
   )
 
@@ -44,11 +44,8 @@ playlistsController
     "/:id",
     asyncHandler(async (req, res) => {
       const { id } = req.params;
-      const isDeleted = await playlistsData.deletePlaylist(id);
-      if (isDeleted) {
-        return res.status(204).end();
-      }
-      res.status(404).json({ error: "Playlist deletion failed" });
+      await playlistsData.deletePlaylist(id);
+      return res.status(204).end();
     })
   )
 
@@ -59,16 +56,9 @@ playlistsController
       const { id } = req.params;
       const updateData = req.body;
 
-      const playlistUpdated = await playlistServices.updatePlaylist(
-        id,
-        updateData
-      );
-      if (playlistUpdated) {
-        const newPlaylist = await playlistsData.getPlaylistById(id);
-        res.status(200).json(newPlaylist[0]);
-      } else {
-        res.status(404).json({ error: "Playlist update failed" });
-      }
+      await playlistServices.updatePlaylist(id, updateData);
+      const newPlaylist = await playlistsData.getPlaylistById(id);
+      return res.status(200).json(newPlaylist[0]);
     })
   );
 
