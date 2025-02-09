@@ -9,40 +9,34 @@ import { HOST } from "../common/constants";
 
 const NavBar = () => {
   const history = useHistory();
-  const auth = useContext(AuthContext);
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
 
-  async function signOut(request) {
+  const handleSignOut = async () => {
     try {
-      const response = await fetch(request);
+      const response = await fetch(`${HOST}/logout`, {
+        method: "DELETE",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
-      } else {
-        auth.setUser(null);
-        localStorage.removeItem("token");
-        history.push("/home");
       }
+      setUser(null);
+      localStorage.removeItem("token");
+      history.push("/home");
     } catch (error) {
       console.error(error.message);
     }
-  }
-
-  const logoutRequest = new Request(`${HOST}/logout`, {
-    method: "DELETE",
-    headers: {
-      authorization: `bearer ${localStorage.getItem("token")}`,
-    },
-  });
+  };
 
   return (
     <header className="header">
       <Link to="/home">
         <div className="header__logo">
           <img src={brandLogo} alt="logo" />
-          <div href="#home" className="brand-logo-name">
-            RidePal
-          </div>
+          <div className="brand-logo-name">RidePal</div>
         </div>
       </Link>
       <nav className="header__nav">
@@ -75,26 +69,23 @@ const NavBar = () => {
               >
                 {user.username}
               </ReactTooltip>
-              <li onClick={() => signOut(logoutRequest)}>
-                <Link to="/home">
-                  <button
-                    className="tooltip-icon-logout"
-                    data-tip
-                    data-for="log-out"
-                    aria-label="Log out"
-                  >
-                    <FiLogOut size={27} />
-                  </button>
-
-                  <ReactTooltip
-                    id="log-out"
-                    place="bottom"
-                    effect="solid"
-                    className="react-tooltip-padding"
-                  >
-                    Log out
-                  </ReactTooltip>
-                </Link>
+              <li onClick={handleSignOut}>
+                <button
+                  className="tooltip-icon-logout"
+                  data-tip
+                  data-for="log-out"
+                  aria-label="Log out"
+                >
+                  <FiLogOut size={27} />
+                </button>
+                <ReactTooltip
+                  id="log-out"
+                  place="bottom"
+                  effect="solid"
+                  className="react-tooltip-padding"
+                >
+                  Log out
+                </ReactTooltip>
               </li>
             </>
           ) : (
